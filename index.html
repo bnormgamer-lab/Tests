@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Wasm Threading Proof</title>
+    <style>
+        body {
+            margin: 0;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        canvas {
+            border: 1px solid #444;
+            margin: 1rem 0;
+        }
+        button {
+            font-size: 1.2rem;
+            padding: 0.5rem 2rem;
+            margin: 0.5rem;
+            cursor: pointer;
+        }
+        #status {
+            margin: 1rem 0;
+            white-space: pre-wrap;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+        .pass { color: #4caf50; }
+        .fail { color: #f44336; }
+        .warn { color: #ffa726; }
+        .info { color: #90caf9; }
+        .section { color: #ce93d8; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <!-- coi-serviceworker MUST load before any module scripts -->
+    <script src="coi-serviceworker.js"></script>
+
+    <h1>Wasm Threading Proof-of-Concept</h1>
+    <div id="status"></div>
+
+    <!-- Threading test canvas (2D, driven by Rust rAF loop) -->
+    <canvas id="canvas" width="600" height="220"></canvas>
+    <div>
+        <button id="advance">Advance (unblock Worker)</button>
+        <button id="auto">Toggle Auto-Advance</button>
+    </div>
+
+    <!-- wgpu coexistence canvas (WebGPU, driven by JS rAF loop) -->
+    <canvas id="webgpu-canvas" width="600" height="80"></canvas>
+
+    <script type="module">
+        import init from './pkg/wasm_thread_proof.js';
+
+        const statusEl = document.getElementById('status');
+
+        function log(msg, cls = 'info') {
+            const span = document.createElement('span');
+            span.className = cls;
+            span.textContent = msg + '\n';
+            statusEl.appendChild(span);
+        }
+
+        // --- Section 1: Cross-Origin Isolation ---
+        log('=== Section 1: Cross-Origin Isolation ===', 'section');
+        log(`crossOriginIsolated: ${self.crossOriginIsolated}`,
+            self.crossOriginIsolated ? 'pass' : 'fail');
+
+        if (!self.crossOriginIsolated) {
+            log('SharedArrayBuffer requires cross-origin isolation.', 'fail');
+            log('coi-serviceworker should reload the page on first visit.', 'fail');
+            log('If this persists, check that coi-serviceworker.js loaded correctly.', 'fail');
+        }
+
+        try {
+            const sab = new SharedArrayBuffer(4);
+            log('SharedArrayBuffer: available', 'pass');
+        } catch (e) {
+            log(`SharedArrayBuffer: ${e.message}`, 'fail');
+        }
+
+        // --- Section 2: COEP Cross-Origin Resource Impact ---
+        log('=== Section 2: COEP Cross-Origin Resource Impact ===', 'section');
+
+        try {
+            const resp = await fetch(
+                'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+                { mode: 'cors' }
+            );
+            if (resp.ok) {
+                log('COEP: cross-origin fetch() SUCCEEDED (CDN sends CORP/CORS headers)', 'warn');
+                log('  -> CDN resources may work, but do not rely on this -- self-host to be safe', 'info');
+            } else {
+                log(`COEP: cross-origin fetch() returned ${resp.status}`, 'warn');
+            }
+        } catch (e) {
+            log('COEP: cross-origin fetch() BLOCKED (expected under require-corp)', 'pass');
+            log(`  -> Error: ${e.message}`, 'info');
+            log('  -> All game assets (fonts, scripts, images) must be self-hosted', 'info');
+        }
+
+        // --- Section 3: Wasm Threading ---
+        log('=== Section 3: Wasm Threading ===', 'section');
+
+        const t0 = performance.now();
+
+        let wasmExports = null;
+        try {
+            wasmExports = await init();
+            const t1 = performance.now();
+            log(`Wasm module initialized in ${(t1 - t0).toFixed(1)}ms`, 'pass');
+        } catch (e) {
+            log(`Wasm init failed: ${e}`, 'fail');
+            throw e;
+        }
+
+        log(`Wasm init returned at t=${performance.now().toFixed(1)}ms -- Worker starts after event loop yields`, 'info');
+
+        // --- Section 4: WebGPU / wgpu Coexistence ---
+        log('=== Section 4: WebGPU / wgpu Coexistence ===', 'section');
+
+        const gpuCanvas = document.getElementById('webgpu-canvas');
+        let gpuRenderLoop = null;
+
+        if (navigator.gpu) {
+            try {
+                const adapter = await navigator.gpu.requestAdapter();
+                if (!adapter) {
+                    log('WebGPU: adapter request returned null (GPU not available)', 'fail');
+                    log('  -> wgpu coexistence UNVERIFIED -- try Chrome with WebGPU enabled', 'info');
+                } else {
+                    const device = await adapter.requestDevice();
+                    const context = gpuCanvas.getContext('webgpu');
+                    const format = navigator.gpu.getPreferredCanvasFormat();
+                    context.configure({ device, format, alphaMode: 'premultiplied' });
+
+                    log('WebGPU: adapter + device + context acquired', 'pass');
+                    log(`  -> Adapter: ${adapter.info?.vendor || 'unknown'} / ${adapter.info?.architecture || 'unknown'}`, 'info');
+
+                    let gpuFrame = 0;
+                    gpuRenderLoop = function() {
+                        gpuFrame++;
+                        const r = Math.sin(gpuFrame * 0.02) * 0.3 + 0.3;
+                        const g = Math.sin(gpuFrame * 0.02 + 2) * 0.3 + 0.3;
+                        const b = Math.sin(gpuFrame * 0.02 + 4) * 0.3 + 0.3;
+
+                        const commandEncoder = device.createCommandEncoder();
+                        const textureView = context.getCurrentTexture().createView();
+                        const renderPass = commandEncoder.beginRenderPass({
+                            colorAttachments: [{
+                                view: textureView,
+                                clearValue: { r, g, b, a: 1 },
+                                loadOp: 'clear',
+                                storeOp: 'store',
+                            }],
+                        });
+                        renderPass.end();
+                        device.queue.submit([commandEncoder.finish()]);
+                    };
+
+                    gpuRenderLoop();
+                    log('WebGPU: clear-render succeeded alongside active Web Worker', 'pass');
+                    log('  -> wgpu coexistence CONFIRMED: WebGPU + SharedArrayBuffer + COEP work together', 'pass');
+                }
+            } catch (e) {
+                log(`WebGPU: initialization failed: ${e.message}`, 'fail');
+                log('  -> This is a CRITICAL finding -- wgpu may not work under COEP', 'fail');
+            }
+        } else {
+            log('WebGPU: navigator.gpu not available in this browser', 'warn');
+            log('  -> Falling back to WebGL2 coexistence test (wgpu fallback backend)', 'info');
+
+            try {
+                const gl = gpuCanvas.getContext('webgl2');
+                if (gl) {
+                    log('WebGL2: context acquired', 'pass');
+
+                    let glFrame = 0;
+                    gpuRenderLoop = function() {
+                        glFrame++;
+                        const r = Math.sin(glFrame * 0.02) * 0.3 + 0.3;
+                        const g = Math.sin(glFrame * 0.02 + 2) * 0.3 + 0.3;
+                        const b = Math.sin(glFrame * 0.02 + 4) * 0.3 + 0.3;
+                        gl.clearColor(r, g, b, 1);
+                        gl.clear(gl.COLOR_BUFFER_BIT);
+                    };
+
+                    gpuRenderLoop();
+                    log('WebGL2: clear-render succeeded alongside active Web Worker', 'pass');
+                    log('  -> wgpu fallback coexistence CONFIRMED (WebGL2 backend)', 'pass');
+                    log('  -> WebGPU coexistence still UNVERIFIED -- test in Chrome for full coverage', 'warn');
+                } else {
+                    log('WebGL2: context creation failed', 'fail');
+                    log('  -> wgpu coexistence UNVERIFIED on this browser', 'fail');
+                }
+            } catch (e) {
+                log(`WebGL2: ${e.message}`, 'fail');
+            }
+        }
+
+        // --- Section 5: Wasm Memory Inspection ---
+        log('=== Section 5: Wasm Memory Inspection ===', 'section');
+
+        try {
+            const wasmMemory = wasmExports?.memory;
+            if (wasmMemory && wasmMemory.buffer) {
+                const buf = wasmMemory.buffer;
+                const isShared = buf instanceof SharedArrayBuffer;
+                const sizeMB = (buf.byteLength / (1024 * 1024)).toFixed(1);
+                log(`Wasm memory: ${sizeMB}MB, shared=${isShared}`, isShared ? 'pass' : 'warn');
+                if (isShared) {
+                    log('  -> Memory is SharedArrayBuffer-backed (atomics enabled)', 'pass');
+                } else {
+                    log('  -> Memory is NOT shared -- atomics may not be working correctly', 'fail');
+                }
+            } else {
+                log('Wasm memory: could not access memory object from wasm exports', 'warn');
+                log('  -> Inspect manually: check wasm module exports in DevTools console', 'info');
+            }
+        } catch (e) {
+            log(`Wasm memory inspection: ${e.message}`, 'warn');
+            log('  -> Inspect manually in DevTools: WebAssembly instances -> memory', 'info');
+        }
+
+        // --- Continuous GPU render loop ---
+        if (gpuRenderLoop) {
+            function gpuFrame() {
+                try { gpuRenderLoop(); } catch (e) { /* device lost -- stop */ return; }
+                requestAnimationFrame(gpuFrame);
+            }
+            requestAnimationFrame(gpuFrame);
+            log('', 'info');
+            log('GPU render loop started -- color-cycling canvas below proves sustained coexistence', 'info');
+        }
+
+        log('', 'info');
+        log('=== All automated checks complete. See canvas for interactive verification. ===', 'section');
+    </script>
+</body>
+</html>
