@@ -55,7 +55,7 @@
     <canvas id="webgpu-canvas" width="600" height="80"></canvas>
 
     <script type="module">
-        import init from './pkg/wasm_thread_proof.js';
+        import init, { start_worker } from './pkg/wasm_thread_proof.js';
 
         const statusEl = document.getElementById('status');
 
@@ -117,6 +117,14 @@
         } catch (e) {
             log(`Wasm init failed: ${e}`, 'fail');
             throw e;
+        }
+
+        // Spawn the Worker now that init() has returned to the event loop
+        try {
+            start_worker();
+            log('Worker spawned successfully', 'pass');
+        } catch (e) {
+            log(`Worker spawn failed: ${e}`, 'fail');
         }
 
         log(`Wasm init returned at t=${performance.now().toFixed(1)}ms -- Worker starts after event loop yields`, 'info');
