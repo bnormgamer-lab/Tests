@@ -1,0 +1,35 @@
+Visual(
+    id: "demo:curve_composition",
+    visual: [
+        // Layer 1: Circle with animated offset (oscillates left/right)
+        Circle(
+            radius: 8.0,
+            fill: "#ff3333",
+            offset: (Loop(period: 1.0, keys: [(0.0, -30.0), (0.5, 30.0), (1.0, -30.0)]), 0.0),
+        ),
+        // Layer 2: Triangle with animated vertex (v1_y breathes)
+        Triangle(
+            v0: (0.0, -20.0),
+            v1: (-15.0, Loop(period: 1.0, keys: [(0.0, 10.0), (0.5, 25.0), (1.0, 10.0)])),
+            v2: (15.0, 10.0),
+            fill: "#33ff33",
+            offset: (0.0, 60.0),
+        ),
+        // Layer 3: RoundedRect with animated corner_radius
+        RoundedRect(
+            width: 30.0,
+            height: 20.0,
+            radius: Loop(period: 0.8, keys: [(0.0, 1.0), (0.4, 10.0), (0.8, 1.0)]),
+            fill: "#3333ff",
+            offset: (0.0, -60.0),
+        ),
+        // Layer 4: Circle with pivot (orbits around origin)
+        Circle(
+            radius: 5.0,
+            fill: "#ffff33",
+            offset: (25.0, 0.0),
+            pivot: (0.0, 0.0),
+            rotation: Loop(period: 2.0, keys: [(0.0, 0.0), (2.0, 6.28318)]),
+        ),
+    ],
+)

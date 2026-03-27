@@ -1,0 +1,67 @@
+Visual(
+    id: "demo:wolf_runner",
+    visual: [
+        // === GROUND SHADOW ===
+        Ellipse(rx: 30.0, ry: 4.0, fill: "#18181f", offset: (0.0, 24.0),
+            opacity: Loop(period: 1.2, keys: [(0.0, 0.22), (0.6, 0.32), (1.2, 0.22)])),
+
+        // === BACK LEGS ===
+        Rect(width: 5.5, height: 22.0, fill: "#606060", offset: (-8.0, 4.0),
+            rotation: Loop(period: 0.30, keys: [(0.0, 0.42), (0.075, -0.38), (0.15, 0.42), (0.225, -0.38), (0.30, 0.42)])),
+        Rect(width: 5.5, height: 22.0, fill: "#525252", offset: (-14.0, 4.0),
+            rotation: Loop(period: 0.30, keys: [(0.0, -0.38), (0.075, 0.42), (0.15, -0.38), (0.225, 0.42), (0.30, -0.38)])),
+
+        // === TAIL ===
+        Ellipse(rx: 3.5, ry: 16.0, fill: "#6e6e6e", offset: (-20.0, -5.0),
+            rotation: Loop(period: 0.55, keys: [(0.0, -0.38), (0.14, -0.12), (0.275, -0.38), (0.41, -0.12), (0.55, -0.38)])),
+
+        // === BODY ===
+        Ellipse(rx: 25.0, ry: 10.0, fill: "#2e2e2e", offset: (0.0, 1.5)),
+        Ellipse(rx: 24.0, ry: 9.0, fill: "#808080"),
+        Ellipse(rx: 21.0, ry: 3.5, fill: "#585858", offset: (0.0, -5.5)),
+        Ellipse(rx: 19.0, ry: 5.0, fill: "#6a6a6a", offset: (0.0, -3.0)),
+        Ellipse(rx: 19.0, ry: 5.0, fill: "#9a9a9a", offset: (0.0, 3.5)),
+        Ellipse(rx: 9.0, ry: 8.0, fill: "#6a6a6a", offset: (-13.0, 0.0)),
+
+        // === FRONT LEGS ===
+        Rect(width: 6.0, height: 22.0, fill: "#6a6a6a", offset: (10.0, 4.0),
+            rotation: Loop(period: 0.30, keys: [(0.0, -0.38), (0.075, 0.42), (0.15, -0.38), (0.225, 0.42), (0.30, -0.38)])),
+        Rect(width: 6.0, height: 22.0, fill: "#585858", offset: (16.0, 4.0),
+            rotation: Loop(period: 0.30, keys: [(0.0, 0.42), (0.075, -0.38), (0.15, 0.42), (0.225, -0.38), (0.30, 0.42)])),
+
+        // === SHOULDER/CHEST ===
+        Ellipse(rx: 9.0, ry: 9.0, fill: "#808080", offset: (17.0, -2.0)),
+        Ellipse(rx: 6.0, ry: 6.0, fill: "#909090", offset: (19.0, 1.0)),
+
+        // === NECK ===
+        Ellipse(rx: 6.0, ry: 8.0, fill: "#808080", offset: (23.0, -5.0)),
+        Ellipse(rx: 4.5, ry: 5.5, fill: "#909090", offset: (22.0, -1.5)),
+
+        // === HEAD ===
+        Ellipse(rx: 7.5, ry: 6.5, fill: "#3a3a3a", offset: (27.0, -9.0)),
+        Ellipse(rx: 7.0, ry: 6.0, fill: "#909090", offset: (27.0, -10.0),
+            rotation: Loop(period: 0.42, keys: [(0.0, -0.025), (0.105, 0.025), (0.21, -0.025), (0.315, 0.025), (0.42, -0.025)])),
+        Ellipse(rx: 4.5, ry: 3.0, fill: "#a0a0a0", offset: (26.0, -13.5)),
+
+        // === MUZZLE (all ellipses — triangles scale unpredictably) ===
+        Ellipse(rx: 8.5, ry: 3.2, fill: "#a0a0a0", offset: (34.0, -9.0)),
+        Ellipse(rx: 3.0, ry: 2.0, fill: "#888888", offset: (41.0, -9.0)),
+        Circle(radius: 2.0, fill: "#181818", offset: (42.5, -9.5)),
+        Rect(width: 11.0, height: 0.7, fill: "#4a4a4a", offset: (35.0, -7.0)),
+        Ellipse(rx: 6.5, ry: 1.8, fill: "#787878", offset: (34.0, -6.2)),
+
+        // === EARS (small ellipses instead of triangles — more predictable size) ===
+        // Left ear
+        Ellipse(rx: 2.5, ry: 4.5, fill: "#6a6a6a", offset: (23.0, -16.0)),
+        Ellipse(rx: 1.5, ry: 3.0, fill: "#9a8a8a", offset: (23.0, -15.5)),
+        // Right ear
+        Ellipse(rx: 2.5, ry: 4.5, fill: "#808080", offset: (28.5, -16.5)),
+        Ellipse(rx: 1.5, ry: 3.0, fill: "#aa9a9a", offset: (28.5, -16.0)),
+
+        // === EYE ===
+        Ellipse(rx: 4.0, ry: 3.0, fill: "#3a3a3a", offset: (30.0, -12.5)),
+        Ellipse(rx: 3.2, ry: 2.5, fill: "#c0b830", offset: (30.0, -12.5)),
+        Ellipse(rx: 1.2, ry: 2.2, fill: "#181818", offset: (30.5, -12.5)),
+        Circle(radius: 0.9, fill: "#f0f0f0", offset: (29.5, -13.3)),
+    ],
+)

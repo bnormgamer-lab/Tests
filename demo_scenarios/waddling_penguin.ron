@@ -1,0 +1,108 @@
+Visual(
+    id: "demo:waddling_penguin",
+    visual: [
+        // === GROUND SHADOW ===
+        Ellipse(rx: 16.0, ry: 4.0, fill: "#0a0a14", offset: (0.0, 24.0),
+            opacity: 0.35),
+
+        // === FEET (behind body) ===
+        // Left foot — animated x offset waddles with body
+        Ellipse(rx: 5.0, ry: 2.5, fill: "#ee7711",
+            offset: (Loop(period: 0.8, keys: [(0.0, -6.5), (0.2, -3.5), (0.4, -6.5), (0.6, -3.5), (0.8, -6.5)]), 22.0)),
+        // Right foot — animated x offset opposite phase
+        Ellipse(rx: 5.0, ry: 2.5, fill: "#dd6600",
+            offset: (Loop(period: 0.8, keys: [(0.0, 3.5), (0.2, 6.5), (0.4, 3.5), (0.6, 6.5), (0.8, 3.5)]), 22.0)),
+
+        // === BODY ===
+        // Body shadow — animated x offset to follow waddle lean
+        Ellipse(rx: 15.0, ry: 21.0, fill: "#0e0e1e",
+            offset: (Loop(period: 0.8, keys: [(0.0, -1.5), (0.2, 1.5), (0.4, -1.5), (0.6, 1.5), (0.8, -1.5)]), 1.0)),
+        // Main body (black)
+        Ellipse(rx: 14.0, ry: 20.0, fill: "#161628",
+            rotation: Loop(period: 0.8, keys: [(0.0, -0.10), (0.2, 0.10), (0.4, -0.10), (0.6, 0.10), (0.8, -0.10)])),
+        // Belly (white, follows waddle)
+        Ellipse(rx: 10.0, ry: 16.0, fill: "#e4e4ee", offset: (0.0, 2.0),
+            rotation: Loop(period: 0.8, keys: [(0.0, -0.10), (0.2, 0.10), (0.4, -0.10), (0.6, 0.10), (0.8, -0.10)])),
+        // Belly sheen (lighter center highlight)
+        Ellipse(rx: 6.0, ry: 12.0, fill: "#f0f0f8", offset: (0.0, 1.0),
+            rotation: Loop(period: 0.8, keys: [(0.0, -0.10), (0.2, 0.10), (0.4, -0.10), (0.6, 0.10), (0.8, -0.10)])),
+
+        // === WINGS ===
+        // Left wing — offset at shoulder, wing extends down-left
+        // Pivot at shoulder so the wing swings from the attachment point
+        Ellipse(rx: 5.5, ry: 15.0, fill: "#1a1a30", offset: (-14.0, 6.0),
+            pivot: (-12.0, -6.0),
+            rotation: Loop(period: 0.8, keys: [(0.0, 0.30), (0.2, -0.20), (0.4, 0.30), (0.6, -0.20), (0.8, 0.30)])),
+        // Left wing tip — offset further out, pivots from shoulder too
+        Ellipse(rx: 3.5, ry: 5.5, fill: "#2a2a40", offset: (-17.0, 14.0),
+            pivot: (-12.0, -6.0),
+            rotation: Loop(period: 0.8, keys: [(0.0, 0.40), (0.2, -0.30), (0.4, 0.40), (0.6, -0.30), (0.8, 0.40)])),
+        // Right wing — mirror of left
+        Ellipse(rx: 5.5, ry: 15.0, fill: "#1a1a30", offset: (14.0, 6.0),
+            pivot: (12.0, -6.0),
+            rotation: Loop(period: 0.8, keys: [(0.0, -0.30), (0.2, 0.20), (0.4, -0.30), (0.6, 0.20), (0.8, -0.30)])),
+        // Right wing tip — pivots from shoulder
+        Ellipse(rx: 3.5, ry: 5.5, fill: "#2a2a40", offset: (17.0, 14.0),
+            pivot: (12.0, -6.0),
+            rotation: Loop(period: 0.8, keys: [(0.0, -0.40), (0.2, 0.30), (0.4, -0.40), (0.6, 0.30), (0.8, -0.40)])),
+
+        // === HEAD ===
+        // Head shadow — animated x follows waddle (subtle)
+        Circle(radius: 10.5, fill: "#0e0e1e",
+            offset: (Loop(period: 0.8, keys: [(0.0, -0.7), (0.2, 0.7), (0.4, -0.7), (0.6, 0.7), (0.8, -0.7)]), -21.0)),
+        // Head main — animated x follows waddle (subtle)
+        Circle(radius: 10.0, fill: "#181830",
+            offset: (Loop(period: 0.8, keys: [(0.0, -0.7), (0.2, 0.7), (0.4, -0.7), (0.6, 0.7), (0.8, -0.7)]), -22.0)),
+        // Face patch — animated x follows waddle (subtle)
+        Ellipse(rx: 7.5, ry: 6.5, fill: "#e4e4ee",
+            offset: (Loop(period: 0.8, keys: [(0.0, -0.7), (0.2, 0.7), (0.4, -0.7), (0.6, 0.7), (0.8, -0.7)]), -20.0)),
+
+        // === EYES ===
+        // Left eye white — animated x follows waddle (subtle)
+        Circle(radius: 2.8, fill: "#f8f8ff",
+            offset: (Loop(period: 0.8, keys: [(0.0, -4.7), (0.2, -3.3), (0.4, -4.7), (0.6, -3.3), (0.8, -4.7)]), -24.0)),
+        // Left pupil
+        Circle(radius: 1.5, fill: "#0a0a14",
+            offset: (Loop(period: 0.8, keys: [(0.0, -4.2), (0.2, -2.8), (0.4, -4.2), (0.6, -2.8), (0.8, -4.2)]), -24.0)),
+        // Left eye glint
+        Circle(radius: 0.5, fill: "#ffffff",
+            offset: (Loop(period: 0.8, keys: [(0.0, -3.7), (0.2, -2.3), (0.4, -3.7), (0.6, -2.3), (0.8, -3.7)]), -24.8)),
+        // Right eye white
+        Circle(radius: 2.8, fill: "#f8f8ff",
+            offset: (Loop(period: 0.8, keys: [(0.0, 3.3), (0.2, 4.7), (0.4, 3.3), (0.6, 4.7), (0.8, 3.3)]), -24.0)),
+        // Right pupil
+        Circle(radius: 1.5, fill: "#0a0a14",
+            offset: (Loop(period: 0.8, keys: [(0.0, 3.8), (0.2, 5.2), (0.4, 3.8), (0.6, 5.2), (0.8, 3.8)]), -24.0)),
+        // Right eye glint
+        Circle(radius: 0.5, fill: "#ffffff",
+            offset: (Loop(period: 0.8, keys: [(0.0, 4.3), (0.2, 5.7), (0.4, 4.3), (0.6, 5.7), (0.8, 4.3)]), -24.8)),
+
+        // === BEAK ===
+        // Beak upper — vertices shift ±0.7 with head
+        Triangle(
+            v0: (Loop(period: 0.8, keys: [(0.0, -0.7), (0.2, 0.7), (0.4, -0.7), (0.6, 0.7), (0.8, -0.7)]), -16.5),
+            v1: (Loop(period: 0.8, keys: [(0.0, -4.2), (0.2, -2.8), (0.4, -4.2), (0.6, -2.8), (0.8, -4.2)]), -19.5),
+            v2: (Loop(period: 0.8, keys: [(0.0, 2.8), (0.2, 4.2), (0.4, 2.8), (0.6, 4.2), (0.8, 2.8)]), -19.5),
+            fill: "#ee8811"),
+        // Beak lower — vertices shift ±0.7 with head
+        Triangle(
+            v0: (Loop(period: 0.8, keys: [(0.0, -0.7), (0.2, 0.7), (0.4, -0.7), (0.6, 0.7), (0.8, -0.7)]), -15.5),
+            v1: (Loop(period: 0.8, keys: [(0.0, -3.2), (0.2, -1.8), (0.4, -3.2), (0.6, -1.8), (0.8, -3.2)]), -17.5),
+            v2: (Loop(period: 0.8, keys: [(0.0, 1.8), (0.2, 3.2), (0.4, 1.8), (0.6, 3.2), (0.8, 1.8)]), -17.5),
+            fill: "#cc6600"),
+        // Beak shine — vertices shift ±0.7 with head
+        Triangle(
+            v0: (Loop(period: 0.8, keys: [(0.0, -0.7), (0.2, 0.7), (0.4, -0.7), (0.6, 0.7), (0.8, -0.7)]), -17.5),
+            v1: (Loop(period: 0.8, keys: [(0.0, -2.2), (0.2, -0.8), (0.4, -2.2), (0.6, -0.8), (0.8, -2.2)]), -19.0),
+            v2: (Loop(period: 0.8, keys: [(0.0, 0.8), (0.2, 2.2), (0.4, 0.8), (0.6, 2.2), (0.8, 0.8)]), -19.0),
+            fill: "#ffaa33"),
+
+        // === HEAD MARKINGS ===
+        // Left eyebrow — animated x ±0.7 with head
+        Ellipse(rx: 4.0, ry: 1.0, fill: "#ffdd44",
+            offset: (Loop(period: 0.8, keys: [(0.0, -3.7), (0.2, -2.3), (0.4, -3.7), (0.6, -2.3), (0.8, -3.7)]), -27.0)),
+        // Right eyebrow — animated x ±0.7 with head
+        Ellipse(rx: 4.0, ry: 1.0, fill: "#ffdd44",
+            offset: (Loop(period: 0.8, keys: [(0.0, 2.3), (0.2, 3.7), (0.4, 2.3), (0.6, 3.7), (0.8, 2.3)]), -27.0)),
+    ],
+)

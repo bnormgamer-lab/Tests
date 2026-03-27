@@ -1,0 +1,27 @@
+Visual(
+    id: "demo:stage_3d_visual",
+    visual: [
+        Circle(
+            radius: 15.0,
+            fill: "#4488ff",
+            opacity: Loop(period: 2.0, keys: [(0.0, 0.3), (1.0, 1.0)]),
+        ),
+        Rect(
+            width: 20.0,
+            height: 12.0,
+            fill: "#ff4444",
+            rotation: Curve(keys: [(0.0, 0.0), (1.0, 3.14159)]),
+        ),
+        Triangle(
+            v0: (0.0, -10.0),
+            v1: (-8.0, 6.0),
+            v2: (8.0, 6.0),
+            fill: "#44ff44",
+        ),
+        Ellipse(
+            rx: 12.0,
+            ry: 8.0,
+            fill: "#ffffff",
+        ),
+    ],
+)

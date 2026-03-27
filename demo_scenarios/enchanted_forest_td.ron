@@ -1,0 +1,608 @@
+[
+// ============================================================
+// ENCHANTED FOREST — Top-down Tower Defense Scene
+// Reusable components defined with id:, composed in main scene
+// ============================================================
+
+// --- PINE TREE (top-down: concentric circles) ---
+Visual(
+    id: "demo:ef_pine",
+    visual: [
+        Ellipse(rx: 12.0, ry: 10.0, fill: "#122a10", offset: (0.0, 2.0)),
+        Ellipse(rx: 10.0, ry: 8.0, fill: "#1a4018"),
+        Ellipse(rx: 7.0, ry: 5.5, fill: "#225520", offset: (0.0, -1.0)),
+        Circle(radius: 2.5, fill: "#2a6628", offset: (0.0, -2.0)),
+    ],
+),
+
+// --- OAK TREE (top-down: larger, rounder canopy) ---
+Visual(
+    id: "demo:ef_oak",
+    visual: [
+        // Shadow
+        Ellipse(rx: 22.0, ry: 18.0, fill: "#0a1a08", offset: (3.0, 3.0), opacity: 0.2),
+        // Outer canopy
+        Ellipse(rx: 20.0, ry: 17.0, fill: "#122a0e"),
+        // Mid canopy clusters
+        Circle(radius: 11.0, fill: "#1a4014", offset: (-5.0, -3.0)),
+        Circle(radius: 10.0, fill: "#1a4014", offset: (6.0, 2.0)),
+        Circle(radius: 9.0, fill: "#183a12", offset: (0.0, 5.0)),
+        // Highlight clusters
+        Circle(radius: 7.0, fill: "#225520", offset: (-4.0, -4.0)),
+        Circle(radius: 6.0, fill: "#225520", offset: (5.0, 0.0)),
+        // Bright center
+        Circle(radius: 4.0, fill: "#2a6628", offset: (-2.0, -2.0)),
+    ],
+),
+
+// --- BUSH (small undergrowth) ---
+Visual(
+    id: "demo:ef_bush",
+    visual: [
+        Ellipse(rx: 7.0, ry: 5.0, fill: "#123412"),
+        Ellipse(rx: 5.0, ry: 3.5, fill: "#1a4a18", offset: (0.0, -1.0)),
+        Circle(radius: 2.0, fill: "#225a20", offset: (-1.0, -1.5)),
+    ],
+),
+
+// --- MUSHROOM CLUSTER (glowing) ---
+Visual(
+    id: "demo:ef_mushroom",
+    visual: [
+        // Glow aura
+        Circle(radius: 10.0, fill: "#88ffaa", offset: (0.0, 0.0),
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.06), (1.5, 0.2), (3.0, 0.06)])),
+        // Stems
+        Rect(width: 1.5, height: 4.0, fill: "#c8c0a0", offset: (-2.0, 2.0)),
+        Rect(width: 1.2, height: 3.0, fill: "#c8c0a0", offset: (2.0, 2.5)),
+        Rect(width: 1.0, height: 2.5, fill: "#c8c0a0", offset: (0.5, 3.0)),
+        // Caps
+        Ellipse(rx: 3.5, ry: 2.0, fill: "#44cc66", offset: (-2.0, -0.5)),
+        Ellipse(rx: 2.8, ry: 1.5, fill: "#55dd77", offset: (2.0, 0.5)),
+        Ellipse(rx: 2.0, ry: 1.2, fill: "#44cc66", offset: (0.5, 1.0)),
+        // Cap spots
+        Circle(radius: 0.6, fill: "#88ffaa", offset: (-2.5, -1.0)),
+        Circle(radius: 0.5, fill: "#88ffaa", offset: (1.5, 0.0)),
+    ],
+),
+
+// --- ROCK (mossy forest boulder) ---
+Visual(
+    id: "demo:ef_rock",
+    visual: [
+        Ellipse(rx: 8.0, ry: 6.0, fill: "#4a4a48", offset: (0.0, 1.0)),
+        Ellipse(rx: 6.5, ry: 4.5, fill: "#5a5a56", offset: (-0.5, -0.5)),
+        Ellipse(rx: 4.0, ry: 2.5, fill: "#6a6a64", offset: (-1.0, -1.5)),
+        // Moss patches
+        Ellipse(rx: 3.0, ry: 1.5, fill: "#3a6a30", offset: (2.0, -1.0), opacity: 0.6),
+        Circle(radius: 1.5, fill: "#3a6a30", offset: (-3.0, 1.0), opacity: 0.5),
+    ],
+),
+
+// --- FALLEN LOG ---
+Visual(
+    id: "demo:ef_log",
+    visual: [
+        RoundedRect(width: 30.0, height: 6.0, radius: 3.0, fill: "#5a3a20", rotation: 0.15),
+        RoundedRect(width: 28.0, height: 3.0, radius: 1.5, fill: "#6a4a28", offset: (0.0, -1.0), rotation: 0.15),
+        // Moss
+        Ellipse(rx: 4.0, ry: 1.5, fill: "#3a7a2a", offset: (-6.0, -2.5), opacity: 0.5),
+        Ellipse(rx: 3.0, ry: 1.2, fill: "#3a7a2a", offset: (8.0, -2.0), opacity: 0.4),
+    ],
+),
+
+// --- CRYSTAL TOWER (arcane defender) ---
+Visual(
+    id: "demo:ef_crystal_tower",
+    visual: [
+        // Base shadow
+        Ellipse(rx: 16.0, ry: 14.0, fill: "#0a0a1a", offset: (0.0, 2.0), opacity: 0.3),
+        // Stone base (top-down circle)
+        Circle(radius: 14.0, fill: "#3a3a4a"),
+        Circle(radius: 12.0, fill: "#4a4a5a"),
+        Circle(radius: 10.0, fill: "#5a5a6a"),
+        // Rune ring
+        Circle(radius: 11.5, fill: "#6688cc", opacity: 0.15),
+        // Inner platform
+        Circle(radius: 8.0, fill: "#5a5a6a"),
+        // Crystal cluster (center)
+        Triangle(v0: (0.0, -6.0), v1: (-4.0, 3.0), v2: (4.0, 3.0), fill: "#66aaff"),
+        Triangle(v0: (3.0, -4.0), v1: (0.0, 4.0), v2: (6.0, 2.0), fill: "#5588dd"),
+        Triangle(v0: (-3.0, -5.0), v1: (-6.0, 2.0), v2: (0.0, 3.0), fill: "#7788ee"),
+        // Crystal highlight
+        Triangle(v0: (0.0, -5.0), v1: (-2.0, 1.0), v2: (2.0, 1.0), fill: "#aaccff"),
+        // Glow pulse (strong against dark ground)
+        Circle(radius: 22.0, fill: "#6688ff",
+            opacity: Loop(period: 2.5, keys: [(0.0, 0.06), (1.25, 0.18), (2.5, 0.06)])),
+        // Bright core
+        Circle(radius: 4.0, fill: "#ccddff",
+            opacity: Loop(period: 2.5, keys: [(0.0, 0.6), (1.25, 1.0), (2.5, 0.6)])),
+    ],
+),
+
+// --- NATURE TOWER (living wood) ---
+Visual(
+    id: "demo:ef_nature_tower",
+    visual: [
+        // Shadow
+        Ellipse(rx: 15.0, ry: 13.0, fill: "#0a1a08", offset: (2.0, 2.0), opacity: 0.25),
+        // Root spread (top-down)
+        Ellipse(rx: 14.0, ry: 12.0, fill: "#3a2a18"),
+        Ellipse(rx: 5.0, ry: 2.0, fill: "#3a2a18", offset: (-10.0, -4.0), rotation: -0.5),
+        Ellipse(rx: 5.0, ry: 2.0, fill: "#3a2a18", offset: (8.0, 6.0), rotation: 0.7),
+        Ellipse(rx: 4.0, ry: 1.8, fill: "#3a2a18", offset: (10.0, -3.0), rotation: 0.3),
+        // Trunk ring (looking down)
+        Circle(radius: 9.0, fill: "#4a3020"),
+        Circle(radius: 7.0, fill: "#5a3a28"),
+        // Tree rings visible from top
+        Circle(radius: 5.0, fill: "#4a3020", opacity: 0.4),
+        Circle(radius: 3.0, fill: "#5a3a28", opacity: 0.3),
+        // Leaf canopy crown (on top)
+        Circle(radius: 10.0, fill: "#1a4014"),
+        Circle(radius: 7.0, fill: "#225520", offset: (-1.0, -1.0)),
+        Circle(radius: 5.0, fill: "#2a6628", offset: (-2.0, -2.0)),
+        // Glowing fruit
+        Circle(radius: 2.0, fill: "#ffaa22", offset: (4.0, -3.0),
+            opacity: Loop(period: 2.0, keys: [(0.0, 0.5), (1.0, 1.0), (2.0, 0.5)])),
+        Circle(radius: 1.5, fill: "#ffaa22", offset: (-5.0, 2.0),
+            opacity: Loop(period: 2.0, keys: [(0.0, 1.0), (1.0, 0.5), (2.0, 1.0)])),
+        // Glow aura
+        Circle(radius: 20.0, fill: "#88ff44",
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.04), (1.5, 0.12), (3.0, 0.04)])),
+    ],
+),
+
+// --- SPIDER ENEMY (8 legs, animated — purple/magenta for visibility) ---
+Visual(
+    id: "demo:ef_spider",
+    visual: [
+        // Shadow
+        Ellipse(rx: 10.0, ry: 8.0, fill: "#0a0a08", offset: (0.0, 2.0), opacity: 0.25),
+        // Legs — left side (4 legs, alternating phase — dark purple)
+        Rect(width: 1.8, height: 10.0, fill: "#3a1a3a", offset: (-7.0, -4.0),
+            rotation: Loop(period: 0.3, keys: [(0.0, -0.8), (0.15, -0.4), (0.3, -0.8)])),
+        Rect(width: 1.8, height: 9.0, fill: "#3a1a3a", offset: (-6.0, -1.0),
+            rotation: Loop(period: 0.3, keys: [(0.0, -0.5), (0.15, -0.9), (0.3, -0.5)])),
+        Rect(width: 1.8, height: 9.0, fill: "#3a1a3a", offset: (-6.0, 2.0),
+            rotation: Loop(period: 0.3, keys: [(0.0, -0.8), (0.15, -0.4), (0.3, -0.8)])),
+        Rect(width: 1.8, height: 10.0, fill: "#3a1a3a", offset: (-5.0, 5.0),
+            rotation: Loop(period: 0.3, keys: [(0.0, -0.5), (0.15, -0.9), (0.3, -0.5)])),
+        // Legs — right side
+        Rect(width: 1.8, height: 10.0, fill: "#3a1a3a", offset: (7.0, -4.0),
+            rotation: Loop(period: 0.3, keys: [(0.0, 0.8), (0.15, 0.4), (0.3, 0.8)])),
+        Rect(width: 1.8, height: 9.0, fill: "#3a1a3a", offset: (6.0, -1.0),
+            rotation: Loop(period: 0.3, keys: [(0.0, 0.5), (0.15, 0.9), (0.3, 0.5)])),
+        Rect(width: 1.8, height: 9.0, fill: "#3a1a3a", offset: (6.0, 2.0),
+            rotation: Loop(period: 0.3, keys: [(0.0, 0.8), (0.15, 0.4), (0.3, 0.8)])),
+        Rect(width: 1.8, height: 10.0, fill: "#3a1a3a", offset: (5.0, 5.0),
+            rotation: Loop(period: 0.3, keys: [(0.0, 0.5), (0.15, 0.9), (0.3, 0.5)])),
+        // Abdomen (dark with purple sheen)
+        Ellipse(rx: 7.0, ry: 5.5, fill: "#1a0a1a", offset: (-3.0, 0.0)),
+        Ellipse(rx: 5.5, ry: 4.0, fill: "#2a1a2a", offset: (-3.0, -0.5)),
+        // Cephalothorax
+        Ellipse(rx: 5.0, ry: 4.5, fill: "#2a1a2a", offset: (4.0, 0.0)),
+        Ellipse(rx: 3.5, ry: 3.0, fill: "#3a2238", offset: (4.0, -0.5)),
+        // Eyes (bright green cluster — eerie)
+        Circle(radius: 1.0, fill: "#44ff44", offset: (7.0, -1.2)),
+        Circle(radius: 1.0, fill: "#44ff44", offset: (7.0, 1.2)),
+        Circle(radius: 0.7, fill: "#88ff88", offset: (7.5, 0.0)),
+        Circle(radius: 0.7, fill: "#44ff44", offset: (6.5, -2.0)),
+        Circle(radius: 0.7, fill: "#44ff44", offset: (6.5, 2.0)),
+        Circle(radius: 0.5, fill: "#88ff88", offset: (8.0, -0.6)),
+        // Fangs
+        Rect(width: 1.0, height: 3.0, fill: "#4a2a2a", offset: (8.5, -1.5), rotation: 0.3),
+        Rect(width: 1.0, height: 3.0, fill: "#4a2a2a", offset: (8.5, 1.5), rotation: -0.3),
+        // Abdomen markings (red hourglass)
+        Ellipse(rx: 1.5, ry: 2.5, fill: "#cc2244", offset: (-4.0, 0.0), opacity: 0.7),
+        Circle(radius: 0.8, fill: "#ff4466", offset: (-2.5, 0.0), opacity: 0.6),
+    ],
+),
+
+// --- WOLF ENEMY (top-down running — warm amber fur) ---
+Visual(
+    id: "demo:ef_wolf",
+    visual: [
+        // Shadow
+        Ellipse(rx: 13.0, ry: 6.0, fill: "#0a0a08", offset: (0.0, 3.0), opacity: 0.25),
+        // Tail (animated wag)
+        Ellipse(rx: 4.0, ry: 2.0, fill: "#7a5a30",
+            offset: (-13.0, Loop(period: 0.4, keys: [(0.0, -2.0), (0.2, 2.0), (0.4, -2.0)])),
+            rotation: Loop(period: 0.4, keys: [(0.0, -0.3), (0.2, 0.3), (0.4, -0.3)])),
+        // Hind legs (animated running)
+        Ellipse(rx: 2.5, ry: 4.5, fill: "#6a4a28", offset: (-6.0, -4.0),
+            rotation: Loop(period: 0.25, keys: [(0.0, -0.3), (0.125, 0.2), (0.25, -0.3)])),
+        Ellipse(rx: 2.5, ry: 4.5, fill: "#6a4a28", offset: (-6.0, 4.0),
+            rotation: Loop(period: 0.25, keys: [(0.0, 0.2), (0.125, -0.3), (0.25, 0.2)])),
+        // Front legs
+        Ellipse(rx: 2.2, ry: 4.0, fill: "#6a4a28", offset: (5.0, -4.0),
+            rotation: Loop(period: 0.25, keys: [(0.0, 0.2), (0.125, -0.3), (0.25, 0.2)])),
+        Ellipse(rx: 2.2, ry: 4.0, fill: "#6a4a28", offset: (5.0, 4.0),
+            rotation: Loop(period: 0.25, keys: [(0.0, -0.3), (0.125, 0.2), (0.25, -0.3)])),
+        // Body
+        Ellipse(rx: 10.0, ry: 5.5, fill: "#7a5a30"),
+        Ellipse(rx: 8.0, ry: 4.0, fill: "#8a6838", offset: (0.0, -0.5)),
+        // Belly (lighter underside)
+        Ellipse(rx: 5.0, ry: 2.5, fill: "#9a7a48", offset: (0.0, 0.5), opacity: 0.5),
+        // Head
+        Ellipse(rx: 5.0, ry: 4.0, fill: "#7a5a30", offset: (10.0, 0.0)),
+        // Snout
+        Ellipse(rx: 3.0, ry: 2.0, fill: "#8a6838", offset: (13.0, 0.0)),
+        // Ears (pointed)
+        Triangle(v0: (9.0, -5.0), v1: (7.0, -3.0), v2: (11.0, -3.0), fill: "#5a3a18"),
+        Triangle(v0: (9.0, 5.0), v1: (7.0, 3.0), v2: (11.0, 3.0), fill: "#5a3a18"),
+        // Eyes (bright amber — threatening)
+        Circle(radius: 1.0, fill: "#ffaa22", offset: (11.5, -1.8)),
+        Circle(radius: 1.0, fill: "#ffaa22", offset: (11.5, 1.8)),
+        Circle(radius: 0.4, fill: "#1a1210", offset: (12.0, -1.8)),
+        Circle(radius: 0.4, fill: "#1a1210", offset: (12.0, 1.8)),
+        // Nose
+        Circle(radius: 1.0, fill: "#1a1210", offset: (15.0, 0.0)),
+        // Dorsal stripe (darker)
+        Ellipse(rx: 6.0, ry: 1.2, fill: "#5a3a18", offset: (-1.0, 0.0), opacity: 0.5),
+    ],
+),
+
+// --- WISP ENEMY (floating magical orb) ---
+Visual(
+    id: "demo:ef_wisp",
+    visual: [
+        // Outer glow
+        Circle(radius: 14.0, fill: "#44ffaa",
+            opacity: Loop(period: 1.5, keys: [(0.0, 0.05), (0.75, 0.15), (1.5, 0.05)])),
+        // Mid glow
+        Circle(radius: 8.0, fill: "#66ffcc",
+            opacity: Loop(period: 1.5, keys: [(0.0, 0.12), (0.75, 0.3), (1.5, 0.12)])),
+        // Core
+        Circle(radius: 3.5, fill: "#aaffee",
+            opacity: Loop(period: 1.5, keys: [(0.0, 0.6), (0.75, 1.0), (1.5, 0.6)])),
+        // Bright center
+        Circle(radius: 1.5, fill: "#eeffff"),
+        // Orbiting sparkle
+        Circle(radius: 1.0, fill: "#ffffff",
+            offset: (Loop(period: 2.0, keys: [(0.0, 5.0), (0.5, 0.0), (1.0, -5.0), (1.5, 0.0), (2.0, 5.0)]),
+                     Loop(period: 2.0, keys: [(0.0, 0.0), (0.5, 5.0), (1.0, 0.0), (1.5, -5.0), (2.0, 0.0)])),
+            opacity: Loop(period: 2.0, keys: [(0.0, 0.8), (0.5, 0.3), (1.0, 0.8), (1.5, 0.3), (2.0, 0.8)])),
+    ],
+),
+
+// --- FIREFLY (tiny ambient sparkle) ---
+Visual(
+    id: "demo:ef_firefly",
+    visual: [
+        Circle(radius: 6.0, fill: "#ffee44",
+            opacity: Loop(period: 2.0, keys: [(0.0, 0.0), (0.8, 0.2), (1.0, 0.0), (2.0, 0.0)])),
+        Circle(radius: 2.0, fill: "#ffff88",
+            opacity: Loop(period: 2.0, keys: [(0.0, 0.0), (0.8, 0.8), (1.0, 0.0), (2.0, 0.0)])),
+    ],
+),
+
+// --- WATER LILY ---
+Visual(
+    id: "demo:ef_lily",
+    visual: [
+        // Pad
+        Ellipse(rx: 5.0, ry: 4.0, fill: "#2a7a2a", opacity: 0.7),
+        // Flower
+        Circle(radius: 2.0, fill: "#ff88aa", offset: (0.0, -1.0)),
+        Circle(radius: 1.0, fill: "#ffaacc", offset: (0.0, -1.5)),
+    ],
+),
+
+// --- OOZE ENEMY (animated blob, pulsing) ---
+Visual(
+    id: "demo:ef_ooze",
+    visual: [
+        // Shadow
+        Ellipse(rx: 8.0, ry: 5.0, fill: "#0a0a08", offset: (0.0, 3.0), opacity: 0.2),
+        // Trail slime
+        Ellipse(rx: 5.0, ry: 2.0, fill: "#44aa44", offset: (-8.0, 1.0), opacity: 0.2),
+        Ellipse(rx: 3.0, ry: 1.5, fill: "#44aa44", offset: (-12.0, 0.5), opacity: 0.1),
+        // Main body (animated breathing via scale)
+        Ellipse(rx: 7.0, ry: 5.5, fill: "#228822"),
+        Ellipse(rx: 5.5, ry: 4.0, fill: "#33aa33", offset: (0.0, -0.5)),
+        // Highlight bubble
+        Ellipse(rx: 3.0, ry: 2.0, fill: "#55cc55", offset: (-1.0, -1.5)),
+        // Eyes (beady, floating in goo)
+        Circle(radius: 1.5, fill: "#eeffee", offset: (3.0, -1.0)),
+        Circle(radius: 1.5, fill: "#eeffee", offset: (3.0, 1.5)),
+        Circle(radius: 0.8, fill: "#112211", offset: (3.5, -1.0)),
+        Circle(radius: 0.8, fill: "#112211", offset: (3.5, 1.5)),
+        // Glow
+        Circle(radius: 10.0, fill: "#44ff44", opacity: 0.04),
+    ],
+),
+
+// ============================================================
+// MAIN SCENE — Enchanted Forest Tower Defense
+// ============================================================
+Visual(
+    id: "demo:enchanted_forest_td",
+    visual: [
+        // === GROUND BASE (dark forest floor) ===
+        Rect(width: 400.0, height: 300.0, fill: "#0a120a"),
+        // Ground variation (leaf litter patches — darker tones)
+        Ellipse(rx: 80.0, ry: 40.0, fill: "#142210", offset: (-60.0, 20.0), opacity: 0.6),
+        Ellipse(rx: 60.0, ry: 35.0, fill: "#10200e", offset: (70.0, -10.0), opacity: 0.5),
+        Ellipse(rx: 90.0, ry: 30.0, fill: "#122410", offset: (0.0, 50.0), opacity: 0.4),
+        // Dappled light (sunbeams through canopy — animated breathing)
+        Ellipse(rx: 25.0, ry: 20.0, fill: "#88aa44", offset: (-80.0, -30.0),
+            opacity: Loop(period: 7.0, keys: [(0.0, 0.06), (3.5, 0.12), (7.0, 0.06)])),
+        Ellipse(rx: 30.0, ry: 15.0, fill: "#88aa44", offset: (50.0, 40.0),
+            opacity: Loop(period: 6.0, keys: [(0.0, 0.09), (3.0, 0.04), (6.0, 0.09)])),
+        Ellipse(rx: 20.0, ry: 18.0, fill: "#88aa44", offset: (100.0, -20.0),
+            opacity: Loop(period: 8.0, keys: [(0.0, 0.04), (4.0, 0.1), (8.0, 0.04)])),
+        Ellipse(rx: 15.0, ry: 12.0, fill: "#aacc66", offset: (-20.0, 60.0),
+            opacity: Loop(period: 5.5, keys: [(0.0, 0.08), (2.75, 0.03), (5.5, 0.08)])),
+
+        // === RIVER PATH (winding stream — the enemy path) ===
+        // River bed (darkest, narrower)
+        Ellipse(rx: 75.0, ry: 10.0, fill: "#081e2a", offset: (-70.0, 0.0), rotation: -0.1),
+        Circle(radius: 12.0, fill: "#081e2a", offset: (-10.0, -5.0)),
+        Circle(radius: 11.0, fill: "#081e2a", offset: (10.0, 5.0)),
+        Ellipse(rx: 75.0, ry: 10.0, fill: "#081e2a", offset: (70.0, 20.0), rotation: 0.15),
+        // River bank (mossy edge)
+        Ellipse(rx: 73.0, ry: 8.5, fill: "#1a2a12", offset: (-70.0, 0.0), rotation: -0.1),
+        Circle(radius: 10.5, fill: "#1a2a12", offset: (-10.0, -5.0)),
+        Circle(radius: 9.5, fill: "#1a2a12", offset: (10.0, 5.0)),
+        Ellipse(rx: 73.0, ry: 8.5, fill: "#1a2a12", offset: (70.0, 20.0), rotation: 0.15),
+        // Water surface (deeper blue, animated shimmer)
+        Ellipse(rx: 70.0, ry: 6.5, fill: "#0e3050", offset: (-70.0, 0.0), rotation: -0.1,
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.8), (1.5, 0.95), (3.0, 0.8)])),
+        Circle(radius: 8.0, fill: "#0e3050", offset: (-10.0, -5.0),
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.8), (1.5, 0.95), (3.0, 0.8)])),
+        Circle(radius: 7.5, fill: "#0e3050", offset: (10.0, 5.0),
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.8), (1.5, 0.95), (3.0, 0.8)])),
+        Ellipse(rx: 70.0, ry: 6.5, fill: "#0e3050", offset: (70.0, 20.0), rotation: 0.15,
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.8), (1.5, 0.95), (3.0, 0.8)])),
+        // Water highlights (moonlight reflections)
+        Ellipse(rx: 25.0, ry: 2.0, fill: "#1a5070", offset: (-85.0, -1.0), rotation: -0.1,
+            opacity: Loop(period: 4.0, keys: [(0.0, 0.3), (2.0, 0.6), (4.0, 0.3)])),
+        Ellipse(rx: 20.0, ry: 1.5, fill: "#1a5070", offset: (55.0, 19.0), rotation: 0.15,
+            opacity: Loop(period: 3.5, keys: [(0.0, 0.5), (1.75, 0.2), (3.5, 0.5)])),
+        // Water ripples (animated concentric rings)
+        Circle(radius: Loop(period: 3.0, keys: [(0.0, 2.0), (3.0, 8.0)]), fill: "#2a6a8a",
+            offset: (-90.0, 0.0),
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.15), (3.0, 0.0)])),
+        Circle(radius: Loop(period: 3.5, keys: [(0.0, 2.0), (3.5, 9.0)]), fill: "#2a6a8a",
+            offset: (60.0, 18.0),
+            opacity: Loop(period: 3.5, keys: [(0.0, 0.12), (3.5, 0.0)])),
+        Circle(radius: Loop(period: 4.0, keys: [(0.0, 1.5), (4.0, 7.0)]), fill: "#2a6a8a",
+            offset: (-40.0, -2.0),
+            opacity: Loop(period: 4.0, keys: [(0.0, 0.1), (4.0, 0.0)])),
+        // Riverbank pebbles
+        Circle(radius: 1.0, fill: "#3a3a32", offset: (-120.0, -7.0)),
+        Circle(radius: 0.8, fill: "#4a4a3a", offset: (-100.0, 6.0)),
+        Circle(radius: 0.7, fill: "#3a3a32", offset: (-60.0, -7.0)),
+        Circle(radius: 0.9, fill: "#4a4a3a", offset: (40.0, 8.0)),
+        Circle(radius: 0.8, fill: "#3a3a32", offset: (80.0, 14.0)),
+        Circle(radius: 1.0, fill: "#4a4a3a", offset: (110.0, 26.0)),
+        Circle(radius: 0.7, fill: "#3a3a32", offset: (130.0, 22.0)),
+        // Stepping stones across river
+        Ellipse(rx: 4.0, ry: 3.0, fill: "#3a3a30", offset: (-30.0, -3.0)),
+        Ellipse(rx: 3.5, ry: 2.5, fill: "#4a4a3a", offset: (-20.0, -4.0)),
+        Ellipse(rx: 3.0, ry: 2.5, fill: "#3a3a30", offset: (20.0, 8.0)),
+
+        // === RUINED STONE BRIDGE (crossing the river) ===
+        // Bridge pillars (stone)
+        RoundedRect(width: 8.0, height: 5.0, radius: 1.0, fill: "#4a4a42", offset: (-5.0, -5.0)),
+        RoundedRect(width: 8.0, height: 5.0, radius: 1.0, fill: "#4a4a42", offset: (-5.0, 5.0)),
+        // Bridge deck (broken — gap in middle)
+        RoundedRect(width: 22.0, height: 10.0, radius: 1.5, fill: "#5a5a50", offset: (-5.0, 0.0)),
+        // Cracked stone detail
+        Rect(width: 0.8, height: 8.0, fill: "#3a3a32", offset: (-8.0, 0.0), rotation: 0.1),
+        Rect(width: 0.6, height: 5.0, fill: "#3a3a32", offset: (-2.0, -1.0), rotation: -0.2),
+        // Moss on bridge
+        Ellipse(rx: 3.0, ry: 1.5, fill: "#2a5a22", offset: (-10.0, -2.0), opacity: 0.4),
+        Ellipse(rx: 2.0, ry: 1.0, fill: "#2a5a22", offset: (-1.0, 2.0), opacity: 0.3),
+        // Broken railing stones
+        Rect(width: 2.0, height: 3.0, fill: "#5a5a48", offset: (-14.0, -4.0)),
+        Rect(width: 2.0, height: 3.0, fill: "#5a5a48", offset: (-14.0, 4.0)),
+        Rect(width: 2.0, height: 2.5, fill: "#4a4a3a", offset: (3.0, -4.5)),
+
+        // === WILDFLOWERS (scattered near path) ===
+        Circle(radius: 1.5, fill: "#dd66aa", offset: (-110.0, -12.0)),
+        Circle(radius: 1.0, fill: "#ee88bb", offset: (-108.0, -10.0)),
+        Circle(radius: 1.2, fill: "#dd66aa", offset: (35.0, 30.0)),
+        Circle(radius: 1.0, fill: "#cc88dd", offset: (37.0, 32.0)),
+        Circle(radius: 1.5, fill: "#cc88dd", offset: (-70.0, 25.0)),
+        Circle(radius: 1.0, fill: "#ee88bb", offset: (90.0, -10.0)),
+        Circle(radius: 1.2, fill: "#ffaa44", offset: (-30.0, -20.0)),
+        Circle(radius: 1.0, fill: "#ffcc66", offset: (-28.0, -18.0)),
+
+        // === RIVER EDGE REEDS (grass tufts along banks) ===
+        Triangle(v0: (-125.0, -8.0), v1: (-127.0, 0.0), v2: (-123.0, 0.0), fill: "#1a4a18"),
+        Triangle(v0: (-105.0, -7.0), v1: (-107.0, 1.0), v2: (-103.0, 1.0), fill: "#1a5020"),
+        Triangle(v0: (-55.0, -9.0), v1: (-57.0, -1.0), v2: (-53.0, -1.0), fill: "#1a4a18"),
+        Triangle(v0: (25.0, 4.0), v1: (23.0, 12.0), v2: (27.0, 12.0), fill: "#1a5020"),
+        Triangle(v0: (75.0, 13.0), v1: (73.0, 21.0), v2: (77.0, 21.0), fill: "#1a4a18"),
+        Triangle(v0: (115.0, 12.0), v1: (113.0, 20.0), v2: (117.0, 20.0), fill: "#1a5020"),
+        Triangle(v0: (140.0, 15.0), v1: (138.0, 23.0), v2: (142.0, 23.0), fill: "#1a4a18"),
+
+        // === WATER LILIES on river ===
+        Visual(visual: "demo:ef_lily", offset: (-90.0, -2.0), scale: (0.8, 0.8)),
+        Visual(visual: "demo:ef_lily", offset: (-50.0, 3.0), scale: (0.6, 0.6)),
+        Visual(visual: "demo:ef_lily", offset: (40.0, 15.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:ef_lily", offset: (90.0, 22.0), scale: (0.9, 0.9)),
+        Visual(visual: "demo:ef_lily", offset: (120.0, 18.0), scale: (0.5, 0.5)),
+
+        // === BACK ROW: large trees (behind path) ===
+        Visual(visual: "demo:ef_oak", offset: (-120.0, -50.0), scale: (1.1, 1.1)),
+        Visual(visual: "demo:ef_pine", offset: (-70.0, -55.0), scale: (1.3, 1.3)),
+        Visual(visual: "demo:ef_oak", offset: (-20.0, -60.0), scale: (0.9, 0.9)),
+        Visual(visual: "demo:ef_pine", offset: (40.0, -50.0), scale: (1.0, 1.0)),
+        Visual(visual: "demo:ef_oak", offset: (100.0, -55.0), scale: (1.2, 1.2)),
+        Visual(visual: "demo:ef_pine", offset: (140.0, -45.0), scale: (0.8, 0.8)),
+
+        // === UNDERGROWTH: bushes near path ===
+        Visual(visual: "demo:ef_bush", offset: (-130.0, -15.0), scale: (0.9, 0.9)),
+        Visual(visual: "demo:ef_bush", offset: (-100.0, -20.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:ef_bush", offset: (30.0, -18.0), scale: (0.8, 0.8)),
+        Visual(visual: "demo:ef_bush", offset: (80.0, 35.0), scale: (1.0, 1.0)),
+        Visual(visual: "demo:ef_bush", offset: (130.0, 10.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:ef_bush", offset: (-40.0, 30.0), scale: (0.6, 0.6)),
+
+        // === MUSHROOM CLUSTERS (glowing accents) ===
+        Visual(visual: "demo:ef_mushroom", offset: (-110.0, -30.0), scale: (0.8, 0.8)),
+        Visual(visual: "demo:ef_mushroom", offset: (60.0, -25.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:ef_mushroom", offset: (-50.0, 40.0), scale: (0.9, 0.9)),
+        Visual(visual: "demo:ef_mushroom", offset: (110.0, 40.0), scale: (0.6, 0.6)),
+
+        // === ROCKS ===
+        Visual(visual: "demo:ef_rock", offset: (-140.0, 10.0), scale: (1.0, 1.0)),
+        Visual(visual: "demo:ef_rock", offset: (30.0, -30.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:ef_rock", offset: (140.0, 30.0), scale: (0.8, 0.8)),
+
+        // === FALLEN LOGS ===
+        Visual(visual: "demo:ef_log", offset: (-90.0, 45.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:ef_log", offset: (120.0, -30.0), scale: (0.6, 0.6), rotation: -0.4),
+
+        // === TOWER RANGE RINGS (subtle, beneath towers) ===
+        Circle(radius: 45.0, fill: "#6688ff", offset: (-50.0, -25.0), opacity: 0.04),
+        Circle(radius: 45.0, fill: "#6688ff", offset: (-50.0, -25.0),
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.0), (1.5, 0.03), (3.0, 0.0)])),
+        Circle(radius: 40.0, fill: "#88ff44", offset: (50.0, 35.0), opacity: 0.03),
+        Circle(radius: 40.0, fill: "#88ff44", offset: (50.0, 35.0),
+            opacity: Loop(period: 3.5, keys: [(0.0, 0.0), (1.75, 0.03), (3.5, 0.0)])),
+        Circle(radius: 38.0, fill: "#6688ff", offset: (120.0, 5.0), opacity: 0.03),
+
+        // === ANIMATED RUNE CIRCLES (rotating around towers) ===
+        // Crystal tower 1 — inner rune ring
+        Visual(offset: (-50.0, -25.0), rotation: Loop(period: 8.0, keys: [(0.0, 0.0), (8.0, 6.283)]), visual: [
+            Circle(radius: 1.2, fill: "#88aaff", offset: (18.0, 0.0),
+                opacity: Loop(period: 2.0, keys: [(0.0, 0.3), (1.0, 0.7), (2.0, 0.3)])),
+            Circle(radius: 1.2, fill: "#88aaff", offset: (-18.0, 0.0),
+                opacity: Loop(period: 2.0, keys: [(0.0, 0.7), (1.0, 0.3), (2.0, 0.7)])),
+            Circle(radius: 1.2, fill: "#88aaff", offset: (0.0, 18.0),
+                opacity: Loop(period: 2.0, keys: [(0.0, 0.5), (1.0, 0.9), (2.0, 0.5)])),
+            Circle(radius: 1.2, fill: "#88aaff", offset: (0.0, -18.0),
+                opacity: Loop(period: 2.0, keys: [(0.0, 0.9), (1.0, 0.5), (2.0, 0.9)])),
+        ]),
+        // Nature tower — orbiting leaves
+        Visual(offset: (50.0, 35.0), rotation: Loop(period: 10.0, keys: [(0.0, 0.0), (10.0, 6.283)]), visual: [
+            Ellipse(rx: 2.0, ry: 1.0, fill: "#4a9a30", offset: (16.0, 0.0), opacity: 0.6),
+            Ellipse(rx: 1.5, ry: 0.8, fill: "#3a8a28", offset: (-16.0, 0.0), opacity: 0.5),
+            Ellipse(rx: 1.8, ry: 0.9, fill: "#4a9a30", offset: (0.0, 16.0), opacity: 0.5),
+        ]),
+
+        // === TOWERS (defending the forest) ===
+        Visual(visual: "demo:ef_crystal_tower", offset: (-50.0, -25.0)),
+        Visual(visual: "demo:ef_nature_tower", offset: (50.0, 35.0)),
+        Visual(visual: "demo:ef_crystal_tower", offset: (120.0, 5.0), scale: (0.85, 0.85)),
+
+        // === ENEMIES moving along the river ===
+        // Spider pack — animated x-offset for crawling movement + scale breathing
+        Visual(visual: "demo:ef_spider",
+            offset: (Loop(period: 4.0, keys: [(0.0, -130.0), (4.0, -110.0)]), -2.0),
+            scale: (Loop(period: 0.6, keys: [(0.0, 0.95), (0.3, 1.05), (0.6, 0.95)]), 1.0)),
+        Visual(visual: "demo:ef_spider",
+            offset: (Loop(period: 4.0, keys: [(0.0, -90.0), (4.0, -70.0)]), 2.0),
+            scale: (Loop(period: 0.6, keys: [(0.0, 1.05), (0.3, 0.95), (0.6, 1.05)]), 1.0)),
+        Visual(visual: "demo:ef_spider",
+            offset: (Loop(period: 4.0, keys: [(0.0, -50.0), (4.0, -30.0)]), -4.0),
+            scale: (Loop(period: 0.6, keys: [(0.0, 0.95), (0.3, 1.05), (0.6, 0.95)]), 1.0)),
+        // Wolf pair — loping movement with scale bob
+        Visual(visual: "demo:ef_wolf",
+            offset: (Loop(period: 3.0, keys: [(0.0, 10.0), (3.0, 35.0)]), 12.0),
+            scale: (1.1, Loop(period: 0.5, keys: [(0.0, 1.05), (0.25, 1.15), (0.5, 1.05)]))),
+        Visual(visual: "demo:ef_wolf",
+            offset: (Loop(period: 3.0, keys: [(0.0, 45.0), (3.0, 70.0)]), 18.0),
+            scale: (1.0, Loop(period: 0.5, keys: [(0.0, 1.1), (0.25, 1.0), (0.5, 1.1)]))),
+        // Third wolf — trailing
+        Visual(visual: "demo:ef_wolf",
+            offset: (Loop(period: 3.0, keys: [(0.0, 80.0), (3.0, 105.0)]), 22.0),
+            scale: (0.9, 0.9)),
+        // Wisps — floating with animated offset bobbing
+        Visual(visual: "demo:ef_wisp",
+            offset: (-60.0, Loop(period: 2.0, keys: [(0.0, -3.0), (1.0, 1.0), (2.0, -3.0)])),
+            scale: (0.8, 0.8)),
+        Visual(visual: "demo:ef_wisp",
+            offset: (100.0, Loop(period: 2.5, keys: [(0.0, 20.0), (1.25, 24.0), (2.5, 20.0)])),
+            scale: (0.7, 0.7)),
+        Visual(visual: "demo:ef_wisp",
+            offset: (Loop(period: 3.0, keys: [(0.0, 35.0), (3.0, 50.0)]),
+                     Loop(period: 1.8, keys: [(0.0, 6.0), (0.9, 10.0), (1.8, 6.0)])),
+            scale: (Loop(period: 1.5, keys: [(0.0, 0.8), (0.75, 1.0), (1.5, 0.8)]),
+                    Loop(period: 1.5, keys: [(0.0, 0.8), (0.75, 1.0), (1.5, 0.8)]))),
+
+        // === OOZE ENEMIES (moving along path) ===
+        Visual(visual: "demo:ef_ooze",
+            offset: (Loop(period: 5.0, keys: [(0.0, -100.0), (5.0, -70.0)]), 0.0),
+            scale: (Loop(period: 0.8, keys: [(0.0, 1.1), (0.4, 0.9), (0.8, 1.1)]),
+                    Loop(period: 0.8, keys: [(0.0, 0.9), (0.4, 1.1), (0.8, 0.9)]))),
+        Visual(visual: "demo:ef_ooze",
+            offset: (Loop(period: 5.0, keys: [(0.0, 90.0), (5.0, 115.0)]), 22.0),
+            scale: (Loop(period: 0.9, keys: [(0.0, 0.9), (0.45, 1.1), (0.9, 0.9)]),
+                    Loop(period: 0.9, keys: [(0.0, 1.1), (0.45, 0.9), (0.9, 1.1)]))),
+
+        // === SPIDER WEB (between back trees) ===
+        // Web strands (thin translucent lines)
+        Rect(width: 0.5, height: 30.0, fill: "#ffffff", offset: (-95.0, -40.0), rotation: 0.3, opacity: 0.08),
+        Rect(width: 0.5, height: 25.0, fill: "#ffffff", offset: (-90.0, -38.0), rotation: -0.2, opacity: 0.06),
+        Rect(width: 0.5, height: 28.0, fill: "#ffffff", offset: (-92.0, -42.0), rotation: 0.8, opacity: 0.07),
+        // Web center
+        Circle(radius: 3.0, fill: "#ffffff", offset: (-93.0, -40.0), opacity: 0.05),
+
+        // === SCATTERED LEAVES (ground detail) ===
+        Ellipse(rx: 1.5, ry: 0.8, fill: "#5a3a18", offset: (-40.0, -15.0), rotation: 0.8, opacity: 0.4),
+        Ellipse(rx: 1.2, ry: 0.6, fill: "#6a4a22", offset: (20.0, -25.0), rotation: 1.2, opacity: 0.3),
+        Ellipse(rx: 1.8, ry: 0.7, fill: "#5a3a18", offset: (70.0, 30.0), rotation: 2.0, opacity: 0.35),
+        Ellipse(rx: 1.0, ry: 0.5, fill: "#4a2a10", offset: (-20.0, 45.0), rotation: 0.5, opacity: 0.3),
+        Ellipse(rx: 1.5, ry: 0.7, fill: "#6a4a22", offset: (100.0, -5.0), rotation: 1.7, opacity: 0.3),
+
+        // === TREE ROOTS (surface roots near large trees) ===
+        Rect(width: 15.0, height: 2.0, fill: "#3a2a14", offset: (-125.0, -42.0), rotation: 0.4, opacity: 0.4),
+        Rect(width: 12.0, height: 1.5, fill: "#3a2a14", offset: (-115.0, -48.0), rotation: -0.3, opacity: 0.3),
+        Rect(width: 10.0, height: 1.5, fill: "#3a2a14", offset: (105.0, -48.0), rotation: 0.5, opacity: 0.35),
+
+        // === FOREGROUND TREES (framing edges, pulled to corners) ===
+        Visual(visual: "demo:ef_oak", offset: (-130.0, 75.0), scale: (1.3, 1.3)),
+        Visual(visual: "demo:ef_pine", offset: (-50.0, 80.0), scale: (1.2, 1.2)),
+        Visual(visual: "demo:ef_oak", offset: (80.0, 78.0), scale: (1.0, 1.0)),
+        Visual(visual: "demo:ef_pine", offset: (150.0, 70.0), scale: (1.3, 1.3)),
+
+        // === FIREFLIES (ambient sparkles throughout) ===
+        Visual(visual: "demo:ef_firefly", offset: (-100.0, -40.0)),
+        Visual(visual: "demo:ef_firefly", offset: (-60.0, 20.0)),
+        Visual(visual: "demo:ef_firefly", offset: (-30.0, -35.0)),
+        Visual(visual: "demo:ef_firefly", offset: (20.0, -40.0)),
+        Visual(visual: "demo:ef_firefly", offset: (70.0, -15.0)),
+        Visual(visual: "demo:ef_firefly", offset: (100.0, 45.0)),
+        Visual(visual: "demo:ef_firefly", offset: (-80.0, 55.0)),
+        Visual(visual: "demo:ef_firefly", offset: (40.0, 50.0)),
+        Visual(visual: "demo:ef_firefly", offset: (-20.0, 10.0)),
+        Visual(visual: "demo:ef_firefly", offset: (130.0, -35.0)),
+
+        // === EXTRA FIREFLIES (staggered timing for liveliness) ===
+        Visual(visual: "demo:ef_firefly", offset: (-140.0, -10.0)),
+        Visual(visual: "demo:ef_firefly", offset: (50.0, -50.0)),
+        Visual(visual: "demo:ef_firefly", offset: (-10.0, 55.0)),
+        Visual(visual: "demo:ef_firefly", offset: (150.0, 50.0)),
+        Visual(visual: "demo:ef_firefly", offset: (-50.0, -50.0)),
+
+        // === CANOPY SHADOWS (animated — wind through leaves) ===
+        Ellipse(rx: 35.0, ry: 25.0, fill: "#000000", offset: (-90.0, -20.0),
+            opacity: Loop(period: 5.0, keys: [(0.0, 0.08), (2.5, 0.14), (5.0, 0.08)])),
+        Ellipse(rx: 40.0, ry: 20.0, fill: "#000000", offset: (30.0, -30.0),
+            opacity: Loop(period: 4.5, keys: [(0.0, 0.12), (2.25, 0.06), (4.5, 0.12)])),
+        Ellipse(rx: 30.0, ry: 30.0, fill: "#000000", offset: (110.0, 10.0),
+            opacity: Loop(period: 6.0, keys: [(0.0, 0.06), (3.0, 0.12), (6.0, 0.06)])),
+
+        // === MIST (atmospheric overlay — rolling fog) ===
+        Ellipse(rx: 150.0, ry: 40.0, fill: "#aaccaa",
+            offset: (Loop(period: 12.0, keys: [(0.0, -10.0), (12.0, 10.0)]), 10.0),
+            opacity: Loop(period: 6.0, keys: [(0.0, 0.02), (3.0, 0.07), (6.0, 0.02)])),
+        Ellipse(rx: 80.0, ry: 25.0, fill: "#88bb88",
+            offset: (Loop(period: 10.0, keys: [(0.0, -70.0), (10.0, -50.0)]), 30.0),
+            opacity: Loop(period: 5.0, keys: [(0.0, 0.04), (2.5, 0.07), (5.0, 0.04)])),
+        Ellipse(rx: 60.0, ry: 20.0, fill: "#aaddaa",
+            offset: (Loop(period: 8.0, keys: [(0.0, 80.0), (8.0, 100.0)]), -10.0),
+            opacity: Loop(period: 7.0, keys: [(0.0, 0.01), (3.5, 0.05), (7.0, 0.01)])),
+
+        // === EDGE DARKENING (within scene bounds) ===
+        Rect(width: 30.0, height: 300.0, fill: "#000000", offset: (-175.0, 0.0), opacity: 0.1),
+        Rect(width: 30.0, height: 300.0, fill: "#000000", offset: (175.0, 0.0), opacity: 0.1),
+        Rect(width: 400.0, height: 25.0, fill: "#000000", offset: (0.0, -90.0), opacity: 0.08),
+        Rect(width: 400.0, height: 25.0, fill: "#000000", offset: (0.0, 90.0), opacity: 0.08),
+    ],
+),
+]
