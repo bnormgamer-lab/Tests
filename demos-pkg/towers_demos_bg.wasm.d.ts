@@ -1,0 +1,34 @@
+/* tslint:disable */
+/* eslint-disable */
+export const memory: WebAssembly.Memory;
+export const __wbg_visualpreview_free: (a: number, b: number) => void;
+export const iso_depth_key: (a: number, b: number, c: number) => number;
+export const iso_screen_to_world: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
+export const iso_world_to_screen: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
+export const td_depth_key: (a: number, b: number) => number;
+export const td_world_to_screen: (a: number, b: number, c: number, d: number) => void;
+export const tick: (a: number) => void;
+export const visualpreview_get_fields_json: (a: number, b: number) => void;
+export const visualpreview_list_visuals: (a: number, b: number, c: number, d: number) => void;
+export const visualpreview_new: (a: number, b: number) => number;
+export const visualpreview_pan: (a: number, b: number, c: number) => void;
+export const visualpreview_render_frame: (a: number, b: number) => void;
+export const visualpreview_reset_camera: (a: number) => void;
+export const visualpreview_resize: (a: number, b: number, c: number) => void;
+export const visualpreview_set_camera: (a: number, b: number, c: number, d: number) => void;
+export const visualpreview_set_field_value: (a: number, b: number, c: number) => void;
+export const visualpreview_update: (a: number, b: number, c: number, d: number) => void;
+export const visualpreview_update_by_id: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
+export const visualpreview_zoom_at: (a: number, b: number, c: number, d: number) => void;
+export const wasm_init: () => void;
+export const __wasm_bindgen_func_elem_685: (a: number, b: number) => void;
+export const __wasm_bindgen_func_elem_1762: (a: number, b: number) => void;
+export const __wasm_bindgen_func_elem_1763: (a: number, b: number, c: number, d: number) => void;
+export const __wasm_bindgen_func_elem_6209: (a: number, b: number, c: number, d: number) => void;
+export const __wasm_bindgen_func_elem_686: (a: number, b: number, c: number) => void;
+export const __wbindgen_export: (a: number, b: number) => number;
+export const __wbindgen_export2: (a: number, b: number, c: number, d: number) => number;
+export const __wbindgen_export3: (a: number) => void;
+export const __wbindgen_export4: (a: number, b: number, c: number) => void;
+export const __wbindgen_add_to_stack_pointer: (a: number) => number;
+export const __wbindgen_start: () => void;

@@ -1,0 +1,29 @@
+Visual(
+    id: "demo:field_slider_test",
+    fields: { "charge": 0.0, "intensity": 0.5, "size_mult": 1.0 },
+    visual: [
+        // Core circle — radius scales with charge and size_mult fields
+        Circle(
+            radius: E("(8 + self.charge * 12) * self.size_mult"),
+            fill: Color(
+                r: E("0.8 + self.intensity * 0.2"),
+                g: E("0.2 * (1.0 - self.charge)"),
+                b: 0.1,
+                a: 1.0,
+            ),
+        ),
+        // Pulsing ring — opacity driven by intensity field
+        Circle(
+            radius: E("(15 + self.charge * 5) * self.size_mult"),
+            fill: Color(r: 0.3, g: 0.5, b: 1.0, a: 1.0),
+            opacity: E("self.intensity * (0.3 + 0.2 * sin(self.time * 4.0))"),
+        ),
+        // Ground shadow
+        Ellipse(
+            rx: E("12 * self.size_mult"), ry: E("3 * self.size_mult"),
+            fill: "#080808",
+            offset: (0, 22),
+            opacity: 0.3,
+        ),
+    ],
+)

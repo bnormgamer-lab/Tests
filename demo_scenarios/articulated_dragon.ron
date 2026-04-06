@@ -1,0 +1,478 @@
+[Visual(
+    id: "demo:dragon_left_wing",
+    visual: [
+        Circle(radius: 4.0, fill: "#2d8b65"),
+
+        RoundedRect(
+            width: 40.0, height: 4.0, radius: 2.0,
+            fill: "#61c89d",
+            offset: (-20.0, -2.0),
+        ),
+
+        Triangle(
+            v0: (0.0, 0.0),
+            v1: (-68.0, E("-22.0 - 12.0 * sin(self.time * 6.4)")),
+            v2: (-10.0, 22.0),
+            fill: "#6e2442",
+            opacity: 0.92,
+        ),
+        Triangle(
+            v0: (-10.0, 22.0),
+            v1: (-68.0, E("-22.0 - 12.0 * sin(self.time * 6.4)")),
+            v2: (-35.0, 26.0),
+            fill: "#963355",
+            opacity: 0.84,
+        ),
+
+        Visual(
+            offset: (-38.0, -3.0),
+            pivot: (-38.0, -3.0),
+            rotation: E("-0.34 + 0.32 * sin(self.time * 6.4 + 0.8)"),
+            visual: [
+                RoundedRect(
+                    width: 36.0, height: 4.0, radius: 2.0,
+                    fill: "#7dddb3",
+                    offset: (-18.0, -2.0),
+                ),
+                Triangle(
+                    v0: (0.0, 0.0),
+                    v1: (-42.0, E("-12.0 - 8.0 * sin(self.time * 6.4 + 0.8)")),
+                    v2: (-8.0, 15.0),
+                    fill: "#bf476f",
+                    opacity: 0.78,
+                ),
+                Triangle(v0: (-32.0, -2.0), v1: (-46.0, -8.0), v2: (-36.0, 0.0), fill: "#d8fff0"),
+                Triangle(v0: (-32.0,  2.0), v1: (-46.0,  8.0), v2: (-36.0, 0.0), fill: "#d8fff0"),
+            ],
+        ),
+
+        Circle(radius: 3.0, fill: "#d8fff0", offset: (-38.0, -3.0)),
+    ],
+),
+
+Visual(
+    id: "demo:dragon_right_wing",
+    visual: [
+        Circle(radius: 4.0, fill: "#2d8b65"),
+
+        RoundedRect(
+            width: 40.0, height: 4.0, radius: 2.0,
+            fill: "#61c89d",
+            offset: (20.0, -2.0),
+        ),
+
+        Triangle(
+            v0: (0.0, 0.0),
+            v1: (68.0, E("-22.0 - 12.0 * sin(self.time * 6.4)")),
+            v2: (10.0, 22.0),
+            fill: "#6e2442",
+            opacity: 0.66,
+        ),
+        Triangle(
+            v0: (10.0, 22.0),
+            v1: (68.0, E("-22.0 - 12.0 * sin(self.time * 6.4)")),
+            v2: (35.0, 26.0),
+            fill: "#963355",
+            opacity: 0.58,
+        ),
+
+        Visual(
+            offset: (38.0, -3.0),
+            pivot: (38.0, -3.0),
+            rotation: E("0.34 - 0.32 * sin(self.time * 6.4 + 0.8)"),
+            visual: [
+                RoundedRect(
+                    width: 36.0, height: 4.0, radius: 2.0,
+                    fill: "#7dddb3",
+                    offset: (18.0, -2.0),
+                ),
+                Triangle(
+                    v0: (0.0, 0.0),
+                    v1: (42.0, E("-12.0 - 8.0 * sin(self.time * 6.4 + 0.8)")),
+                    v2: (8.0, 15.0),
+                    fill: "#bf476f",
+                    opacity: 0.54,
+                ),
+                Triangle(v0: (32.0, -2.0), v1: (46.0, -8.0), v2: (36.0, 0.0), fill: "#d8fff0"),
+                Triangle(v0: (32.0,  2.0), v1: (46.0,  8.0), v2: (36.0, 0.0), fill: "#d8fff0"),
+            ],
+        ),
+
+        Circle(radius: 3.0, fill: "#d8fff0", offset: (38.0, -3.0)),
+    ],
+),
+
+Visual(
+    id: "demo:dragon_fore_leg",
+    visual: [
+        Visual(
+            offset: (0.0, -1.0),
+            pivot: (0.0, 0.0),
+            rotation: E("0.18 + 0.08 * sin(self.time * 6.4 + 0.4)"),
+            visual: [
+                Circle(radius: 6.5, fill: "#2f8f69"),
+                RoundedRect(
+                    width: 12.0, height: 24.0, radius: 6.0,
+                    fill: "#379f75",
+                    offset: (0.0, 12.0),
+                ),
+                Circle(radius: 5.2, fill: "#379f75", offset: (0.0, 22.0)),
+
+                Visual(
+                    offset: (0.0, 21.0),
+                    pivot: (0.0, 0.0),
+                    rotation: E("0.62 + 0.14 * sin(self.time * 6.4 + 1.1)"),
+                    visual: [
+                        RoundedRect(
+                            width: 9.0, height: 21.0, radius: 4.5,
+                            fill: "#2a7e5c",
+                            offset: (0.0, 10.5),
+                        ),
+                        Circle(radius: 4.4, fill: "#2a7e5c", offset: (0.0, 20.0)),
+                        RoundedRect(
+                            width: 15.0, height: 6.0, radius: 3.0,
+                            fill: "#246f52",
+                            offset: (5.0, 23.0),
+                        ),
+                        Triangle(v0: (6.0, 20.0), v1: (9.0, 30.0), v2: (11.0, 20.0), fill: "#f2dfb2"),
+                        Triangle(v0: (10.0, 20.0), v1: (13.0, 30.0), v2: (15.0, 20.0), fill: "#f2dfb2"),
+                    ],
+                ),
+            ],
+        ),
+    ],
+),
+
+Visual(
+    id: "demo:dragon_hind_leg",
+    visual: [
+        Visual(
+            offset: (0.0, -1.0),
+            pivot: (0.0, 0.0),
+            rotation: E("-0.30 + 0.08 * sin(self.time * 6.4 + 1.7)"),
+            visual: [
+                Circle(radius: 7.5, fill: "#2c835f"),
+                RoundedRect(
+                    width: 15.0, height: 23.0, radius: 7.0,
+                    fill: "#3aa57c",
+                    offset: (-1.0, 11.5),
+                ),
+                Circle(radius: 5.8, fill: "#3aa57c", offset: (-1.0, 22.0)),
+
+                Visual(
+                    offset: (-1.0, 21.0),
+                    pivot: (0.0, 0.0),
+                    rotation: E("1.02 + 0.16 * sin(self.time * 6.4 + 2.5)"),
+                    visual: [
+                        RoundedRect(
+                            width: 10.0, height: 22.0, radius: 5.0,
+                            fill: "#2a7e5c",
+                            offset: (0.0, 11.0),
+                        ),
+                        Circle(radius: 4.8, fill: "#2a7e5c", offset: (0.0, 21.0)),
+                        RoundedRect(
+                            width: 17.0, height: 6.0, radius: 3.0,
+                            fill: "#246f52",
+                            offset: (6.0, 24.0),
+                        ),
+                        Triangle(v0: (7.0, 21.0), v1: (10.0, 31.0), v2: (12.0, 21.0), fill: "#f2dfb2"),
+                        Triangle(v0: (11.0, 21.0), v1: (14.0, 31.0), v2: (16.0, 21.0), fill: "#f2dfb2"),
+                    ],
+                ),
+            ],
+        ),
+    ],
+),
+
+Visual(
+    id: "demo:dragon_head",
+    visual: [
+        RoundedRect(
+            width: 30.0, height: 17.0, radius: 7.0,
+            fill: "#2c8d67",
+            offset: (14.0, -1.0),
+        ),
+        RoundedRect(
+            width: 25.0, height: 11.0, radius: 5.0,
+            fill: "#38a377",
+            offset: (31.0, 1.0),
+        ),
+
+        Triangle(v0: (10.0, -8.0), v1: (16.0, -20.0), v2: (18.0, -8.0), fill: "#d8fff0"),
+        Triangle(v0: (21.0, -10.0), v1: (29.0, -22.0), v2: (30.0, -9.0), fill: "#d8fff0"),
+        Triangle(v0: (6.0, -5.0), v1: (12.0, -14.0), v2: (13.0, -4.0), fill: "#8ee9c1"),
+
+        Triangle(
+            v0: (34.0, -2.0), v1: (45.0, 0.0), v2: (34.0, 3.0),
+            fill: "#55cc9d",
+        ),
+
+        Circle(radius: 2.6, fill: "#f4ff9a", offset: (20.0, -4.0)),
+        Circle(radius: 1.1, fill: "#10180f", offset: (20.8, -4.0)),
+        Circle(radius: 0.8, fill: "#ffffff", offset: (19.6, -4.8), opacity: 0.65),
+
+        Triangle(v0: (25.0, 1.0), v1: (28.0, 5.0), v2: (30.0, 1.0), fill: "#f6e8c8"),
+        Triangle(v0: (31.0, 1.0), v1: (34.0, 5.0), v2: (36.0, 1.0), fill: "#f6e8c8"),
+        Triangle(v0: (37.0, 1.0), v1: (40.0, 5.0), v2: (42.0, 1.0), fill: "#f6e8c8"),
+
+        Visual(
+            offset: (17.0, 4.0),
+            pivot: (11.0, 0.0),
+            rotation: E("0.40 * clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0)"),
+            visual: [
+                RoundedRect(
+                    width: 24.0, height: 6.0, radius: 3.0,
+                    fill: "#7b3828",
+                    offset: (12.0, 3.0),
+                ),
+                Triangle(v0: (9.0, 2.0), v1: (12.0, 7.0), v2: (14.0, 2.0), fill: "#f6e8c8"),
+                Triangle(v0: (17.0, 2.0), v1: (20.0, 7.0), v2: (22.0, 2.0), fill: "#f6e8c8"),
+                Triangle(v0: (25.0, 2.0), v1: (28.0, 7.0), v2: (30.0, 2.0), fill: "#f6e8c8"),
+
+                Visual(
+                    offset: (28.0, -1.0),
+                    rotation: E("0.025 * sin(self.time * 19.0)"),
+                    visual: [
+                        Ellipse(
+                            rx: 18.0, ry: 5.0,
+                            fill: "#ffb347",
+                            offset: (16.0, 0.0),
+                            opacity: E("clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0) * (0.58 + 0.18 * sin(self.time * 18.0))"),
+                        ),
+
+                        Triangle(
+                            v0: (2.0, -4.0),
+                            v1: (E("34.0 + 5.0 * sin(self.time * 15.0)"), E("-15.0 + 5.0 * sin(self.time * 21.0)")),
+                            v2: (E("31.0 + 4.0 * cos(self.time * 13.0)"), E("12.0 + 5.0 * cos(self.time * 19.0)")),
+                            fill: "#fff2a8",
+                            opacity: E("clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0) * (0.72 + 0.20 * sin(self.time * 23.0))"),
+                        ),
+                        Triangle(
+                            v0: (8.0, -3.0),
+                            v1: (E("56.0 + 8.0 * sin(self.time * 12.0 + 0.5)"), E("-22.0 + 7.0 * sin(self.time * 18.0 + 0.6)")),
+                            v2: (E("50.0 + 6.0 * cos(self.time * 14.0 + 0.3)"), E("18.0 + 6.0 * cos(self.time * 17.0 + 0.4)")),
+                            fill: "#ffb347",
+                            opacity: E("clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0) * (0.56 + 0.18 * sin(self.time * 17.0 + 0.4))"),
+                        ),
+                        Triangle(
+                            v0: (16.0, -2.0),
+                            v1: (E("82.0 + 10.0 * sin(self.time * 10.0 + 0.9)"), E("-29.0 + 9.0 * sin(self.time * 14.0 + 0.9)")),
+                            v2: (E("76.0 + 8.0 * cos(self.time * 11.0 + 0.8)"), E("23.0 + 8.0 * cos(self.time * 15.0 + 0.9)")),
+                            fill: "#ff7a2d",
+                            opacity: E("clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0) * (0.40 + 0.16 * sin(self.time * 14.0 + 0.8))"),
+                        ),
+                        Triangle(
+                            v0: (26.0, -1.0),
+                            v1: (E("110.0 + 14.0 * sin(self.time * 8.0 + 1.3)"), E("-24.0 + 10.0 * sin(self.time * 13.0 + 1.3)")),
+                            v2: (E("104.0 + 10.0 * cos(self.time * 9.0 + 1.2)"), E("24.0 + 10.0 * cos(self.time * 14.0 + 1.1)")),
+                            fill: "#ff3b2f",
+                            opacity: E("clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0) * (0.24 + 0.10 * sin(self.time * 13.0 + 1.1))"),
+                        ),
+
+                        Circle(
+                            radius: 1.8,
+                            fill: "#ffe58a",
+                            offset: (
+                                E("44.0 + 10.0 * sin(self.time * 11.0)"),
+                                E("-8.0 + 7.0 * sin(self.time * 24.0)")
+                            ),
+                            opacity: E("clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0) * (0.22 + 0.10 * sin(self.time * 22.0))"),
+                        ),
+                        Circle(
+                            radius: 1.2,
+                            fill: "#ffd166",
+                            offset: (
+                                E("68.0 + 12.0 * sin(self.time * 10.0 + 0.6)"),
+                                E("6.0 + 8.0 * cos(self.time * 20.0 + 0.4)")
+                            ),
+                            opacity: E("clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0) * (0.16 + 0.08 * sin(self.time * 19.0 + 0.2))"),
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    ],
+),
+
+Visual(
+    id: "demo:articulated_dragon_masterpiece",
+    visual: [
+        Ellipse(
+            rx: 82.0, ry: 14.0,
+            fill: "#081018",
+            offset: (
+                E("sin(self.time * 0.58) * 170.0 + sin(self.time * 1.77) * 34.0"),
+                E("88.0 + cos(self.time * 1.05) * 6.0")
+            ),
+            opacity: E("0.11 + 0.04 * sin(self.time * 6.4)"),
+        ),
+
+        Visual(
+            offset: (
+                E("sin(self.time * 0.58) * 170.0 + sin(self.time * 1.77) * 34.0 + cos(self.time * 0.19) * 16.0"),
+                E("cos(self.time * 0.79) * 74.0 + sin(self.time * 1.31 + 0.8) * 32.0 + cos(self.time * 2.20) * 8.0")
+            ),
+            rotation: E("0.14 * cos(self.time * 0.58) - 0.32 * sin(self.time * 0.79) + 0.08 * cos(self.time * 1.77)"),
+            visual: [
+                Visual(
+                    rotation: E("0.03 * sin(self.time * 12.8)"),
+                    visual: [
+                        Visual(
+                            offset: (-6.0, -14.0),
+                            pivot: (0.0, 0.0),
+                            rotation: E("0.96 - 1.02 * sin(self.time * 6.4)"),
+                            visual: "demo:dragon_right_wing",
+                        ),
+
+                        Visual(
+                            offset: (-42.0, -1.0),
+                            pivot: (-4.0, 0.0),
+                            rotation: E("-0.08 + 0.18 * sin(self.time * 4.1 + 0.2)"),
+                            visual: [
+                                RoundedRect(
+                                    width: 28.0, height: 10.0, radius: 5.0,
+                                    fill: "#266f51",
+                                    offset: (-14.0, 0.0),
+                                ),
+                                Triangle(v0: (-26.0, 0.0), v1: (-38.0, -4.0), v2: (-38.0, 4.0), fill: "#266f51"),
+
+                                Visual(
+                                    offset: (-28.0, 0.0),
+                                    pivot: (-2.0, 0.0),
+                                    rotation: E("-0.14 + 0.24 * sin(self.time * 4.1 + 0.8)"),
+                                    visual: [
+                                        RoundedRect(
+                                            width: 24.0, height: 8.0, radius: 4.0,
+                                            fill: "#2f815f",
+                                            offset: (-12.0, 0.0),
+                                        ),
+                                        Triangle(v0: (-22.0, 0.0), v1: (-34.0, -4.0), v2: (-34.0, 4.0), fill: "#2f815f"),
+
+                                        Visual(
+                                            offset: (-24.0, 0.0),
+                                            pivot: (-2.0, 0.0),
+                                            rotation: E("-0.20 + 0.30 * sin(self.time * 4.1 + 1.5)"),
+                                            visual: [
+                                                RoundedRect(
+                                                    width: 20.0, height: 7.0, radius: 3.5,
+                                                    fill: "#399972",
+                                                    offset: (-10.0, 0.0),
+                                                ),
+                                                Triangle(v0: (-18.0, 0.0), v1: (-30.0, -5.0), v2: (-30.0, 5.0), fill: "#399972"),
+
+                                                Visual(
+                                                    offset: (-20.0, 0.0),
+                                                    pivot: (-2.0, 0.0),
+                                                    rotation: E("-0.28 + 0.34 * sin(self.time * 4.1 + 2.2)"),
+                                                    visual: [
+                                                        RoundedRect(
+                                                            width: 15.0, height: 6.0, radius: 3.0,
+                                                            fill: "#45aa80",
+                                                            offset: (-7.5, 0.0),
+                                                        ),
+                                                        Triangle(v0: (-14.0, 0.0), v1: (-25.0, -6.0), v2: (-25.0, 6.0), fill: "#d8fff0"),
+                                                    ],
+                                                ),
+                                            ],
+                                        ),
+                                    ],
+                                ),
+                            ],
+                        ),
+
+                        Visual(
+                            offset: (-22.0, 4.0),
+                            pivot: (0.0, 0.0),
+                            rotation: E("-0.01 + 0.02 * sin(self.time * 6.4 + 1.1)"),
+                            visual: "demo:dragon_hind_leg",
+                        ),
+                        Visual(
+                            offset: (16.0, 4.0),
+                            pivot: (0.0, 0.0),
+                            rotation: E("0.02 + 0.02 * sin(self.time * 6.4 + 0.1)"),
+                            visual: "demo:dragon_fore_leg",
+                        ),
+
+                        RoundedRect(
+                            width: 78.0, height: 30.0, radius: 15.0,
+                            fill: "#30916b",
+                            offset: (0.0, 0.0),
+                        ),
+                        Ellipse(
+                            rx: 33.0, ry: 9.0,
+                            fill: "#8de1ba",
+                            offset: (8.0, 7.0),
+                            opacity: 0.28,
+                        ),
+                        Circle(radius: 14.0, fill: "#2c835f", offset: (-22.0, 0.0)),
+                        Circle(radius: 16.0, fill: "#359d74", offset: (8.0, -1.0)),
+                        Circle(radius: 13.0, fill: "#2c835f", offset: (32.0, -1.0)),
+                        RoundedRect(
+                            width: 42.0, height: 9.0, radius: 4.5,
+                            fill: "#2a815f",
+                            offset: (2.0, 9.0),
+                        ),
+
+                        Circle(radius: 10.5, fill: "#2c835f", offset: (-22.0, 6.0)),
+                        RoundedRect(width: 17.0, height: 11.0, radius: 5.5, fill: "#2c835f", offset: (-16.0, 6.5)),
+
+                        Circle(radius: 9.5, fill: "#30916b", offset: (16.0, 6.0)),
+                        RoundedRect(width: 16.0, height: 10.0, radius: 5.0, fill: "#30916b", offset: (11.5, 6.5)),
+
+                        Triangle(v0: (-26.0, -14.0), v1: (-20.0, -27.0), v2: (-14.0, -13.0), fill: "#d8fff0"),
+                        Triangle(v0: ( -7.0, -15.0), v1: ( -1.0, -30.0), v2: (  6.0, -14.0), fill: "#d8fff0"),
+                        Triangle(v0: ( 16.0, -14.0), v1: ( 22.0, -27.0), v2: ( 28.0, -13.0), fill: "#d8fff0"),
+
+                        Visual(
+                            offset: (0.0, -14.0),
+                            pivot: (0.0, 0.0),
+                            rotation: E("-0.96 + 1.02 * sin(self.time * 6.4)"),
+                            visual: "demo:dragon_left_wing",
+                        ),
+
+                        Visual(
+                            offset: (
+                                E("36.0 + 7.0 * clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0)"),
+                                E("-7.0 + 1.5 * sin(self.time * 6.4)")
+                            ),
+                            pivot: (0.0, 0.0),
+                            rotation: E("0.06 + 0.08 * sin(self.time * 3.7 + 0.1)"),
+                            visual: [
+                                RoundedRect(
+                                    width: 25.0, height: 12.0, radius: 6.0,
+                                    fill: "#30916b",
+                                    offset: (12.5, 0.0),
+                                ),
+                                Triangle(v0: (6.0, -5.0), v1: (12.0, -14.0), v2: (14.0, -4.0), fill: "#d8fff0"),
+
+                                Visual(
+                                    offset: (23.0, -1.0),
+                                    pivot: (0.0, 0.0),
+                                    rotation: E("0.08 + 0.15 * sin(self.time * 3.7 + 0.7)"),
+                                    visual: [
+                                        RoundedRect(
+                                            width: 21.0, height: 11.0, radius: 5.5,
+                                            fill: "#379f75",
+                                            offset: (10.5, 0.0),
+                                        ),
+                                        Triangle(v0: (5.0, -5.0), v1: (10.0, -13.0), v2: (12.0, -4.0), fill: "#d8fff0"),
+
+                                        Visual(
+                                            offset: (
+                                                E("18.0 + 4.5 * clamp((sin(self.time * 1.96 - 1.62) + 1.0) * 2.35 - 3.15, 0.0, 1.0)"),
+                                                0.0
+                                            ),
+                                            pivot: (0.0, 0.0),
+                                            rotation: E("0.11 + 0.19 * sin(self.time * 3.7 + 1.4)"),
+                                            visual: "demo:dragon_head",
+                                        ),
+                                    ],
+                                ),
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    ],
+)]

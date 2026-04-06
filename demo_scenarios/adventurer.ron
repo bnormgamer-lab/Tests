@@ -1,0 +1,378 @@
+Visual(
+    id: "demo:adventurer",
+    // entity_angle: 0=right, PI/2=toward camera, PI=left, 3PI/2=away
+    //
+    // 5 PRINCIPLES:
+    //   P1 Position: paired elements at ±C*cos(a). No sin cross-terms.
+    //   P2 Depth:    right-side = C*cos(a), left-side = -C*cos(a),
+    //                back(cape) = -C*sin(a) - offset, top(head) = constant.
+    //   P3 Width:    head 0.88+0.12|sin|, body 0.8+0.2|sin|, limbs 0.7+0.3|sin|.
+    //   P4 Visibility: front-facing sin>thresh, back-facing -sin>thresh, side -cos>thresh.
+    //   P5 Shading:  front lighter +C*sin, near lighter +C*cos.
+    //
+    // TIME ANIMATION: walk cycle + idle breathing/sway
+    fields: { "entity_angle": 0.785 },
+    visual: [
+        // === GROUND SHADOW ===
+        Ellipse(rx: 16.0, ry: 6.0, fill: "#08080c",
+            offset: (0.0, E("30.0 + 0.3 * sin(self.time * 2.0)")),
+            opacity: E("0.22 + 0.03 * sin(self.time * 2.0)")),
+
+        // === CAPE ===
+        // depth: -3*sin(a) - 1.5 — behind body facing camera, in front facing away
+        Ellipse(
+            rx: E("9.0 * clamp(0.4 - 0.4 * sin(self.entity_angle), 0.0, 1.0)"),
+            ry: E("12.0 + 1.0 * sin(self.time * 1.8)"),
+            fill: "#7a1c1c",
+            offset: (E("-0.8 * sin(self.entity_angle)"), E("8.0 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: E("-3.0 * sin(self.entity_angle) - 1.5"),
+        ),
+        // Cape hem
+        Ellipse(
+            rx: E("8.0 * clamp(0.35 - 0.35 * sin(self.entity_angle), 0.0, 1.0)"),
+            ry: E("3.5 + 0.8 * sin(self.time * 2.5)"),
+            fill: Color(
+                r: E("0.42 + 0.04 * sin(self.time * 2.5)"),
+                g: 0.10,
+                b: 0.10,
+                a: 1.0,
+            ),
+            offset: (E("-0.8 * sin(self.entity_angle) + 1.2 * sin(self.time * 2.0)"), E("20.0 + 0.8 * sin(self.time * 1.8)")),
+            depth_offset: E("-3.0 * sin(self.entity_angle) - 1.6"),
+        ),
+        // Cape side drape
+        Triangle(
+            v0: (E("-2.0 * cos(self.entity_angle)"), E("-4.0 + 0.3 * sin(self.time * 2.0)")),
+            v1: (E("-9.0 * cos(self.entity_angle) - 2.0 * sin(self.time * 2.0)"), E("22.0 + 1.0 * sin(self.time * 1.5)")),
+            v2: (E("3.0 * cos(self.entity_angle) + 1.5 * sin(self.time * 2.5)"), E("20.0 + 0.8 * sin(self.time * 1.8)")),
+            fill: "#8b2020",
+            depth_offset: E("-2.5 * sin(self.entity_angle) - 1.0"),
+        ),
+
+        // === BACK LEG ===
+        // depth: -1.5*cos(a) — behind when on far side, in front when on near side
+        Visual(
+            offset: (E("-3.0 * cos(self.entity_angle)"), E("16.0 + 0.3 * sin(self.time * 2.0)")),
+            pivot: (0.0, 0.0),
+            rotation: E("0.35 * sin(self.time * 4.0) + 0.02 * sin(self.time * 1.8)"),
+            depth_offset: E("-1.5 * cos(self.entity_angle)"),
+            visual: [
+                Rect(width: E("5.5 * (0.7 + 0.3 * abs(sin(self.entity_angle)))"), height: 10.0,
+                    fill: Color(
+                        r: E("0.22 - 0.03 * cos(self.entity_angle)"),
+                        g: E("0.18 - 0.02 * cos(self.entity_angle)"),
+                        b: E("0.13 - 0.01 * cos(self.entity_angle)"),
+                        a: 1.0,
+                    ),
+                    offset: (0.0, 5.0)),
+                Rect(width: E("6.0 * (0.7 + 0.3 * abs(sin(self.entity_angle)))"), height: 2.5,
+                    fill: "#2a1c14",
+                    offset: (0.0, 9.0)),
+                Rect(width: E("6.0 * (0.7 + 0.3 * abs(sin(self.entity_angle)))"), height: 5.5,
+                    fill: "#241610",
+                    offset: (E("0.5 * cos(self.entity_angle)"), 13.0)),
+            ],
+        ),
+
+        // === BACK ARM + SHIELD ===
+        // P1: left side. P2: -2*cos(a).
+        Visual(
+            offset: (E("-5.0 * cos(self.entity_angle)"), E("-1.0 + 0.3 * sin(self.time * 2.0)")),
+            pivot: (0.0, -2.0),
+            rotation: E("-0.3 * sin(self.time * 4.0 + 3.14159) - 0.05 * sin(self.time * 1.5 + 0.5)"),
+            depth_offset: E("-2.0 * cos(self.entity_angle)"),
+            visual: [
+                Ellipse(
+                    rx: E("4.5 * (0.6 + 0.4 * abs(sin(self.entity_angle)))"),
+                    ry: 3.0,
+                    fill: Color(
+                        r: E("0.36 + 0.04 * sin(self.entity_angle)"),
+                        g: E("0.30 + 0.03 * sin(self.entity_angle)"),
+                        b: E("0.26 + 0.02 * sin(self.entity_angle)"),
+                        a: 1.0,
+                    ),
+                    offset: (0.0, -1.0),
+                ),
+                Rect(width: E("4.0 * (0.6 + 0.4 * abs(sin(self.entity_angle)))"), height: 9.0,
+                    fill: Color(
+                        r: E("0.48 - 0.05 * cos(self.entity_angle)"),
+                        g: E("0.34 - 0.04 * cos(self.entity_angle)"),
+                        b: E("0.20 - 0.02 * cos(self.entity_angle)"),
+                        a: 1.0,
+                    ),
+                    offset: (0.0, 3.0)),
+                Circle(radius: E("2.5 * (0.7 + 0.3 * abs(sin(self.entity_angle)))"),
+                    fill: "#3a2818",
+                    offset: (E("-0.5 * cos(self.entity_angle)"), 10.0)),
+                // Shield
+                Ellipse(
+                    rx: E("6.5 * (0.4 + 0.6 * abs(cos(self.entity_angle)))"),
+                    ry: 7.5,
+                    fill: Color(
+                        r: E("0.28 + 0.08 * sin(self.entity_angle)"),
+                        g: E("0.22 + 0.06 * sin(self.entity_angle)"),
+                        b: E("0.50 + 0.08 * sin(self.entity_angle)"),
+                        a: 1.0,
+                    ),
+                    offset: (E("-2.0 * cos(self.entity_angle)"), 5.0),
+                ),
+                Circle(radius: 2.0,
+                    fill: "#c8a838",
+                    offset: (E("-2.0 * cos(self.entity_angle)"), 5.0),
+                    depth_offset: 0.1,
+                ),
+            ],
+        ),
+
+        // === BODY TORSO ===
+        Ellipse(
+            rx: E("10.0 * (0.8 + 0.2 * abs(sin(self.entity_angle)))"),
+            ry: E("12.0 + 0.3 * sin(self.time * 2.0)"),
+            fill: Color(
+                r: E("0.48 + 0.06 * sin(self.entity_angle)"),
+                g: E("0.33 + 0.04 * sin(self.entity_angle)"),
+                b: E("0.20 + 0.02 * sin(self.entity_angle)"),
+                a: 1.0,
+            ),
+            offset: (0.0, E("3.0 + 0.3 * sin(self.time * 2.0)")),
+        ),
+        // Tunic front highlight
+        Ellipse(
+            rx: E("8.0 * (0.8 + 0.2 * abs(sin(self.entity_angle)))"),
+            ry: 9.0,
+            fill: Color(
+                r: E("0.58 + 0.08 * sin(self.entity_angle)"),
+                g: E("0.40 + 0.05 * sin(self.entity_angle)"),
+                b: E("0.26 + 0.03 * sin(self.entity_angle)"),
+                a: 1.0,
+            ),
+            offset: (E("1.0 * sin(self.entity_angle)"), E("2.0 + 0.3 * sin(self.time * 2.0)")),
+            opacity: E("clamp(0.25 + 0.5 * sin(self.entity_angle), 0.0, 0.65)"),
+        ),
+        // Tunic back detail
+        Ellipse(
+            rx: E("8.0 * (0.8 + 0.2 * abs(sin(self.entity_angle)))"),
+            ry: 9.0,
+            fill: Color(
+                r: E("0.52 - 0.06 * sin(self.entity_angle)"),
+                g: E("0.36 - 0.04 * sin(self.entity_angle)"),
+                b: E("0.22 - 0.03 * sin(self.entity_angle)"),
+                a: 1.0,
+            ),
+            offset: (E("-1.0 * sin(self.entity_angle)"), E("2.0 + 0.3 * sin(self.time * 2.0)")),
+            opacity: E("clamp(0.25 - 0.5 * sin(self.entity_angle), 0.0, 0.55)"),
+        ),
+        // Collar
+        Ellipse(
+            rx: E("5.5 * (0.8 + 0.2 * abs(sin(self.entity_angle)))"),
+            ry: 2.0,
+            fill: Color(
+                r: E("0.40 + 0.03 * sin(self.entity_angle)"),
+                g: E("0.26 + 0.02 * sin(self.entity_angle)"),
+                b: E("0.16 + 0.01 * sin(self.entity_angle)"),
+                a: 1.0,
+            ),
+            offset: (E("0.5 * sin(self.entity_angle)"), E("-7.0 + 0.3 * sin(self.time * 2.0)")),
+            depth_offset: 0.2,
+        ),
+        // Belt
+        Rect(
+            width: E("18.0 * (0.8 + 0.2 * abs(sin(self.entity_angle)))"),
+            height: 2.5,
+            fill: "#3a2410",
+            offset: (0.0, E("10.0 + 0.3 * sin(self.time * 2.0)")),
+            depth_offset: 0.3,
+        ),
+        // Belt buckle
+        Rect(width: 3.5, height: 3.0,
+            fill: "#c8a838",
+            offset: (E("1.5 * sin(self.entity_angle)"), E("10.0 + 0.3 * sin(self.time * 2.0)")),
+            opacity: E("clamp(sin(self.entity_angle) * 1.5 - 0.2, 0.0, 1.0)"),
+            depth_offset: 0.4,
+        ),
+        // Tunic skirt
+        Rect(
+            width: E("14.0 * (0.8 + 0.2 * abs(sin(self.entity_angle)))"),
+            height: 5.0,
+            fill: Color(
+                r: E("0.40 + 0.03 * sin(self.entity_angle)"),
+                g: E("0.26 + 0.02 * sin(self.entity_angle)"),
+                b: E("0.16 + 0.01 * sin(self.entity_angle)"),
+                a: 1.0,
+            ),
+            offset: (0.0, E("15.0 + 0.3 * sin(self.time * 2.0)")),
+            depth_offset: 0.1,
+        ),
+
+        // === FRONT LEG ===
+        // depth: 1.5*cos(a) — in front when on near side
+        Visual(
+            offset: (E("3.0 * cos(self.entity_angle)"), E("16.0 + 0.3 * sin(self.time * 2.0)")),
+            pivot: (0.0, 0.0),
+            rotation: E("-0.35 * sin(self.time * 4.0) - 0.02 * sin(self.time * 1.8)"),
+            depth_offset: E("1.5 * cos(self.entity_angle)"),
+            visual: [
+                Rect(width: E("5.5 * (0.7 + 0.3 * abs(sin(self.entity_angle)))"), height: 10.0,
+                    fill: Color(
+                        r: E("0.28 + 0.04 * cos(self.entity_angle)"),
+                        g: E("0.22 + 0.03 * cos(self.entity_angle)"),
+                        b: E("0.16 + 0.02 * cos(self.entity_angle)"),
+                        a: 1.0,
+                    ),
+                    offset: (0.0, 5.0)),
+                Rect(width: E("6.0 * (0.7 + 0.3 * abs(sin(self.entity_angle)))"), height: 2.5,
+                    fill: "#3a2418",
+                    offset: (0.0, 9.0)),
+                Rect(width: E("6.0 * (0.7 + 0.3 * abs(sin(self.entity_angle)))"), height: 5.5,
+                    fill: "#3a2418",
+                    offset: (E("-0.5 * cos(self.entity_angle)"), 13.0)),
+            ],
+        ),
+
+        // === FRONT ARM + SWORD ===
+        // P1: right side. P2: 2*cos(a).
+        Visual(
+            offset: (E("5.0 * cos(self.entity_angle)"), E("-2.0 + 0.3 * sin(self.time * 2.0)")),
+            pivot: (0.0, -2.0),
+            rotation: E("0.3 * sin(self.time * 4.0 + 3.14159) + 0.08 * sin(self.time * 1.5)"),
+            depth_offset: E("2.0 * cos(self.entity_angle)"),
+            visual: [
+                // Shoulder
+                Ellipse(
+                    rx: E("4.5 * (0.6 + 0.4 * abs(sin(self.entity_angle)))"),
+                    ry: 3.0,
+                    fill: Color(
+                        r: E("0.42 + 0.05 * cos(self.entity_angle)"),
+                        g: E("0.36 + 0.04 * cos(self.entity_angle)"),
+                        b: E("0.30 + 0.03 * cos(self.entity_angle)"),
+                        a: 1.0,
+                    ),
+                    offset: (0.0, -1.0),
+                ),
+                // Upper arm
+                Rect(width: E("4.0 * (0.6 + 0.4 * abs(sin(self.entity_angle)))"), height: 9.0,
+                    fill: Color(
+                        r: E("0.55 + 0.05 * cos(self.entity_angle)"),
+                        g: E("0.40 + 0.04 * cos(self.entity_angle)"),
+                        b: E("0.26 + 0.02 * cos(self.entity_angle)"),
+                        a: 1.0,
+                    ),
+                    offset: (0.0, 3.0)),
+                // Hand
+                Circle(radius: E("2.5 * (0.7 + 0.3 * abs(sin(self.entity_angle)))"),
+                    fill: "#3a2818",
+                    offset: (E("0.5 * cos(self.entity_angle)"), 10.0)),
+                // Sword blade — depth 3.0: at cos>0.3, total=2*0.3+3=3.6 >= helmet brim
+                Rect(width: 2.2, height: 18.0,
+                    fill: "#b8c0d0",
+                    offset: (E("1.5 * cos(self.entity_angle)"), -7.0),
+                    depth_offset: 3.0,
+                ),
+                // Sword shine
+                Rect(width: 0.8, height: 16.0,
+                    fill: "#e0e8f8",
+                    offset: (E("2.1 * cos(self.entity_angle)"), -6.0),
+                    opacity: 0.5,
+                    depth_offset: 3.05,
+                ),
+                // Crossguard
+                Rect(width: 7.0, height: 2.0,
+                    fill: "#5a3820",
+                    offset: (E("1.5 * cos(self.entity_angle)"), 2.0),
+                    depth_offset: 0.2,
+                ),
+                // Pommel
+                Circle(radius: 1.8,
+                    fill: "#c8a838",
+                    offset: (E("1.5 * cos(self.entity_angle)"), 5.0),
+                    depth_offset: 0.2,
+                ),
+            ],
+        ),
+
+        // === HEAD (constant depth — always on top) ===
+        Circle(radius: E("7.5 * (0.88 + 0.12 * abs(sin(self.entity_angle)))"),
+            fill: Color(
+                r: E("0.78 + 0.04 * sin(self.entity_angle)"),
+                g: E("0.60 + 0.03 * sin(self.entity_angle)"),
+                b: E("0.48 + 0.02 * sin(self.entity_angle)"),
+                a: 1.0,
+            ),
+            offset: (E("0.8 * sin(self.entity_angle)"), E("-13.0 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: 3.0,
+        ),
+        // Helmet dome
+        Ellipse(
+            rx: E("8.0 * (0.88 + 0.12 * abs(sin(self.entity_angle)))"),
+            ry: 5.5,
+            fill: Color(
+                r: E("0.38 + 0.04 * sin(self.entity_angle)"),
+                g: E("0.33 + 0.03 * sin(self.entity_angle)"),
+                b: E("0.28 + 0.02 * sin(self.entity_angle)"),
+                a: 1.0,
+            ),
+            offset: (E("0.8 * sin(self.entity_angle)"), E("-16.0 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: 3.5,
+        ),
+        // Helmet brim
+        Ellipse(
+            rx: E("9.0 * (0.88 + 0.12 * abs(sin(self.entity_angle)))"),
+            ry: 2.5,
+            fill: Color(
+                r: E("0.34 + 0.03 * sin(self.entity_angle)"),
+                g: E("0.29 + 0.02 * sin(self.entity_angle)"),
+                b: E("0.25 + 0.01 * sin(self.entity_angle)"),
+                a: 1.0,
+            ),
+            offset: (E("0.8 * sin(self.entity_angle)"), E("-13.0 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: 3.6,
+        ),
+        // Helmet crest — sways
+        Rect(width: 2.5, height: 7.0,
+            fill: "#cc3030",
+            offset: (E("0.3 * sin(self.entity_angle) + 0.8 * sin(self.time * 3.0)"), E("-22.0 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: 3.3,
+        ),
+        // Plume tip
+        Circle(radius: E("2.2 + 0.3 * sin(self.time * 4.0)"),
+            fill: "#dd3535",
+            offset: (E("0.3 * sin(self.entity_angle) + 1.2 * sin(self.time * 3.0)"), E("-25.5 + 0.4 * sin(self.time * 2.0) - 0.5 * sin(self.time * 4.0)")),
+            depth_offset: 3.3,
+        ),
+        // Visor slit
+        Rect(
+            width: E("8.0 * (0.4 + 0.6 * abs(cos(self.entity_angle)))"),
+            height: 1.5,
+            fill: "#0a0808",
+            offset: (E("1.5 * sin(self.entity_angle)"), E("-13.5 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: 3.7,
+            opacity: E("clamp(sin(self.entity_angle) * 1.8 - 0.4, 0.0, 0.9)"),
+        ),
+
+        // === EYES (constant depth, constant gap) ===
+        Circle(radius: 1.5,
+            fill: "#ece4d4",
+            offset: (E("-2.0 + 1.8 * sin(self.entity_angle)"), E("-13.0 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: 3.8,
+            opacity: E("clamp(sin(self.entity_angle) * 2.0 - 0.5, 0.0, 1.0)"),
+        ),
+        Circle(radius: 1.5,
+            fill: "#ece4d4",
+            offset: (E("2.0 + 1.8 * sin(self.entity_angle)"), E("-13.0 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: 3.8,
+            opacity: E("clamp(sin(self.entity_angle) * 2.0 - 0.5, 0.0, 1.0)"),
+        ),
+        Circle(radius: 0.8,
+            fill: "#1a1410",
+            offset: (E("-2.0 + 2.2 * sin(self.entity_angle)"), E("-13.0 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: 3.85,
+            opacity: E("clamp(sin(self.entity_angle) * 2.0 - 0.5, 0.0, 1.0)"),
+        ),
+        Circle(radius: 0.8,
+            fill: "#1a1410",
+            offset: (E("2.0 + 2.2 * sin(self.entity_angle)"), E("-13.0 + 0.4 * sin(self.time * 2.0)")),
+            depth_offset: 3.85,
+            opacity: E("clamp(sin(self.entity_angle) * 2.0 - 0.5, 0.0, 1.0)"),
+        ),
+    ],
+)

@@ -1,0 +1,81 @@
+Visual(
+    id: "demo:charging_goblin",
+    visual: [
+        // Ground shadow
+        Ellipse(rx: 20.0, ry: 4.0, fill: "#1a1a22", offset: (0.0, 20.0),
+            opacity: Loop(period: 0.28, keys: [(0.0, 0.25), (0.14, 0.35), (0.28, 0.25)])),
+
+        // Left leg (back)
+        Rect(width: 6.0, height: 12.0, fill: "#2d5520", offset: (-6.0, 12.0),
+            rotation: Loop(period: 0.28, keys: [(0.0, -0.35), (0.14, 0.35), (0.28, -0.35)])),
+
+        // Right leg (front)
+        Rect(width: 6.0, height: 12.0, fill: "#336622", offset: (6.0, 12.0),
+            rotation: Loop(period: 0.28, keys: [(0.0, 0.35), (0.14, -0.35), (0.28, 0.35)])),
+
+        // Shield arm (behind body)
+        Rect(width: 5.0, height: 10.0, fill: "#2d5520", offset: (-14.0, -2.0),
+            rotation: Loop(period: 0.5, keys: [(0.0, 0.20), (0.125, -0.15), (0.25, 0.20), (0.375, -0.15), (0.5, 0.20)])),
+
+        // Shield (behind body)
+        Circle(radius: 7.0, fill: "#553311", offset: (-19.0, -5.0)),
+        Circle(radius: 6.0, fill: "#775522", offset: (-19.0, -5.0)),
+        Circle(radius: 2.0, fill: "#998844", offset: (-19.0, -5.0)),
+
+        // Body outline/shadow
+        Ellipse(rx: 14.5, ry: 13.5, fill: "#1a3312", offset: (0.0, 0.5)),
+
+        // Body
+        Ellipse(rx: 14.0, ry: 13.0, fill: "#447733", offset: (0.0, 0.0)),
+
+        // Belly highlight
+        Ellipse(rx: 10.0, ry: 8.0, fill: "#558844", offset: (0.0, 3.0)),
+
+        // Belt
+        Rect(width: 22.0, height: 2.5, fill: "#443311", offset: (0.0, 5.0)),
+
+        // Belt buckle
+        Rect(width: 3.0, height: 2.5, fill: "#998855", offset: (0.0, 5.0)),
+
+        // Weapon arm (over body)
+        Rect(width: 5.0, height: 12.0, fill: "#447733", offset: (14.0, -4.0),
+            rotation: Loop(period: 0.5, keys: [(0.0, -0.60), (0.125, 0.30), (0.25, -0.60), (0.375, 0.30), (0.5, -0.60)])),
+
+        // Cleaver blade
+        Rect(width: 3.5, height: 12.0, fill: "#8899aa", offset: (15.0, -18.0),
+            rotation: Loop(period: 0.5, keys: [(0.0, -0.60), (0.125, 0.30), (0.25, -0.60), (0.375, 0.30), (0.5, -0.60)])),
+
+        // Head shadow
+        Circle(radius: 10.5, fill: "#2a4418", offset: (0.0, -15.0)),
+
+        // Head
+        Circle(radius: 10.0, fill: "#558844", offset: (0.0, -15.5),
+            rotation: Loop(period: 0.28, keys: [(0.0, -0.03), (0.14, 0.03), (0.28, -0.03)])),
+
+        // Brow ridge
+        Ellipse(rx: 9.0, ry: 2.5, fill: "#3a6628", offset: (0.0, -19.0)),
+
+        // Top of head
+        Ellipse(rx: 7.0, ry: 5.0, fill: "#4a7838", offset: (0.0, -19.5)),
+
+        // Ears
+        Ellipse(rx: 2.0, ry: 5.0, fill: "#558844", offset: (-9.0, -20.0), rotation: 0.35),
+        Ellipse(rx: 1.2, ry: 3.5, fill: "#77aa66", offset: (-9.0, -19.5), rotation: 0.35),
+        Ellipse(rx: 2.0, ry: 5.0, fill: "#558844", offset: (9.0, -20.0), rotation: -0.35),
+        Ellipse(rx: 1.2, ry: 3.5, fill: "#77aa66", offset: (9.0, -19.5), rotation: -0.35),
+
+        // Eyes
+        Ellipse(rx: 3.2, ry: 2.2, fill: "#2a3318", offset: (-4.0, -17.5)),
+        Ellipse(rx: 2.8, ry: 1.8, fill: "#ffee44", offset: (-4.0, -17.5)),
+        Circle(radius: 1.0, fill: "#cc1111", offset: (-3.5, -17.5)),
+        Ellipse(rx: 3.2, ry: 2.2, fill: "#2a3318", offset: (4.0, -17.5)),
+        Ellipse(rx: 2.8, ry: 1.8, fill: "#ffee44", offset: (4.0, -17.5)),
+        Circle(radius: 1.0, fill: "#cc1111", offset: (4.5, -17.5)),
+
+        // Nose
+        Ellipse(rx: 1.8, ry: 1.2, fill: "#4a7838", offset: (0.0, -14.5)),
+
+        // Mouth
+        Ellipse(rx: 4.5, ry: 1.3, fill: "#1a0800", offset: (0.0, -12.5)),
+    ],
+)

@@ -1,0 +1,161 @@
+Visual(
+    id: "demo:skeleton_warrior",
+    visual: [
+        // === GROUND SHADOW (tracks body bob slightly) ===
+        Ellipse(rx: 24.0, ry: 4.5, fill: "#0a0a12",
+            offset: (3.0, Loop(period: 0.35, keys: [(0.0, 22.5), (0.175, 21.5), (0.35, 22.5)])),
+            opacity: Loop(period: 0.35, keys: [(0.0, 0.18), (0.175, 0.26), (0.35, 0.18)])),
+
+        // === BACK LEG ===
+        Visual(offset: (-6.0, 5.0), pivot: (0.0, 0.0),
+            rotation: Loop(period: 0.70, keys: [
+                (0.0, 0.38), (0.175, -0.32), (0.35, 0.38), (0.525, -0.32), (0.70, 0.38)]),
+            visual: [
+                Rect(width: 3.5, height: 14.0, fill: "#605848", offset: (0.0, 11.0)),
+                Rect(width: 3.0, height: 13.0, fill: "#504840", offset: (0.0, 22.0),
+                    pivot: (0.0, -6.0),
+                    rotation: Loop(period: 0.70, keys: [
+                        (0.0, 0.20), (0.175, 0.55), (0.35, 0.20), (0.525, 0.55), (0.70, 0.20)])),
+                Ellipse(rx: 3.5, ry: 1.5, fill: "#504840", offset: (1.0, 28.0),
+                    pivot: (-1.0, 0.0),
+                    rotation: Loop(period: 0.70, keys: [
+                        (0.0, -0.10), (0.175, 0.15), (0.35, -0.10), (0.525, 0.15), (0.70, -0.10)])),
+            ]),
+
+        // === BACK ARM ===
+        Visual(offset: (2.0, Loop(period: 0.35, keys: [(0.0, -10.5), (0.175, -9.5), (0.35, -10.5)])),
+            pivot: (0.0, 0.0),
+            rotation: Loop(period: 0.70, keys: [
+                (0.0, -0.30), (0.175, 0.28), (0.35, -0.30), (0.525, 0.28), (0.70, -0.30)]),
+            visual: [
+                Rect(width: 3.0, height: 11.0, fill: "#605848", offset: (0.0, -1.0)),
+                Rect(width: 2.5, height: 10.0, fill: "#504840", offset: (0.0, 8.0),
+                    pivot: (0.0, -4.0),
+                    rotation: Loop(period: 0.70, keys: [
+                        (0.0, 0.30), (0.175, -0.10), (0.35, 0.30), (0.525, -0.10), (0.70, 0.30)])),
+            ]),
+
+        // === TATTERED CLOTH (ragged pieces with more dramatic sway) ===
+        Triangle(v0: (-3.0, 8.0), v1: (7.0, 8.0), v2: (3.0, 20.0), fill: "#3a3028", opacity: 0.65,
+            rotation: Loop(period: 0.70, keys: [
+                (0.0, 0.10), (0.175, -0.10), (0.35, 0.10), (0.525, -0.10), (0.70, 0.10)])),
+        Triangle(v0: (-7.0, 7.0), v1: (0.0, 7.0), v2: (-4.0, 18.0), fill: "#2e2820", opacity: 0.55,
+            rotation: Loop(period: 0.70, keys: [
+                (0.0, -0.08), (0.175, 0.12), (0.35, -0.08), (0.525, 0.12), (0.70, -0.08)])),
+        Triangle(v0: (2.0, 9.0), v1: (8.0, 9.0), v2: (6.0, 17.0), fill: "#342c22", opacity: 0.50,
+            rotation: Loop(period: 0.70, keys: [
+                (0.0, 0.05), (0.175, -0.12), (0.35, 0.05), (0.525, -0.12), (0.70, 0.05)])),
+
+        // === RIBCAGE ===
+        Ellipse(rx: 12.0, ry: 9.0, fill: "#2a2420",
+            offset: (2.0, Loop(period: 0.35, keys: [(0.0, -2.5), (0.175, -1.5), (0.35, -2.5)]))),
+        Rect(width: 3.0, height: 18.0, fill: "#c8c0b0",
+            offset: (2.0, Loop(period: 0.35, keys: [(0.0, -3.5), (0.175, -2.5), (0.35, -3.5)]))),
+        Rect(width: 20.0, height: 2.0, fill: "#b8b0a0",
+            offset: (2.0, Loop(period: 0.35, keys: [(0.0, -9.5), (0.175, -8.5), (0.35, -9.5)]))),
+        Rect(width: 18.0, height: 1.8, fill: "#a8a090",
+            offset: (2.0, Loop(period: 0.35, keys: [(0.0, -6.5), (0.175, -5.5), (0.35, -6.5)]))),
+        Rect(width: 16.0, height: 1.8, fill: "#b0a898",
+            offset: (2.0, Loop(period: 0.35, keys: [(0.0, -3.5), (0.175, -2.5), (0.35, -3.5)]))),
+        Rect(width: 14.0, height: 1.5, fill: "#a09888",
+            offset: (2.0, Loop(period: 0.35, keys: [(0.0, -0.5), (0.175, 0.5), (0.35, -0.5)]))),
+        Rect(width: 12.0, height: 1.5, fill: "#a8a090",
+            offset: (2.0, Loop(period: 0.35, keys: [(0.0, 2.0), (0.175, 3.0), (0.35, 2.0)]))),
+
+        // === PELVIS ===
+        Ellipse(rx: 8.0, ry: 4.5, fill: "#a09888", offset: (0.0, 6.0)),
+
+        // === FRONT LEG ===
+        Visual(offset: (4.0, 5.0), pivot: (0.0, 0.0),
+            rotation: Loop(period: 0.70, keys: [
+                (0.0, -0.32), (0.175, 0.38), (0.35, -0.32), (0.525, 0.38), (0.70, -0.32)]),
+            visual: [
+                Rect(width: 4.0, height: 14.0, fill: "#c8c0b0", offset: (0.0, 11.0)),
+                Rect(width: 3.5, height: 13.0, fill: "#b0a898", offset: (0.0, 22.0),
+                    pivot: (0.0, -6.0),
+                    rotation: Loop(period: 0.70, keys: [
+                        (0.0, 0.55), (0.175, 0.20), (0.35, 0.55), (0.525, 0.20), (0.70, 0.55)])),
+                Ellipse(rx: 4.0, ry: 1.8, fill: "#b0a898", offset: (1.5, 28.0),
+                    pivot: (-1.5, 0.0),
+                    rotation: Loop(period: 0.70, keys: [
+                        (0.0, 0.15), (0.175, -0.10), (0.35, 0.15), (0.525, -0.10), (0.70, 0.15)])),
+            ]),
+
+        // === SHOULDERS (bob + armor hint) ===
+        Ellipse(rx: 12.0, ry: 4.5, fill: "#b8b0a0",
+            offset: (2.0, Loop(period: 0.35, keys: [(0.0, -12.5), (0.175, -11.5), (0.35, -12.5)]))),
+        // Front shoulder pad (rusted iron)
+        Ellipse(rx: 5.5, ry: 4.0, fill: "#6a5a48",
+            offset: (12.0, Loop(period: 0.35, keys: [(0.0, -13.5), (0.175, -12.5), (0.35, -13.5)]))),
+        Ellipse(rx: 4.5, ry: 3.0, fill: "#7a6a58",
+            offset: (12.0, Loop(period: 0.35, keys: [(0.0, -13.0), (0.175, -12.0), (0.35, -13.0)]))),
+        // Back shoulder cap
+        Circle(radius: 3.5, fill: "#c0b8a8",
+            offset: (-8.0, Loop(period: 0.35, keys: [(0.0, -12.5), (0.175, -11.5), (0.35, -12.5)]))),
+
+        // === FRONT ARM (sword arm) ===
+        Visual(offset: (-6.0, Loop(period: 0.35, keys: [(0.0, -10.5), (0.175, -9.5), (0.35, -10.5)])),
+            pivot: (0.0, 0.0),
+            rotation: Loop(period: 0.70, keys: [
+                (0.0, 0.28), (0.175, -0.30), (0.35, 0.28), (0.525, -0.30), (0.70, 0.28)]),
+            visual: [
+                Rect(width: 3.5, height: 11.0, fill: "#c8c0b0", offset: (0.0, -1.0)),
+                Visual(offset: (0.0, 4.0), pivot: (0.0, 0.0),
+                    rotation: Loop(period: 0.70, keys: [
+                        (0.0, -0.10), (0.175, 0.20), (0.35, -0.10), (0.525, 0.20), (0.70, -0.10)]),
+                    visual: [
+                        Rect(width: 3.0, height: 10.0, fill: "#b0a898", offset: (0.0, 7.0)),
+                        // Blade with edge highlight
+                        Rect(width: 2.0, height: 24.0, fill: "#b0b8c8", offset: (0.0, 17.0)),
+                        Rect(width: 0.8, height: 22.0, fill: "#e0e8f0", offset: (0.5, 17.0)),
+                        // Crossguard
+                        Rect(width: 7.0, height: 1.5, fill: "#a0886a", offset: (0.0, 6.5)),
+                        Circle(radius: 2.0, fill: "#8a7050", offset: (0.0, 4.0)),
+                    ]),
+            ]),
+
+        // === NECK ===
+        Rect(width: 3.5, height: 5.0, fill: "#c0b8a8",
+            offset: (4.0, Loop(period: 0.35, keys: [(0.0, -16.5), (0.175, -15.5), (0.35, -16.5)]))),
+
+        // === SKULL (bobs) ===
+        Ellipse(rx: 8.0, ry: 7.5, fill: "#d8d0c0",
+            offset: (6.0, Loop(period: 0.35, keys: [(0.0, -24.5), (0.175, -23.5), (0.35, -24.5)])),
+            rotation: Loop(period: 0.70, keys: [
+                (0.0, -0.04), (0.175, 0.04), (0.35, -0.04), (0.525, 0.04), (0.70, -0.04)])),
+        // Brow
+        Ellipse(rx: 7.0, ry: 2.0, fill: "#c0b8a8",
+            offset: (6.0, Loop(period: 0.35, keys: [(0.0, -23.0), (0.175, -22.0), (0.35, -23.0)]))),
+        // Eye socket
+        Ellipse(rx: 3.0, ry: 3.2, fill: "#1a1218",
+            offset: (9.0, Loop(period: 0.35, keys: [(0.0, -24.5), (0.175, -23.5), (0.35, -24.5)]))),
+        // Eye glow aura (dim, larger)
+        Circle(radius: 4.0, fill: "#22aa44",
+            offset: (9.5, Loop(period: 0.35, keys: [(0.0, -24.5), (0.175, -23.5), (0.35, -24.5)])),
+            opacity: Loop(period: 1.40, keys: [
+                (0.0, 0.15), (0.35, 0.30), (0.70, 0.15), (1.05, 0.30), (1.40, 0.15)])),
+        // Eye glow (bright core)
+        Circle(radius: 1.5, fill: "#44ff66",
+            offset: (9.5, Loop(period: 0.35, keys: [(0.0, -24.5), (0.175, -23.5), (0.35, -24.5)])),
+            opacity: Loop(period: 1.40, keys: [
+                (0.0, 0.55), (0.35, 1.0), (0.70, 0.55), (1.05, 1.0), (1.40, 0.55)])),
+        // Nasal cavity (bobs with skull)
+        Triangle(v0: (10.0, Loop(period: 0.35, keys: [(0.0, -21.5), (0.175, -20.5), (0.35, -21.5)])),
+                 v1: (8.0, Loop(period: 0.35, keys: [(0.0, -19.5), (0.175, -18.5), (0.35, -19.5)])),
+                 v2: (11.0, Loop(period: 0.35, keys: [(0.0, -19.5), (0.175, -18.5), (0.35, -19.5)])),
+                 fill: "#2a2220"),
+        // Jaw (bobs + jaw gape — opens slightly on each step)
+        Ellipse(rx: 7.0, ry: 2.2, fill: "#c8c0b0",
+            offset: (7.0, Loop(period: 0.35, keys: [(0.0, -17.5), (0.175, -16.5), (0.35, -17.5)]))),
+        // Teeth (bob with jaw + gape)
+        Rect(width: 10.0, height: 1.2, fill: "#e8e0d8",
+            offset: (8.0, Loop(period: 0.35, keys: [(0.0, -18.0), (0.175, -17.0), (0.35, -18.0)]))),
+        // Tooth gaps (bob with jaw)
+        Rect(width: 0.8, height: 1.5, fill: "#1a1218",
+            offset: (5.0, Loop(period: 0.35, keys: [(0.0, -18.0), (0.175, -17.0), (0.35, -18.0)]))),
+        Rect(width: 0.8, height: 1.5, fill: "#1a1218",
+            offset: (8.0, Loop(period: 0.35, keys: [(0.0, -18.0), (0.175, -17.0), (0.35, -18.0)]))),
+        Rect(width: 0.8, height: 1.5, fill: "#1a1218",
+            offset: (11.0, Loop(period: 0.35, keys: [(0.0, -18.0), (0.175, -17.0), (0.35, -18.0)]))),
+    ],
+)

@@ -1,0 +1,347 @@
+[
+// ============================================================
+// REUSABLE COMPONENTS — defined with id, referenced by scene
+// ============================================================
+
+// --- DESERT ROCK (small boulder) ---
+Visual(
+    id: "demo:desert_rock",
+    visual: [
+        // Shadow
+        Ellipse(rx: 10.0, ry: 4.0, fill: "#1a150a", offset: (0.0, 8.0), opacity: 0.3),
+        // Base
+        Ellipse(rx: 9.0, ry: 7.0, fill: "#8a7a5a", offset: (0.0, 1.0)),
+        // Highlight
+        Ellipse(rx: 6.0, ry: 4.0, fill: "#a8986a", offset: (-1.0, -2.0)),
+        // Crack detail
+        Rect(width: 1.0, height: 5.0, fill: "#6a5a3a", offset: (2.0, 0.0), rotation: 0.3),
+    ],
+),
+
+// --- CACTUS (saguaro) ---
+Visual(
+    id: "demo:desert_cactus",
+    visual: [
+        // Shadow
+        Ellipse(rx: 8.0, ry: 3.0, fill: "#1a150a", offset: (0.0, 28.0), opacity: 0.25),
+        // Main trunk
+        RoundedRect(width: 8.0, height: 35.0, radius: 4.0, fill: "#2a6630", offset: (0.0, 5.0)),
+        // Trunk highlight
+        RoundedRect(width: 3.0, height: 30.0, radius: 1.5, fill: "#3a8840", offset: (-1.0, 4.0)),
+        // Left arm
+        RoundedRect(width: 6.0, height: 16.0, radius: 3.0, fill: "#2a6630", offset: (-10.0, -2.0)),
+        // Left arm horizontal connector
+        RoundedRect(width: 10.0, height: 6.0, radius: 3.0, fill: "#2a6630", offset: (-6.0, 6.0)),
+        // Right arm
+        RoundedRect(width: 6.0, height: 20.0, radius: 3.0, fill: "#287028", offset: (10.0, -6.0)),
+        // Right arm horizontal connector
+        RoundedRect(width: 10.0, height: 6.0, radius: 3.0, fill: "#287028", offset: (6.0, 2.0)),
+        // Right arm highlight
+        RoundedRect(width: 2.5, height: 16.0, radius: 1.2, fill: "#3a8840", offset: (9.0, -7.0)),
+    ],
+),
+
+// --- PALM TREE ---
+Visual(
+    id: "demo:desert_palm",
+    visual: [
+        // Shadow
+        Ellipse(rx: 18.0, ry: 5.0, fill: "#1a150a", offset: (5.0, 35.0), opacity: 0.2),
+        // Trunk (curved via offset rects)
+        RoundedRect(width: 5.0, height: 14.0, radius: 2.0, fill: "#8a6830", offset: (0.0, 24.0)),
+        RoundedRect(width: 5.0, height: 14.0, radius: 2.0, fill: "#7a5828", offset: (1.0, 12.0)),
+        RoundedRect(width: 4.5, height: 14.0, radius: 2.0, fill: "#8a6830", offset: (2.0, 0.0)),
+        // Trunk rings
+        Rect(width: 5.5, height: 1.0, fill: "#6a4818", offset: (0.0, 20.0)),
+        Rect(width: 5.5, height: 1.0, fill: "#6a4818", offset: (0.5, 10.0)),
+        // Fronds (animated gentle sway)
+        Ellipse(rx: 20.0, ry: 4.0, fill: "#2a7a28", offset: (-8.0, -10.0),
+            rotation: Loop(period: 3.0, keys: [(0.0, -0.15), (1.5, 0.1), (3.0, -0.15)])),
+        Ellipse(rx: 18.0, ry: 3.5, fill: "#338832", offset: (10.0, -8.0),
+            rotation: Loop(period: 3.5, keys: [(0.0, 0.1), (1.75, -0.12), (3.5, 0.1)])),
+        Ellipse(rx: 15.0, ry: 3.0, fill: "#2a8a30", offset: (0.0, -12.0),
+            rotation: Loop(period: 2.8, keys: [(0.0, -0.08), (1.4, 0.12), (2.8, -0.08)])),
+        Ellipse(rx: 16.0, ry: 3.0, fill: "#3a9038", offset: (-5.0, -11.0),
+            rotation: Loop(period: 4.0, keys: [(0.0, 0.05), (2.0, -0.1), (4.0, 0.05)])),
+        // Coconuts
+        Circle(radius: 2.5, fill: "#6a4a1a", offset: (3.0, -6.0)),
+        Circle(radius: 2.5, fill: "#5a3a10", offset: (-1.0, -5.0)),
+    ],
+),
+
+// --- SAND DUNE (gentle mound) ---
+Visual(
+    id: "demo:desert_dune",
+    visual: [
+        Ellipse(rx: 50.0, ry: 12.0, fill: "#d4b878"),
+        Ellipse(rx: 40.0, ry: 8.0, fill: "#dcc488", offset: (-5.0, -3.0)),
+    ],
+),
+
+// --- SCORPION ENEMY (animated walk) ---
+Visual(
+    id: "demo:desert_scorpion",
+    visual: [
+        // Shadow
+        Ellipse(rx: 14.0, ry: 4.0, fill: "#1a150a", offset: (0.0, 10.0), opacity: 0.3),
+        // Left legs (animated)
+        Rect(width: 2.5, height: 8.0, fill: "#5a2a10", offset: (-8.0, 4.0),
+            rotation: Loop(period: 0.25, keys: [(0.0, -0.3), (0.125, 0.3), (0.25, -0.3)])),
+        Rect(width: 2.5, height: 8.0, fill: "#5a2a10", offset: (-5.0, 5.0),
+            rotation: Loop(period: 0.25, keys: [(0.0, 0.3), (0.125, -0.3), (0.25, 0.3)])),
+        // Right legs (animated, opposite phase)
+        Rect(width: 2.5, height: 8.0, fill: "#5a2a10", offset: (8.0, 4.0),
+            rotation: Loop(period: 0.25, keys: [(0.0, 0.3), (0.125, -0.3), (0.25, 0.3)])),
+        Rect(width: 2.5, height: 8.0, fill: "#5a2a10", offset: (5.0, 5.0),
+            rotation: Loop(period: 0.25, keys: [(0.0, -0.3), (0.125, 0.3), (0.25, -0.3)])),
+        // Body
+        Ellipse(rx: 10.0, ry: 7.0, fill: "#6a3418", offset: (0.0, 0.0)),
+        Ellipse(rx: 8.0, ry: 5.0, fill: "#7a4420", offset: (0.0, -1.0)),
+        // Head
+        Ellipse(rx: 5.0, ry: 4.0, fill: "#7a4420", offset: (12.0, -2.0)),
+        // Pincers (animated clacking)
+        Rect(width: 3.0, height: 7.0, fill: "#6a3418", offset: (16.0, -6.0),
+            rotation: Loop(period: 0.6, keys: [(0.0, -0.4), (0.3, -0.1), (0.6, -0.4)])),
+        Rect(width: 3.0, height: 7.0, fill: "#6a3418", offset: (16.0, 2.0),
+            rotation: Loop(period: 0.6, keys: [(0.0, 0.4), (0.3, 0.1), (0.6, 0.4)])),
+        // Tail segments (animated swaying)
+        Circle(radius: 3.5, fill: "#6a3418", offset: (-10.0, -2.0)),
+        Circle(radius: 3.0, fill: "#7a4420",
+            offset: (-14.0, Loop(period: 0.8, keys: [(0.0, -5.0), (0.4, -3.0), (0.8, -5.0)]))),
+        Circle(radius: 2.5, fill: "#6a3418",
+            offset: (-17.0, Loop(period: 0.8, keys: [(0.0, -9.0), (0.4, -6.0), (0.8, -9.0)]))),
+        // Stinger
+        Triangle(
+            v0: (-17.0, Loop(period: 0.8, keys: [(0.0, -15.0), (0.4, -11.0), (0.8, -15.0)])),
+            v1: (-19.0, Loop(period: 0.8, keys: [(0.0, -11.0), (0.4, -8.0), (0.8, -11.0)])),
+            v2: (-15.0, Loop(period: 0.8, keys: [(0.0, -11.0), (0.4, -8.0), (0.8, -11.0)])),
+            fill: "#3a1a08"),
+        // Eyes
+        Circle(radius: 1.2, fill: "#ff4422", offset: (14.0, -3.0)),
+        Circle(radius: 1.2, fill: "#ff4422", offset: (14.0, 0.0)),
+    ],
+),
+
+// --- SCARAB BEETLE ENEMY (smaller, faster) ---
+Visual(
+    id: "demo:desert_scarab",
+    visual: [
+        // Shadow
+        Ellipse(rx: 8.0, ry: 3.0, fill: "#1a150a", offset: (0.0, 8.0), opacity: 0.25),
+        // Legs (animated scuttle)
+        Rect(width: 1.5, height: 5.0, fill: "#1a3a5a", offset: (-5.0, 3.0),
+            rotation: Loop(period: 0.15, keys: [(0.0, -0.4), (0.075, 0.4), (0.15, -0.4)])),
+        Rect(width: 1.5, height: 5.0, fill: "#1a3a5a", offset: (-3.0, 4.0),
+            rotation: Loop(period: 0.15, keys: [(0.0, 0.4), (0.075, -0.4), (0.15, 0.4)])),
+        Rect(width: 1.5, height: 5.0, fill: "#1a3a5a", offset: (5.0, 3.0),
+            rotation: Loop(period: 0.15, keys: [(0.0, 0.4), (0.075, -0.4), (0.15, 0.4)])),
+        Rect(width: 1.5, height: 5.0, fill: "#1a3a5a", offset: (3.0, 4.0),
+            rotation: Loop(period: 0.15, keys: [(0.0, -0.4), (0.075, 0.4), (0.15, -0.4)])),
+        // Shell
+        Ellipse(rx: 7.0, ry: 5.5, fill: "#1a4a7a", offset: (0.0, 0.0)),
+        // Shell highlight
+        Ellipse(rx: 5.0, ry: 3.0, fill: "#2a5a9a", offset: (0.0, -1.0)),
+        // Shell line
+        Rect(width: 0.8, height: 10.0, fill: "#0a2a4a", offset: (0.0, 0.0)),
+        // Head
+        Circle(radius: 3.0, fill: "#1a3a5a", offset: (7.0, 0.0)),
+        // Antennae
+        Rect(width: 0.8, height: 4.0, fill: "#1a3a5a", offset: (10.0, -2.0), rotation: -0.5),
+        Rect(width: 0.8, height: 4.0, fill: "#1a3a5a", offset: (10.0, 2.0), rotation: 0.5),
+        // Eye gems
+        Circle(radius: 1.0, fill: "#44ddaa", offset: (8.0, -1.0)),
+        Circle(radius: 1.0, fill: "#44ddaa", offset: (8.0, 1.0)),
+    ],
+),
+
+// --- SAND ZAPPER TOWER (animated charging glow) ---
+Visual(
+    id: "demo:sand_tower",
+    visual: [
+        // Base shadow
+        Ellipse(rx: 20.0, ry: 7.0, fill: "#1a150a", offset: (0.0, 22.0), opacity: 0.35),
+        // Stone base (isometric platform — dark stone, not sand)
+        Ellipse(rx: 18.0, ry: 9.0, fill: "#5a4a30", offset: (0.0, 14.0)),
+        Ellipse(rx: 16.0, ry: 8.0, fill: "#7a6a48", offset: (0.0, 12.0)),
+        // Pillar (darker stone — contrasts with sand)
+        RoundedRect(width: 14.0, height: 34.0, radius: 3.0, fill: "#8a7048", offset: (0.0, -6.0)),
+        // Pillar dark side
+        Rect(width: 5.0, height: 32.0, fill: "#6a5530", offset: (4.0, -6.0)),
+        // Pillar highlight side
+        Rect(width: 4.0, height: 30.0, fill: "#a08858", offset: (-3.0, -6.0)),
+        // Stone band (horizontal detail)
+        Rect(width: 16.0, height: 2.5, fill: "#5a4a28", offset: (0.0, 2.0)),
+        Rect(width: 16.0, height: 2.5, fill: "#5a4a28", offset: (0.0, -12.0)),
+        // Crenellations (wider, darker)
+        Rect(width: 5.0, height: 6.0, fill: "#7a6040", offset: (-6.0, -25.0)),
+        Rect(width: 5.0, height: 6.0, fill: "#7a6040", offset: (0.0, -25.0)),
+        Rect(width: 5.0, height: 6.0, fill: "#7a6040", offset: (6.0, -25.0)),
+        // Crystal on top (charging glow — brighter)
+        Circle(radius: 5.0, fill: "#44aaff", offset: (0.0, -30.0),
+            opacity: Loop(period: 2.0, keys: [(0.0, 0.5), (1.0, 1.0), (2.0, 0.5)])),
+        // Crystal glow halo (bigger, more visible)
+        Circle(radius: 12.0, fill: "#44aaff", offset: (0.0, -30.0),
+            opacity: Loop(period: 2.0, keys: [(0.0, 0.08), (1.0, 0.3), (2.0, 0.08)])),
+        // Crystal core
+        Circle(radius: 2.5, fill: "#ccddff", offset: (0.0, -30.0)),
+        // Window slit (darker)
+        Rect(width: 2.5, height: 7.0, fill: "#2a1a08", offset: (0.0, -8.0)),
+        // Door arch
+        RoundedRect(width: 7.0, height: 9.0, radius: 3.5, fill: "#3a2a10", offset: (0.0, 9.0)),
+    ],
+),
+
+// --- OASIS POOL ---
+Visual(
+    id: "demo:desert_oasis",
+    visual: [
+        // Shore ring
+        Ellipse(rx: 38.0, ry: 16.0, fill: "#b8a060", opacity: 0.4),
+        // Water outer
+        Ellipse(rx: 35.0, ry: 14.0, fill: "#1a5a7a",
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.6), (1.5, 0.75), (3.0, 0.6)])),
+        // Water inner shimmer
+        Ellipse(rx: 28.0, ry: 10.0, fill: "#2a7a9a",
+            opacity: Loop(period: 2.0, keys: [(0.0, 0.5), (1.0, 0.7), (2.0, 0.5)])),
+        // Water highlight
+        Ellipse(rx: 12.0, ry: 5.0, fill: "#4aaabb", offset: (-5.0, -2.0),
+            opacity: Loop(period: 2.5, keys: [(0.0, 0.2), (1.25, 0.45), (2.5, 0.2)])),
+    ],
+),
+
+// --- DESERT DEBRIS (bones, pottery — scattered detail) ---
+Visual(
+    id: "demo:desert_debris",
+    visual: [
+        // Broken pot base
+        Ellipse(rx: 4.0, ry: 2.5, fill: "#8a5530"),
+        // Pot rim
+        Ellipse(rx: 3.0, ry: 1.5, fill: "#a06838", offset: (0.0, -1.5)),
+        // Bone
+        Rect(width: 1.2, height: 6.0, fill: "#e8ddc0", offset: (6.0, 0.0), rotation: 0.7),
+        // Bone knob
+        Circle(radius: 1.0, fill: "#e8ddc0", offset: (8.0, -2.0)),
+        // Small skull
+        Ellipse(rx: 2.5, ry: 2.0, fill: "#ddd8c0", offset: (-5.0, 1.0)),
+        Circle(radius: 0.6, fill: "#2a2018", offset: (-5.5, 0.5)),
+        Circle(radius: 0.6, fill: "#2a2018", offset: (-4.2, 0.5)),
+    ],
+),
+
+// ============================================================
+// MAIN SCENE — composes everything via Visual refs
+// ============================================================
+Visual(
+    id: "demo:desert_td",
+    visual: [
+        // === SKY (narrow strip at top) ===
+        Rect(width: 340.0, height: 70.0, fill: "#e8a838", offset: (0.0, -75.0)),
+        Rect(width: 340.0, height: 25.0, fill: "#d08828", offset: (0.0, -95.0), opacity: 0.5),
+
+        // === SUN ===
+        Circle(radius: 18.0, fill: "#ffee66", offset: (110.0, -75.0), opacity: 0.3),
+        Circle(radius: 12.0, fill: "#ffdd44", offset: (110.0, -75.0), opacity: 0.6),
+        Circle(radius: 7.0, fill: "#ffcc22", offset: (110.0, -75.0)),
+        Circle(radius: 25.0, fill: "#ffee66", offset: (110.0, -75.0),
+            opacity: Loop(period: 4.0, keys: [(0.0, 0.05), (2.0, 0.15), (4.0, 0.05)])),
+
+        // === DISTANT DUNES (horizon line — tighter) ===
+        Visual(visual: "demo:desert_dune", offset: (-80.0, -42.0), scale: (1.3, 0.6)),
+        Visual(visual: "demo:desert_dune", offset: (40.0, -38.0), scale: (1.1, 0.5)),
+        Visual(visual: "demo:desert_dune", offset: (-20.0, -35.0), scale: (0.8, 0.4)),
+
+        // === GROUND PLANE (fills most of canvas) ===
+        Rect(width: 340.0, height: 200.0, fill: "#c8a050", offset: (0.0, 10.0)),
+        // Subtle sand variation (low opacity — not spotlights)
+        Ellipse(rx: 100.0, ry: 35.0, fill: "#d0b058", offset: (-50.0, -10.0), opacity: 0.4),
+        Ellipse(rx: 80.0, ry: 30.0, fill: "#b89840", offset: (70.0, 35.0), opacity: 0.35),
+        Ellipse(rx: 60.0, ry: 20.0, fill: "#c8a850", offset: (20.0, 65.0), opacity: 0.3),
+        // Sand ripple details (very subtle)
+        Ellipse(rx: 30.0, ry: 2.0, fill: "#b89840", offset: (-90.0, 30.0), opacity: 0.2),
+        Ellipse(rx: 25.0, ry: 1.5, fill: "#b89840", offset: (120.0, 15.0), opacity: 0.2),
+        Ellipse(rx: 20.0, ry: 1.5, fill: "#b89840", offset: (-30.0, 70.0), opacity: 0.15),
+        Ellipse(rx: 35.0, ry: 2.0, fill: "#b89840", offset: (50.0, -20.0), opacity: 0.2),
+
+        // === ENEMY PATH (S-curve — ellipses for organic shape + blending circles at junctions) ===
+        // Shadow layer (darkest, widest)
+        Ellipse(rx: 75.0, ry: 16.0, fill: "#5a4520", offset: (-65.0, 8.0)),
+        Ellipse(rx: 75.0, ry: 16.0, fill: "#5a4520", offset: (65.0, 38.0)),
+        // Junction blenders (circles to smooth the S-curve connection)
+        Circle(radius: 18.0, fill: "#5a4520", offset: (-10.0, 12.0)),
+        Circle(radius: 18.0, fill: "#5a4520", offset: (10.0, 22.0)),
+        Circle(radius: 16.0, fill: "#5a4520", offset: (0.0, 17.0)),
+        // Road surface (warmer brown with red undertone)
+        Ellipse(rx: 72.0, ry: 12.0, fill: "#806040", offset: (-65.0, 8.0)),
+        Ellipse(rx: 72.0, ry: 12.0, fill: "#806040", offset: (65.0, 38.0)),
+        // Junction surface blenders
+        Circle(radius: 14.0, fill: "#806040", offset: (-10.0, 12.0)),
+        Circle(radius: 14.0, fill: "#806040", offset: (10.0, 22.0)),
+        Circle(radius: 13.0, fill: "#806040", offset: (0.0, 17.0)),
+        // Road highlight (center worn track — lighter)
+        Ellipse(rx: 60.0, ry: 5.0, fill: "#907050", offset: (-65.0, 7.0)),
+        Ellipse(rx: 60.0, ry: 5.0, fill: "#907050", offset: (65.0, 37.0)),
+        Circle(radius: 6.0, fill: "#907050", offset: (-5.0, 12.0)),
+        Circle(radius: 6.0, fill: "#907050", offset: (5.0, 21.0)),
+        // Path edge stones
+        Circle(radius: 2.0, fill: "#6a5a38", offset: (-130.0, 6.0)),
+        Circle(radius: 1.8, fill: "#6a5a38", offset: (-95.0, -2.0)),
+        Circle(radius: 1.5, fill: "#6a5a38", offset: (-35.0, 0.0)),
+        Circle(radius: 1.8, fill: "#6a5a38", offset: (35.0, 48.0)),
+        Circle(radius: 2.0, fill: "#6a5a38", offset: (95.0, 50.0)),
+        Circle(radius: 1.5, fill: "#6a5a38", offset: (130.0, 40.0)),
+
+        // === OASIS (right side, repositioned clear of tower) ===
+        Visual(visual: "demo:desert_oasis", offset: (110.0, 58.0), scale: (0.55, 0.55)),
+
+        // === BACK ROW: rocks + cacti (above path, behind) ===
+        Visual(visual: "demo:desert_rock", offset: (-100.0, -15.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:desert_rock", offset: (120.0, -10.0), scale: (0.9, 0.9)),
+        Visual(visual: "demo:desert_cactus", offset: (-75.0, -25.0), scale: (0.6, 0.6)),
+        Visual(visual: "demo:desert_cactus", offset: (95.0, -18.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:desert_cactus", offset: (10.0, -15.0), scale: (0.5, 0.5)),
+
+        // === PALM TREES near oasis (larger, flanking the water) ===
+        Visual(visual: "demo:desert_palm", offset: (80.0, 38.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:desert_palm", offset: (130.0, 48.0), scale: (0.55, 0.55)),
+        // Grass tufts near oasis (green = water nearby)
+        Triangle(v0: (100.0, 55.0), v1: (97.0, 62.0), v2: (103.0, 62.0), fill: "#4a8a3a"),
+        Triangle(v0: (118.0, 53.0), v1: (115.0, 60.0), v2: (121.0, 60.0), fill: "#3a7a28"),
+        Triangle(v0: (125.0, 56.0), v1: (122.0, 63.0), v2: (128.0, 63.0), fill: "#4a9038"),
+
+        // === TOWERS (prominent, flanking path) ===
+        Visual(visual: "demo:sand_tower", offset: (-40.0, -5.0), scale: (1.0, 1.0)),
+        Visual(visual: "demo:sand_tower", offset: (35.0, 55.0), scale: (0.85, 0.85)),
+
+        // === ENEMIES marching along path (bigger scales!) ===
+        // Scorpion squad — along the S-curve
+        Visual(visual: "demo:desert_scorpion", offset: (-90.0, 8.0), scale: (0.8, 0.8)),
+        Visual(visual: "demo:desert_scorpion", offset: (-40.0, 2.0), scale: (0.85, 0.85)),
+        Visual(visual: "demo:desert_scorpion", offset: (15.0, 18.0), scale: (0.8, 0.8)),
+        Visual(visual: "demo:desert_scorpion", offset: (70.0, 38.0), scale: (0.75, 0.75)),
+        // Scarab beetles — interspersed (spaced along path)
+        Visual(visual: "demo:desert_scarab", offset: (-65.0, 12.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:desert_scarab", offset: (50.0, 32.0), scale: (0.65, 0.65)),
+        Visual(visual: "demo:desert_scarab", offset: (110.0, 38.0), scale: (0.7, 0.7)),
+
+        // === MID-GROUND detail (between path and foreground) ===
+        Visual(visual: "demo:desert_debris", offset: (-110.0, 30.0), scale: (0.7, 0.7)),
+        Visual(visual: "demo:desert_debris", offset: (110.0, 20.0), scale: (0.5, 0.5)),
+        Visual(visual: "demo:desert_cactus", offset: (-130.0, 50.0), scale: (0.4, 0.4)),
+        Visual(visual: "demo:desert_rock", offset: (45.0, 65.0), scale: (0.6, 0.6)),
+
+        // === FOREGROUND dune (moved up into visible area) ===
+        Visual(visual: "demo:desert_dune", offset: (-70.0, 60.0), scale: (0.9, 0.5)),
+        Visual(visual: "demo:desert_dune", offset: (90.0, 68.0), scale: (0.7, 0.4)),
+
+        // === FOREGROUND ROCKS + DEBRIS (bottom of frame) ===
+        Visual(visual: "demo:desert_rock", offset: (-120.0, 58.0), scale: (1.0, 1.0)),
+        Visual(visual: "demo:desert_rock", offset: (130.0, 62.0), scale: (0.8, 0.8)),
+        Visual(visual: "demo:desert_debris", offset: (30.0, 55.0), scale: (0.6, 0.6)),
+        Visual(visual: "demo:desert_debris", offset: (-50.0, 72.0), scale: (0.5, 0.5)),
+
+        // === HEAT SHIMMER (atmospheric) ===
+        Ellipse(rx: 120.0, ry: 5.0, fill: "#ffdd88", offset: (0.0, -5.0),
+            opacity: Loop(period: 5.0, keys: [(0.0, 0.0), (2.5, 0.08), (5.0, 0.0)])),
+    ],
+),
+]

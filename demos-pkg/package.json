@@ -1,0 +1,15 @@
+{
+  "name": "towers-demos",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "towers_demos_bg.wasm",
+    "towers_demos.js",
+    "towers_demos.d.ts"
+  ],
+  "main": "towers_demos.js",
+  "types": "towers_demos.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

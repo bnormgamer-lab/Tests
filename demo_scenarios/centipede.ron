@@ -1,0 +1,306 @@
+Visual(
+    id: "demo:centipede",
+    visual: [
+        // === GROUND SHADOW — tracks body center ===
+        Ellipse(rx: 48.0, ry: 7.0, fill: "#06060a",
+            offset: (E("2.0 + sin(self.time * 5.0 + 3.0) * 1.5"), E("26.0 + 1.0 * sin(self.time * 3.0)")),
+            opacity: E("0.20 + 0.05 * sin(self.time * 3.0)")),
+        // Subtle red underglow — menacing ground presence
+        Ellipse(rx: 30.0, ry: 3.0,
+            fill: Color(r: E("0.4 + 0.15 * sin(self.time * 2.0)"), g: 0.03, b: 0.01, a: 1.0),
+            offset: (E("5.0 + sin(self.time * 5.0 + 3.0) * 1.5"), E("22.0 + 0.8 * sin(self.time * 3.0)")),
+            opacity: E("0.04 + 0.02 * sin(self.time * 2.0)")),
+
+        // === BODY SEGMENTS — 8 instanced, wave motion ===
+        // Each segment positioned along x by node_index, with y-undulation phased by node_fraction.
+        // This is IMPOSSIBLE without instancing: 8 segments from 1 definition.
+        Visual(
+            instances: 6,
+            offset: (
+                E("(self.node_index - 2.5) * (11.0 + (5.0 - self.node_index) * 0.6)"),
+                E("sin(self.time * 5.0 + self.node_fraction * 6.283185) * (2.5 + (5.0 - self.node_index) * 0.2)"),
+            ),
+            depth_offset: E("self.node_index * 0.1"),
+            visual: [
+                // --- Back leg: articulated, scales with body segment ---
+                Visual(
+                    offset: (-2.0, E("3.0 + self.node_index * 0.3")),
+                    pivot: (0.0, 0.0),
+                    rotation: E("0.35 * sin(self.time * 5.0 + self.node_fraction * 6.283185 + 1.57)"),
+                    depth_offset: -0.5,
+                    visual: [
+                        // Upper leg (thigh) — scales with segment
+                        Rect(width: E("1.8 + self.node_index * 0.1"), height: E("5.5 + self.node_index * 0.4"),
+                            fill: Color(
+                                r: E("0.22 + hash(self.node_seed, 1.0) * 0.06"),
+                                g: E("0.16 + hash(self.node_seed, 2.0) * 0.04"),
+                                b: E("0.10 + hash(self.node_seed, 3.0) * 0.03"),
+                                a: 1.0,
+                            ),
+                            offset: (0.0, 3.5)),
+                        // Lower leg (shin) — pivoted at knee, counter-rotates
+                        Visual(
+                            offset: (0.0, 7.0),
+                            pivot: (0.0, 0.0),
+                            rotation: E("0.5 + 0.3 * sin(self.time * 5.0 + self.node_fraction * 6.283185 + 2.8)"),
+                            visual: [
+                                Rect(width: 1.8, height: 6.0,
+                                    fill: Color(
+                                        r: E("0.18 + hash(self.node_seed, 10.0) * 0.05"),
+                                        g: E("0.12 + hash(self.node_seed, 11.0) * 0.04"),
+                                        b: E("0.08 + hash(self.node_seed, 12.0) * 0.03"),
+                                        a: 1.0,
+                                    ),
+                                    offset: (0.0, 3.0)),
+                                // Foot claw
+                                Circle(radius: 1.2, fill: "#1a0e08",
+                                    offset: (0.0, 6.5)),
+                            ],
+                        ),
+                    ],
+                ),
+
+                // --- Body segment: dark chitin with red warning stripe ---
+                // Dramatic taper: front (node_index=7) rx≈8.5, rear (node_index=0) rx≈4.5
+                Ellipse(
+                    rx: E("4.5 + (self.node_index) * 0.6"),
+                    ry: E("3.5 + (self.node_index) * 0.35"),
+                    fill: Color(
+                        r: E("0.14 + self.node_fraction * 0.06"),
+                        g: E("0.08 + self.node_fraction * 0.03"),
+                        b: E("0.06 + self.node_fraction * 0.02"),
+                        a: 1.0,
+                    ),
+                ),
+                // Dorsal highlight (glossy chitin shine)
+                Ellipse(
+                    rx: E("3.0 + self.node_index * 0.4"),
+                    ry: E("1.5 + self.node_index * 0.15"),
+                    fill: Color(
+                        r: E("0.28 + self.node_fraction * 0.08"),
+                        g: E("0.18 + self.node_fraction * 0.04"),
+                        b: E("0.12 + self.node_fraction * 0.03"),
+                        a: 1.0,
+                    ),
+                    offset: (0.0, -2.0),
+                    opacity: 0.45,
+                ),
+                // Red warning stripe — dorsal center line
+                Ellipse(
+                    rx: E("2.0 + self.node_index * 0.35"),
+                    ry: 0.9,
+                    fill: Color(
+                        r: E("0.65 + 0.15 * sin(self.node_fraction * 6.283185)"),
+                        g: E("0.08 + 0.04 * sin(self.node_fraction * 6.283185)"),
+                        b: 0.04,
+                        a: 1.0,
+                    ),
+                    offset: (0.0, -1.0),
+                    opacity: E("0.55 + 0.15 * sin(self.time * 2.0 + self.node_fraction * 6.283185)"),
+                ),
+                // Ventral underbelly (lighter)
+                Ellipse(
+                    rx: E("3.0 + self.node_index * 0.35"),
+                    ry: E("2.0 + self.node_index * 0.15"),
+                    fill: Color(
+                        r: E("0.30 + self.node_fraction * 0.08"),
+                        g: E("0.22 + self.node_fraction * 0.06"),
+                        b: E("0.16 + self.node_fraction * 0.04"),
+                        a: 1.0,
+                    ),
+                    offset: (0.0, 2.5),
+                    opacity: 0.4,
+                ),
+                // Segment division line
+                Ellipse(
+                    rx: E("3.8 + self.node_index * 0.5"),
+                    ry: 0.8,
+                    fill: "#060302",
+                    offset: (E("-5.5 + self.node_index * 0.25"), 0.0),
+                    opacity: 0.4,
+                ),
+
+                // --- Front leg: articulated, scales with body segment ---
+                Visual(
+                    offset: (2.0, E("3.0 + self.node_index * 0.3")),
+                    pivot: (0.0, 0.0),
+                    rotation: E("-0.35 * sin(self.time * 5.0 + self.node_fraction * 6.283185 + 1.57)"),
+                    depth_offset: 0.5,
+                    visual: [
+                        // Upper leg — scales with segment
+                        Rect(width: E("1.8 + self.node_index * 0.1"), height: E("5.5 + self.node_index * 0.4"),
+                            fill: Color(
+                                r: E("0.20 + hash(self.node_seed, 5.0) * 0.06"),
+                                g: E("0.14 + hash(self.node_seed, 6.0) * 0.04"),
+                                b: E("0.09 + hash(self.node_seed, 7.0) * 0.03"),
+                                a: 1.0,
+                            ),
+                            offset: (0.0, 3.5)),
+                        // Lower leg — counter-rotates
+                        Visual(
+                            offset: (0.0, 7.0),
+                            pivot: (0.0, 0.0),
+                            rotation: E("-0.5 - 0.3 * sin(self.time * 5.0 + self.node_fraction * 6.283185 + 2.8)"),
+                            visual: [
+                                Rect(width: 1.8, height: 6.0,
+                                    fill: Color(
+                                        r: E("0.16 + hash(self.node_seed, 8.0) * 0.05"),
+                                        g: E("0.11 + hash(self.node_seed, 9.0) * 0.04"),
+                                        b: E("0.07 + hash(self.node_seed, 13.0) * 0.03"),
+                                        a: 1.0,
+                                    ),
+                                    offset: (0.0, 3.0)),
+                                // Foot claw
+                                Circle(radius: 1.2, fill: "#1a0e08",
+                                    offset: (0.0, 6.5)),
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        ),
+
+        // === NECK TRANSITION ===
+        Ellipse(rx: 7.0, ry: 5.5,
+            fill: "#1a0f0c",
+            offset: (E("38.0 + 1.5 * sin(self.time * 5.0 + 5.8)"), E("sin(self.time * 5.0 + 5.8) * 3.0")),
+            depth_offset: 0.85,
+        ),
+
+        // === HEAD ===
+        Ellipse(rx: 11.0, ry: 8.5,
+            fill: "#1e1210",
+            offset: (E("46.0 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("sin(self.time * 5.0 + 6.283185) * 3.0")),
+            depth_offset: 0.9,
+        ),
+        // Head highlight (chitin shine)
+        Ellipse(rx: 7.0, ry: 4.0,
+            fill: "#2e1e18",
+            offset: (E("44.0 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("-2.0 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            opacity: 0.6,
+            depth_offset: 0.95,
+        ),
+
+        // Eye glow (behind eyes)
+        Circle(radius: 3.5,
+            fill: Color(r: E("0.8 + 0.2 * sin(self.time * 4.0)"), g: 0.1, b: 0.05, a: 1.0),
+            offset: (E("46.0 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("-1.0 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            opacity: E("0.2 + 0.1 * sin(self.time * 4.0)"),
+            depth_offset: 0.98,
+        ),
+        // Eyes
+        Circle(radius: 2.2, fill: Color(r: E("0.9 + 0.1 * sin(self.time * 3.0)"), g: E("0.15 + 0.1 * sin(self.time * 3.0)"), b: 0.05, a: 1.0),
+            offset: (E("46.0 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("-3.0 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            depth_offset: 1.0,
+        ),
+        Circle(radius: 2.2, fill: "#cc3333",
+            offset: (E("46.0 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("1.0 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            depth_offset: 1.0,
+        ),
+        // Eye pupils
+        Circle(radius: 1.0, fill: "#110808",
+            offset: (E("46.8 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("-3.0 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            depth_offset: 1.05,
+        ),
+        Circle(radius: 1.0, fill: "#110808",
+            offset: (E("46.8 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("1.0 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            depth_offset: 1.05,
+        ),
+
+        // Left mandible — articulated with pivot-based snapping
+        Visual(
+            offset: (E("50.0 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("-3.0 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            pivot: (0.0, 0.0),
+            rotation: E("-0.15 - 0.2 * clamp(sin(self.time * 3.0), -1.0, 0.3)"),
+            depth_offset: 1.1,
+            visual: [
+                // Mandible base
+                Triangle(v0: (0.0, -1.5), v1: (10.0, -4.0), v2: (0.0, 1.5), fill: "#1a0e08"),
+                // Mandible tip (sharper, lighter)
+                Triangle(v0: (8.0, -3.0), v1: (14.0, E("-3.5 - 0.5 * sin(self.time * 6.0)")), v2: (8.0, -1.0),
+                    fill: "#882211"),
+            ],
+        ),
+        // Right mandible
+        Visual(
+            offset: (E("50.0 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("3.0 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            pivot: (0.0, 0.0),
+            rotation: E("0.15 + 0.2 * clamp(sin(self.time * 3.0), -1.0, 0.3)"),
+            depth_offset: 1.1,
+            visual: [
+                Triangle(v0: (0.0, 1.5), v1: (10.0, 4.0), v2: (0.0, -1.5), fill: "#1a0e08"),
+                Triangle(v0: (8.0, 3.0), v1: (14.0, E("3.5 + 0.5 * sin(self.time * 6.0)")), v2: (8.0, 1.0),
+                    fill: "#882211"),
+            ],
+        ),
+
+        // Left antenna — 2-segment with secondary motion
+        Visual(
+            offset: (E("48.0 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("-5.5 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            pivot: (0.0, 0.0),
+            rotation: E("-0.45 + 0.12 * sin(self.time * 7.0)"),
+            depth_offset: 1.05,
+            visual: [
+                Rect(width: 1.2, height: 10.0, fill: "#2a1810", offset: (0.0, -5.0)),
+                // Antenna tip — second segment with faster wobble
+                Visual(
+                    offset: (0.0, -10.0),
+                    pivot: (0.0, 0.0),
+                    rotation: E("-0.2 + 0.25 * sin(self.time * 11.0 + 0.3)"),
+                    visual: [
+                        Rect(width: 1.0, height: 8.0, fill: "#3a2418", offset: (0.0, -4.0)),
+                        Circle(radius: 0.8, fill: "#4a3020", offset: (0.0, -8.0)),
+                    ],
+                ),
+            ],
+        ),
+        // Right antenna
+        Visual(
+            offset: (E("48.0 + 1.5 * sin(self.time * 5.0 + 6.283185)"), E("5.5 + sin(self.time * 5.0 + 6.283185) * 3.0")),
+            pivot: (0.0, 0.0),
+            rotation: E("0.45 - 0.12 * sin(self.time * 7.0 + 0.5)"),
+            depth_offset: 1.05,
+            visual: [
+                Rect(width: 1.2, height: 10.0, fill: "#2a1810", offset: (0.0, -5.0)),
+                Visual(
+                    offset: (0.0, -10.0),
+                    pivot: (0.0, 0.0),
+                    rotation: E("0.2 - 0.25 * sin(self.time * 11.0 + 0.8)"),
+                    visual: [
+                        Rect(width: 1.0, height: 8.0, fill: "#3a2418", offset: (0.0, -4.0)),
+                        Circle(radius: 0.8, fill: "#4a3020", offset: (0.0, -8.0)),
+                    ],
+                ),
+            ],
+        ),
+
+        // === TAIL ===
+        // Venom sac (pulsing)
+        Ellipse(rx: E("5.0 + 0.5 * sin(self.time * 4.0)"), ry: E("4.0 + 0.3 * sin(self.time * 4.0)"),
+            fill: Color(r: E("0.35 + 0.1 * sin(self.time * 4.0)"), g: 0.12, b: 0.08, a: 1.0),
+            offset: (E("-46.0 + sin(self.time * 5.0) * 3.0"), E("sin(self.time * 5.0) * 3.0")),
+            depth_offset: -0.1,
+        ),
+        // Tail segment
+        Ellipse(rx: 3.5, ry: 3.0,
+            fill: "#1a0e08",
+            offset: (E("-51.0 + sin(self.time * 5.0) * 3.0"), E("sin(self.time * 5.0) * 3.0")),
+            depth_offset: -0.15,
+        ),
+        // Stinger — sharp, curved
+        Triangle(
+            v0: (E("-53.0 + sin(self.time * 5.0) * 3.0"), E("-1.0 + sin(self.time * 5.0) * 3.0")),
+            v1: (E("-64.0 + sin(self.time * 5.0) * 3.0 - 3.0 * sin(self.time * 4.0)"), E("-5.0 + sin(self.time * 5.0) * 3.0")),
+            v2: (E("-55.0 + sin(self.time * 5.0) * 3.0"), E("1.0 + sin(self.time * 5.0) * 3.0")),
+            fill: "#660808",
+            depth_offset: -0.2,
+        ),
+        // Venom drip
+        Circle(radius: E("0.8 + 0.3 * sin(self.time * 6.0)"),
+            fill: "#44cc22",
+            offset: (E("-64.0 + sin(self.time * 5.0) * 3.0 - 3.0 * sin(self.time * 4.0)"), E("-5.0 + sin(self.time * 5.0) * 3.0")),
+            opacity: E("0.4 + 0.3 * sin(self.time * 6.0)"),
+            depth_offset: -0.2,
+        ),
+    ],
+)

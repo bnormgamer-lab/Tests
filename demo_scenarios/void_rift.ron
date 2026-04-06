@@ -1,0 +1,333 @@
+Visual(
+    id: "demo:void_rift",
+    visual: [
+        // === GROUND GLOW OUTER — eldritch light pool ===
+        // Compound harmonics make the glow "breathe" with the rift's energy
+        Ellipse(
+            rx: 48.0, ry: 7.0,
+            fill: "#1a0033",
+            offset: (0.0, 42.0),
+            opacity: E("0.28 + 0.18 * sin(self.time * 1.7) + 0.08 * sin(self.time * 4.3) + 0.04 * sin(self.time * 9.1)"),
+        ),
+
+        // === GROUND GLOW INNER — brighter cyan pool, pulsing ===
+        // Wider and more visible, rx breathes via Expr (impossible with static keyframes
+        // since rx isn't a simple scalar — it uses the Expr-evaluated value)
+        Ellipse(
+            rx: 28.0, ry: 4.0,
+            fill: "#008899",
+            offset: (0.0, 42.0),
+            opacity: E("0.22 + 0.15 * sin(self.time * 2.1) + 0.07 * sin(self.time * 5.7) + 0.03 * sin(self.time * 11.3)"),
+        ),
+
+        // === OUTER ENERGY HAZE — tall vertical aura, slightly asymmetric ===
+        // Offset drifts 3px left of center for organic asymmetry
+        Ellipse(
+            rx: 28.0, ry: 50.0,
+            fill: "#110022",
+            offset: (
+                E("sin(self.time * 2.3) * (2 + 1.5 * sin(self.time * 0.7)) - 3"),
+                E("cos(self.time * 0.9) * 2 - 1"),
+            ),
+            opacity: E("0.25 + 0.1 * sin(self.time * 2.7) + 0.05 * sin(self.time * 6.1)"),
+        ),
+
+        // === ENERGY FIELD 1 — purple vertical shimmer ===
+        Ellipse(
+            rx: 22.0, ry: 42.0,
+            fill: "#2d0066",
+            offset: (
+                E("sin(self.time * 3.7) * 2 * (0.5 + 0.5 * sin(self.time * 0.41))"),
+                E("cos(self.time * 1.9) * 1.5"),
+            ),
+            opacity: E("0.35 + 0.15 * sin(self.time * 2.3)"),
+        ),
+
+        // === ENERGY FIELD 2 — cyan contrast ===
+        Ellipse(
+            rx: 20.0, ry: 40.0,
+            fill: "#004466",
+            offset: (
+                E("cos(self.time * 4.1) * 2.5 * (0.6 + 0.4 * sin(self.time * 0.61))"),
+                E("sin(self.time * 1.3) * 1.5"),
+            ),
+            opacity: E("0.2 + 0.1 * cos(self.time * 1.9)"),
+        ),
+
+        // === RIFT EDGE GLOW — bright cyan boundary energy ===
+        // Compound harmonics create organic breathing — 3 frequencies overlaid
+        Ellipse(
+            rx: 16.0, ry: 36.0,
+            fill: "#00ddff",
+            offset: (
+                E("sin(self.time * 1.7) * 1.2"),
+                E("cos(self.time * 1.3) * 0.8"),
+            ),
+            opacity: E("0.22 + 0.14 * sin(self.time * 3.7) + 0.07 * sin(self.time * 8.3)"),
+        ),
+
+        // === RIFT EDGE GLOW 2 — purple inner edge, balancing cyan ===
+        Ellipse(
+            rx: 14.5, ry: 34.0,
+            fill: "#aa11ee",
+            offset: (
+                E("cos(self.time * 2.1) * 1.0"),
+                E("sin(self.time * 1.1) * 0.8"),
+            ),
+            opacity: E("0.22 + 0.13 * cos(self.time * 5.1) + 0.06 * sin(self.time * 11.3)"),
+        ),
+
+        // === HALO — color-shifting glow ring ===
+        // Cycles through cyan → purple → magenta → cyan over 6 seconds.
+        // The slow color shift adds another dimension of animation variety.
+        Ellipse(
+            rx: 18.0, ry: 38.0,
+            fill: Loop(period: 6.0, keys: [(0.0, "#00bbee"), (2.0, "#8833cc"), (4.0, "#cc33aa"), (6.0, "#00bbee")]),
+            offset: (
+                E("sin(self.time * 1.3) * 1.0"),
+                E("cos(self.time * 0.9) * 0.8"),
+            ),
+            opacity: E("0.12 + 0.06 * sin(self.time * 2.3)"),
+        ),
+
+        // === RIFT TEAR — central dark void ===
+        Ellipse(
+            rx: 13.0, ry: 33.0,
+            fill: "#020006",
+            offset: (
+                E("sin(self.time * 1.3) * 1"),
+                E("cos(self.time * 0.7) * 1"),
+            ),
+            opacity: 0.97,
+        ),
+
+        // === INNER VOID — deepest darkness, subtly breathing ===
+        // The void itself breathes — rx and offset shift slightly,
+        // giving the impression the darkness is alive
+        Ellipse(
+            rx: 8.0, ry: 25.0,
+            fill: "#000001",
+            offset: (
+                E("cos(self.time * 2.1) * 0.8"),
+                E("sin(self.time * 0.7) * 1.5"),
+            ),
+        ),
+
+        // === DANGER SPARK 1 — amber/gold warning energy inside the void ===
+        // Warm accent breaks the cool-only palette, signals danger
+        Circle(
+            radius: 2.0,
+            fill: "#ffaa22",
+            offset: (
+                E("sin(self.time * 4.1 + 0.7) * 6"),
+                E("cos(self.time * 3.3 + 0.7) * 15"),
+            ),
+            opacity: E("hash(7, floor(self.time * 11)) * 0.7"),
+        ),
+
+        // === DANGER SPARK 2 — orange, different orbit ===
+        Circle(
+            radius: 1.8,
+            fill: "#ff7733",
+            offset: (
+                E("cos(self.time * 5.7 + 2.3) * 5"),
+                E("sin(self.time * 4.1 + 2.3) * 12"),
+            ),
+            opacity: E("hash(8, floor(self.time * 14)) * 0.6"),
+        ),
+
+        // === SPARK 1 — Hash-driven random flicker (cyan) ===
+        // Phase offsets (+ constants in sin/cos args) ensure sparks start distributed.
+        // Hash provides genuine per-timestep randomness impossible with Loop.
+        Circle(
+            radius: 2.5,
+            fill: "#44ddff",
+            offset: (
+                E("sin(self.time * 5.3) * 14"),
+                E("cos(self.time * 3.7) * 30"),
+            ),
+            opacity: E("hash(0, floor(self.time * 8)) * 0.85"),
+        ),
+
+        // === SPARK 2 — purple, phase offset +1.0 ===
+        Circle(
+            radius: 2.0,
+            fill: "#cc44ff",
+            offset: (
+                E("cos(self.time * 6.1 + 1.0) * 12"),
+                E("sin(self.time * 4.3 + 1.0) * 26"),
+            ),
+            opacity: E("hash(1, floor(self.time * 10)) * 0.8"),
+        ),
+
+        // === SPARK 3 — bright cyan, phase offset +2.0 ===
+        Circle(
+            radius: 1.8,
+            fill: "#66eeff",
+            offset: (
+                E("sin(self.time * 7.7 + 2.0) * 10"),
+                E("cos(self.time * 5.1 + 2.0) * 22"),
+            ),
+            opacity: E("hash(2, floor(self.time * 12)) * 0.75"),
+        ),
+
+        // === SPARK 4 — large, slow orbit, purple, phase offset +3.14 ===
+        Circle(
+            radius: 3.0,
+            fill: "#aa22ee",
+            offset: (
+                E("cos(self.time * 3.1 + 3.14) * 16"),
+                E("sin(self.time * 2.3 + 3.14) * 32"),
+            ),
+            opacity: E("hash(3, floor(self.time * 15)) * 0.65"),
+        ),
+
+        // === SPARK 5 — white-hot, tiny, phase offset +4.7 ===
+        Circle(
+            radius: 1.5,
+            fill: "#ffffff",
+            offset: (
+                E("sin(self.time * 9.3 + 4.7) * 8"),
+                E("cos(self.time * 7.1 + 4.7) * 18"),
+            ),
+            opacity: E("hash(4, floor(self.time * 20)) * 0.55"),
+        ),
+
+        // === SPARK 6 — medium cyan, phase offset +5.5 ===
+        Circle(
+            radius: 2.2,
+            fill: "#55ccee",
+            offset: (
+                E("cos(self.time * 4.7 + 5.5) * 13"),
+                E("sin(self.time * 3.1 + 5.5) * 28"),
+            ),
+            opacity: E("hash(5, floor(self.time * 9)) * 0.7"),
+        ),
+
+        // === TENDRIL 1 — cyan, spiraling close to rift edge ===
+        Ellipse(
+            rx: 6.0, ry: 1.5,
+            fill: "#00bbdd",
+            offset: (
+                E("sin(self.time * 2.7) * (12 + 3 * sin(self.time * 0.83))"),
+                E("cos(self.time * 1.9) * (30 + 5 * cos(self.time * 0.71))"),
+            ),
+            rotation: E("self.time * 3.1"),
+            opacity: E("0.45 + 0.3 * sin(self.time * 4.7)"),
+        ),
+
+        // === TENDRIL 2 — purple, counter-orbit, tight to edge ===
+        Ellipse(
+            rx: 5.0, ry: 2.0,
+            fill: "#9933dd",
+            offset: (
+                E("cos(self.time * 3.3) * (10 + 2 * cos(self.time * 0.67))"),
+                E("sin(self.time * 2.1) * (24 + 3.5 * sin(self.time * 0.91))"),
+            ),
+            rotation: E("self.time * -2.7"),
+            opacity: E("0.45 + 0.25 * cos(self.time * 3.9)"),
+        ),
+
+        // === TENDRIL 3 — slow, wider cyan arc ===
+        Ellipse(
+            rx: 8.0, ry: 1.2,
+            fill: "#33ccee",
+            offset: (
+                E("sin(self.time * 1.9) * (14 + 4 * sin(self.time * 0.47))"),
+                E("cos(self.time * 1.3) * (32 + 4 * cos(self.time * 0.39))"),
+            ),
+            rotation: E("self.time * 1.9"),
+            opacity: E("0.35 + 0.2 * sin(self.time * 2.3)"),
+        ),
+
+        // === CORE FLASH — discrete stepped brightness ===
+        // Smaller and subtler so it doesn't occlude the dark void
+        Circle(
+            radius: 3.5,
+            fill: "#88eeff",
+            offset: (0.0, 0.0),
+            opacity: E("0.3 * floor(fract(self.time * 0.5) * 5) / 5"),
+        ),
+
+        // === BRIGHT CORE — compound harmonic pulse ===
+        Circle(
+            radius: 3.0,
+            fill: "#eeffff",
+            offset: (0.0, 0.0),
+            opacity: E("clamp(0.35 * sin(self.time * 1.5) + 0.18 * sin(self.time * 4.5) + 0.1 * sin(self.time * 10.5), 0, 0.65)"),
+        ),
+
+        // === HOT CENTER — white-hot point that flickers erratically ===
+        Circle(
+            radius: 1.5,
+            fill: "#ffffff",
+            offset: (0.0, 0.0),
+            opacity: E("clamp(hash(6, floor(self.time * 6)) * 0.4 + 0.15 * sin(self.time * 13.7), 0, 0.55)"),
+        ),
+
+        // === TOP CORONA — binary on/off via Select (bold) ===
+        // Select + Gt creates sharp threshold: appears suddenly, doesn't fade in.
+        // When visible, shimmers at a fast frequency. Loop creates gradual fade;
+        // Select creates instant snap — a fundamentally different visual behavior.
+        Ellipse(
+            rx: 16.0, ry: 4.5,
+            fill: "#55eeff",
+            offset: (0.0, -38.0),
+            opacity: E("select(sin(self.time * 2) > 0.3, 0.75 * (0.5 + 0.5 * sin(self.time * 7)), 0)"),
+        ),
+
+        // === BOTTOM CORONA — inverted phase (bold) ===
+        Ellipse(
+            rx: 16.0, ry: 4.5,
+            fill: "#8855ff",
+            offset: (0.0, 38.0),
+            opacity: E("select(sin(self.time * 2 + 3.14159) > 0.3, 0.65 * (0.5 + 0.5 * cos(self.time * 5.3)), 0)"),
+        ),
+
+        // === LEFT ENERGY WISP 1 — horizontal escape energy ===
+        // Sawtooth position using fract: streaks outward from rift edge, snaps back.
+        // With Loop you'd get symmetric round-trip; fract gives directional emission.
+        Ellipse(
+            rx: 8.0, ry: 1.8,
+            fill: "#33ddee",
+            offset: (
+                E("fract(self.time * 0.8) * -40 - 10"),
+                E("sin(self.time * 2.1) * 6"),
+            ),
+            opacity: E("(1 - fract(self.time * 0.8)) ^ 1.5 * 0.7"),
+        ),
+
+        // === LEFT ENERGY WISP 2 — staggered, slower ===
+        Ellipse(
+            rx: 6.0, ry: 1.5,
+            fill: "#22aacc",
+            offset: (
+                E("fract(self.time * 0.55 + 0.3) * -35 - 10"),
+                E("sin(self.time * 1.7 + 1.0) * 8 - 12"),
+            ),
+            opacity: E("(1 - fract(self.time * 0.55 + 0.3)) ^ 1.5 * 0.6"),
+        ),
+
+        // === RIGHT ENERGY WISP 1 — mirrored, purple ===
+        Ellipse(
+            rx: 8.0, ry: 1.8,
+            fill: "#aa44dd",
+            offset: (
+                E("fract(self.time * 0.8 + 0.5) * 40 + 10"),
+                E("cos(self.time * 2.3) * 6"),
+            ),
+            opacity: E("(1 - fract(self.time * 0.8 + 0.5)) ^ 1.5 * 0.7"),
+        ),
+
+        // === RIGHT ENERGY WISP 2 — staggered, slower ===
+        Ellipse(
+            rx: 6.0, ry: 1.5,
+            fill: "#8833bb",
+            offset: (
+                E("fract(self.time * 0.55 + 0.8) * 35 + 10"),
+                E("cos(self.time * 1.9 + 2.0) * 8 + 12"),
+            ),
+            opacity: E("(1 - fract(self.time * 0.55 + 0.8)) ^ 1.5 * 0.6"),
+        ),
+    ],
+)

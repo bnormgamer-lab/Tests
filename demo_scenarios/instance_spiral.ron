@@ -1,0 +1,58 @@
+[Visual(
+    id: "demo:level1",
+    visual: [
+        Visual(
+            instances: E("20+10*sin(self.time)"),
+            offset: (
+                E("cos(self.node_fraction * 6.283185) * 22.0"),
+                E("sin(self.node_fraction * 6.283185) * 22.0"),
+            ),
+            rotation: E("self.time * 2.283185 + self.node_fraction"),
+            visual: [
+                Rect(
+                    width: E("1.0 + hash(self.node_seed, 0.0) * 5.0"),
+                    height: E("1.0 + hash(self.node_seed, 1.0) * 5.0"),
+                    fill: Color(
+                        r: E("0.35 + hash(self.node_seed, 2.0) * 0.9"),
+                        g: E("0.25 + hash(self.node_seed, 3.0) * 0.1"),
+                        b: E("0.4 + hash(self.node_seed, 4.0) * 0.15"),
+                        a: 1.0,
+                    ),
+                ),
+            ],
+        ),
+    ],
+),
+Visual(
+    id: "demo:level2",
+    visual: [
+        Visual(
+            instances: E("20+10*sin(self.time)"),
+            depth_offset: E("sin(self.node_fraction * 6.283185) * 22.0"),
+            offset: (
+                E("cos(self.node_fraction * 6.283185) * 22.0"),
+                E("sin(self.node_fraction * 6.283185) * 22.0"),
+            ),
+            rotation: E("self.time * 2.283185 + self.node_fraction"),
+            visual: [
+                "demo:level1",
+            ],
+        ),
+    ],
+),
+Visual(
+    id: "demo:a_instance_spiral",
+    visual: [
+        Visual(
+            instances: E("20+10*sin(self.time)"),
+            offset: (
+                E("cos(self.node_fraction * 6.283185) * 100.0"),
+                E("sin(self.node_fraction * 6.283185) * 100.0"),
+            ),
+            rotation: E("self.time * 5.283185 * sin(self.time * 0.01) + self.node_fraction"),
+            visual: [
+                "demo:level2",
+            ],
+        ),
+    ],
+)]

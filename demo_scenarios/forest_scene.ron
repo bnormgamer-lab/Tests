@@ -1,0 +1,226 @@
+[
+// Wolf definition must come first so the forest can reference it by ID.
+Visual(
+    id: "demo:wolf_runner",
+    visual: [
+        // === GROUND SHADOW ===
+        Ellipse(rx: 30.0, ry: 4.0, fill: "#18181f", offset: (0.0, 24.0),
+            opacity: Loop(period: 1.2, keys: [(0.0, 0.22), (0.6, 0.32), (1.2, 0.22)])),
+
+        // === BACK LEGS ===
+        Rect(width: 5.5, height: 22.0, fill: "#606060", offset: (-8.0, 4.0),
+            rotation: Loop(period: 0.30, keys: [(0.0, 0.42), (0.075, -0.38), (0.15, 0.42), (0.225, -0.38), (0.30, 0.42)])),
+        Rect(width: 5.5, height: 22.0, fill: "#525252", offset: (-14.0, 4.0),
+            rotation: Loop(period: 0.30, keys: [(0.0, -0.38), (0.075, 0.42), (0.15, -0.38), (0.225, 0.42), (0.30, -0.38)])),
+
+        // === TAIL ===
+        Ellipse(rx: 3.5, ry: 16.0, fill: "#6e6e6e", offset: (-20.0, -5.0),
+            rotation: Loop(period: 0.55, keys: [(0.0, -0.38), (0.14, -0.12), (0.275, -0.38), (0.41, -0.12), (0.55, -0.38)])),
+
+        // === BODY ===
+        Ellipse(rx: 25.0, ry: 10.0, fill: "#2e2e2e", offset: (0.0, 1.5)),
+        Ellipse(rx: 24.0, ry: 9.0, fill: "#808080"),
+        Ellipse(rx: 21.0, ry: 3.5, fill: "#585858", offset: (0.0, -5.5)),
+        Ellipse(rx: 19.0, ry: 5.0, fill: "#6a6a6a", offset: (0.0, -3.0)),
+        Ellipse(rx: 19.0, ry: 5.0, fill: "#9a9a9a", offset: (0.0, 3.5)),
+        Ellipse(rx: 9.0, ry: 8.0, fill: "#6a6a6a", offset: (-13.0, 0.0)),
+
+        // === FRONT LEGS ===
+        Rect(width: 6.0, height: 22.0, fill: "#6a6a6a", offset: (10.0, 4.0),
+            rotation: Loop(period: 0.30, keys: [(0.0, -0.38), (0.075, 0.42), (0.15, -0.38), (0.225, 0.42), (0.30, -0.38)])),
+        Rect(width: 6.0, height: 22.0, fill: "#585858", offset: (16.0, 4.0),
+            rotation: Loop(period: 0.30, keys: [(0.0, 0.42), (0.075, -0.38), (0.15, 0.42), (0.225, -0.38), (0.30, 0.42)])),
+
+        // === SHOULDER/CHEST ===
+        Ellipse(rx: 9.0, ry: 9.0, fill: "#808080", offset: (17.0, -2.0)),
+        Ellipse(rx: 6.0, ry: 6.0, fill: "#909090", offset: (19.0, 1.0)),
+
+        // === NECK ===
+        Ellipse(rx: 6.0, ry: 8.0, fill: "#808080", offset: (23.0, -5.0)),
+        Ellipse(rx: 4.5, ry: 5.5, fill: "#909090", offset: (22.0, -1.5)),
+
+        // === HEAD ===
+        Ellipse(rx: 7.5, ry: 6.5, fill: "#3a3a3a", offset: (27.0, -9.0)),
+        Ellipse(rx: 7.0, ry: 6.0, fill: "#909090", offset: (27.0, -10.0),
+            rotation: Loop(period: 0.42, keys: [(0.0, -0.025), (0.105, 0.025), (0.21, -0.025), (0.315, 0.025), (0.42, -0.025)])),
+        Ellipse(rx: 4.5, ry: 3.0, fill: "#a0a0a0", offset: (26.0, -13.5)),
+
+        // === MUZZLE ===
+        Ellipse(rx: 8.5, ry: 3.2, fill: "#a0a0a0", offset: (34.0, -9.0)),
+        Ellipse(rx: 3.0, ry: 2.0, fill: "#888888", offset: (41.0, -9.0)),
+        Circle(radius: 2.0, fill: "#181818", offset: (42.5, -9.5)),
+        Rect(width: 11.0, height: 0.7, fill: "#4a4a4a", offset: (35.0, -7.0)),
+        Ellipse(rx: 6.5, ry: 1.8, fill: "#787878", offset: (34.0, -6.2)),
+
+        // === EARS ===
+        Ellipse(rx: 2.5, ry: 4.5, fill: "#6a6a6a", offset: (23.0, -16.0)),
+        Ellipse(rx: 1.5, ry: 3.0, fill: "#9a8a8a", offset: (23.0, -15.5)),
+        Ellipse(rx: 2.5, ry: 4.5, fill: "#808080", offset: (28.5, -16.5)),
+        Ellipse(rx: 1.5, ry: 3.0, fill: "#aa9a9a", offset: (28.5, -16.0)),
+
+        // === EYE ===
+        Ellipse(rx: 4.0, ry: 3.0, fill: "#3a3a3a", offset: (30.0, -12.5)),
+        Ellipse(rx: 3.2, ry: 2.5, fill: "#c0b830", offset: (30.0, -12.5)),
+        Ellipse(rx: 1.2, ry: 2.2, fill: "#181818", offset: (30.5, -12.5)),
+        Circle(radius: 0.9, fill: "#f0f0f0", offset: (29.5, -13.3)),
+    ],
+),
+Visual(
+    id: "demo:forest_scene",
+    visual: [
+        // ========== SKY LAYER ==========
+        // Sky background (large rect)
+        Rect(width: 500.0, height: 300.0, fill: "#2a3050", offset: (0.0, -50.0)),
+
+        // === SUN ===
+        Circle(radius: 40.0, fill: "#ffee88", offset: (-120.0, -120.0),
+            opacity: Loop(period: 4.0, keys: [(0.0, 0.2), (2.0, 0.35), (4.0, 0.2)])),
+        Circle(radius: 28.0, fill: "#ffdd44", offset: (-120.0, -120.0),
+            opacity: Loop(period: 4.0, keys: [(0.0, 0.5), (2.0, 0.7), (4.0, 0.5)])),
+        Circle(radius: 18.0, fill: "#ffcc22", offset: (-120.0, -120.0)),
+
+        // === CLOUDS ===
+        // Cloud 1 (large, left)
+        Ellipse(rx: 35.0, ry: 12.0, fill: "#6678aa", offset: (-50.0, -100.0),
+            opacity: Loop(period: 10.0, keys: [(0.0, 0.25), (5.0, 0.4), (10.0, 0.25)])),
+        Ellipse(rx: 22.0, ry: 14.0, fill: "#7788bb", offset: (-60.0, -108.0),
+            opacity: Loop(period: 10.0, keys: [(0.0, 0.25), (5.0, 0.4), (10.0, 0.25)])),
+        Ellipse(rx: 18.0, ry: 10.0, fill: "#6678aa", offset: (-38.0, -106.0),
+            opacity: Loop(period: 10.0, keys: [(0.0, 0.2), (5.0, 0.35), (10.0, 0.2)])),
+
+        // Cloud 2 (right)
+        Ellipse(rx: 28.0, ry: 10.0, fill: "#5566aa", offset: (80.0, -110.0),
+            opacity: Loop(period: 8.0, keys: [(0.0, 0.2), (4.0, 0.35), (8.0, 0.2)])),
+        Ellipse(rx: 20.0, ry: 12.0, fill: "#6677bb", offset: (70.0, -116.0),
+            opacity: Loop(period: 8.0, keys: [(0.0, 0.2), (4.0, 0.35), (8.0, 0.2)])),
+
+        // Cloud 3 (small, center)
+        Ellipse(rx: 16.0, ry: 7.0, fill: "#5566aa", offset: (10.0, -90.0),
+            opacity: Loop(period: 6.0, keys: [(0.0, 0.15), (3.0, 0.3), (6.0, 0.15)])),
+
+        // ========== DISTANT HILLS ==========
+        Ellipse(rx: 200.0, ry: 60.0, fill: "#2a4828", offset: (-30.0, 40.0)),
+        Ellipse(rx: 160.0, ry: 50.0, fill: "#2d5028", offset: (60.0, 50.0)),
+
+        // ========== GROUND ==========
+        Rect(width: 500.0, height: 120.0, fill: "#3a5a2a", offset: (0.0, 80.0)),
+        // Ground highlight (lighter strip)
+        Rect(width: 500.0, height: 8.0, fill: "#4a6a3a", offset: (0.0, 25.0)),
+
+        // ========== TREE 1 (far left, large) ==========
+        // Trunk shadow
+        Rect(width: 10.0, height: 55.0, fill: "#3a2210", offset: (-100.0, 10.0)),
+        // Trunk
+        Rect(width: 9.0, height: 54.0, fill: "#5a3a1a", offset: (-100.0, 9.0)),
+        // Trunk bark detail
+        Rect(width: 3.0, height: 20.0, fill: "#4a2a10", offset: (-98.0, 5.0)),
+        // Roots
+        Ellipse(rx: 8.0, ry: 3.0, fill: "#4a3018", offset: (-100.0, 35.0)),
+        // Lower canopy
+        Triangle(v0: (-100.0, -50.0), v1: (-130.0, 10.0), v2: (-70.0, 10.0), fill: "#1a5518"),
+        // Middle canopy
+        Triangle(v0: (-100.0, -70.0), v1: (-125.0, -20.0), v2: (-75.0, -20.0), fill: "#226622"),
+        // Upper canopy
+        Triangle(v0: (-100.0, -85.0), v1: (-118.0, -45.0), v2: (-82.0, -45.0), fill: "#2a7a2a"),
+        // Canopy highlight
+        Triangle(v0: (-95.0, -75.0), v1: (-110.0, -35.0), v2: (-85.0, -35.0), fill: "#338833"),
+
+        // ========== TREE 2 (center-left, medium) ==========
+        Rect(width: 8.0, height: 45.0, fill: "#5a3a1a", offset: (-40.0, 15.0)),
+        Rect(width: 3.0, height: 15.0, fill: "#4a2a10", offset: (-38.0, 10.0)),
+        Triangle(v0: (-40.0, -35.0), v1: (-62.0, 10.0), v2: (-18.0, 10.0), fill: "#1a5218"),
+        Triangle(v0: (-40.0, -50.0), v1: (-56.0, -15.0), v2: (-24.0, -15.0), fill: "#226622"),
+        Triangle(v0: (-40.0, -60.0), v1: (-52.0, -30.0), v2: (-28.0, -30.0), fill: "#2a7a28"),
+
+        // ========== TREE 3 (center-right, large) ==========
+        Rect(width: 11.0, height: 60.0, fill: "#5a3818", offset: (40.0, 5.0)),
+        Rect(width: 4.0, height: 25.0, fill: "#4a2810", offset: (43.0, 0.0)),
+        Ellipse(rx: 9.0, ry: 3.0, fill: "#4a3018", offset: (40.0, 33.0)),
+        Triangle(v0: (40.0, -55.0), v1: (5.0, 10.0), v2: (75.0, 10.0), fill: "#1a5818"),
+        Triangle(v0: (40.0, -72.0), v1: (14.0, -20.0), v2: (66.0, -20.0), fill: "#226622"),
+        Triangle(v0: (40.0, -85.0), v1: (22.0, -45.0), v2: (58.0, -45.0), fill: "#2a8028"),
+        Triangle(v0: (45.0, -78.0), v1: (30.0, -38.0), v2: (56.0, -38.0), fill: "#339930"),
+
+        // ========== TREE 4 (far right, small) ==========
+        Rect(width: 6.0, height: 35.0, fill: "#5a3a1a", offset: (110.0, 22.0)),
+        Triangle(v0: (110.0, -15.0), v1: (92.0, 20.0), v2: (128.0, 20.0), fill: "#1a5518"),
+        Triangle(v0: (110.0, -28.0), v1: (96.0, 0.0), v2: (124.0, 0.0), fill: "#226622"),
+        Triangle(v0: (110.0, -38.0), v1: (100.0, -12.0), v2: (120.0, -12.0), fill: "#2a7a2a"),
+
+        // ========== TREE 5 (between 1 and 2, background, smaller+darker) ==========
+        Rect(width: 5.0, height: 30.0, fill: "#3a2810", offset: (-70.0, 20.0)),
+        Triangle(v0: (-70.0, -12.0), v1: (-84.0, 16.0), v2: (-56.0, 16.0), fill: "#154412"),
+        Triangle(v0: (-70.0, -22.0), v1: (-80.0, 0.0), v2: (-60.0, 0.0), fill: "#1a5518"),
+
+        // ========== BUSHES ==========
+        // Bush left
+        Ellipse(rx: 12.0, ry: 8.0, fill: "#2a6622", offset: (-75.0, 32.0)),
+        Ellipse(rx: 8.0, ry: 6.0, fill: "#338828", offset: (-70.0, 30.0)),
+        // Bush center
+        Ellipse(rx: 10.0, ry: 7.0, fill: "#286620", offset: (0.0, 34.0)),
+        Ellipse(rx: 7.0, ry: 5.0, fill: "#2a7a24", offset: (4.0, 32.0)),
+        // Bush right
+        Ellipse(rx: 14.0, ry: 9.0, fill: "#2a6622", offset: (75.0, 30.0)),
+        Ellipse(rx: 9.0, ry: 6.0, fill: "#338828", offset: (80.0, 28.0)),
+
+        // ========== GRASS TUFTS ==========
+        Triangle(v0: (-130.0, 24.0), v1: (-135.0, 34.0), v2: (-125.0, 34.0), fill: "#4a8a3a"),
+        Triangle(v0: (-115.0, 26.0), v1: (-119.0, 34.0), v2: (-111.0, 34.0), fill: "#3a7a2a"),
+        Triangle(v0: (-55.0, 28.0), v1: (-59.0, 36.0), v2: (-51.0, 36.0), fill: "#4a8a3a"),
+        Triangle(v0: (-25.0, 30.0), v1: (-28.0, 36.0), v2: (-22.0, 36.0), fill: "#3a7a2a"),
+        Triangle(v0: (15.0, 28.0), v1: (11.0, 35.0), v2: (19.0, 35.0), fill: "#4a8a3a"),
+        Triangle(v0: (55.0, 29.0), v1: (51.0, 36.0), v2: (59.0, 36.0), fill: "#3a7a2a"),
+        Triangle(v0: (90.0, 27.0), v1: (86.0, 34.0), v2: (94.0, 34.0), fill: "#4a8a3a"),
+        Triangle(v0: (125.0, 28.0), v1: (121.0, 35.0), v2: (129.0, 35.0), fill: "#3a7a2a"),
+        Triangle(v0: (-90.0, 30.0), v1: (-94.0, 37.0), v2: (-86.0, 37.0), fill: "#449938"),
+        Triangle(v0: (30.0, 30.0), v1: (26.0, 37.0), v2: (34.0, 37.0), fill: "#449938"),
+
+        // ========== STONES / ROCKS ==========
+        Ellipse(rx: 5.0, ry: 3.0, fill: "#667766", offset: (-20.0, 36.0)),
+        Ellipse(rx: 3.0, ry: 2.0, fill: "#778877", offset: (-17.0, 35.0)),
+        Ellipse(rx: 4.0, ry: 2.5, fill: "#607060", offset: (60.0, 38.0)),
+        Circle(radius: 2.5, fill: "#6a7a6a", offset: (63.0, 37.0)),
+
+        // ========== FLOWERS ==========
+        // Red flower
+        Circle(radius: 2.0, fill: "#ff3355", offset: (-85.0, 32.0),
+            opacity: Loop(period: 2.5, keys: [(0.0, 0.6), (1.25, 1.0), (2.5, 0.6)])),
+        Circle(radius: 0.8, fill: "#ffee44", offset: (-85.0, 32.0)),
+        // Orange flower
+        Circle(radius: 1.8, fill: "#ff8822", offset: (-30.0, 34.0),
+            opacity: Loop(period: 3.0, keys: [(0.0, 0.7), (1.5, 1.0), (3.0, 0.7)])),
+        Circle(radius: 0.7, fill: "#ffee44", offset: (-30.0, 34.0)),
+        // Purple flower
+        Circle(radius: 2.2, fill: "#9944cc", offset: (20.0, 33.0),
+            opacity: Loop(period: 2.0, keys: [(0.0, 0.5), (1.0, 1.0), (2.0, 0.5)])),
+        Circle(radius: 0.9, fill: "#ffdd88", offset: (20.0, 33.0)),
+        // Blue flower
+        Circle(radius: 1.5, fill: "#4488ee", offset: (95.0, 32.0),
+            opacity: Loop(period: 2.8, keys: [(0.0, 0.6), (1.4, 1.0), (2.8, 0.6)])),
+        Circle(radius: 0.6, fill: "#ffee88", offset: (95.0, 32.0)),
+        // White flower
+        Circle(radius: 1.8, fill: "#eeeeff", offset: (50.0, 35.0),
+            opacity: Loop(period: 1.8, keys: [(0.0, 0.5), (0.9, 0.9), (1.8, 0.5)])),
+        Circle(radius: 0.7, fill: "#ffdd66", offset: (50.0, 35.0)),
+
+        // ========== PATH (winding through forest) ==========
+        Ellipse(rx: 200.0, ry: 8.0, fill: "#6a5a3a", offset: (0.0, 50.0)),
+        Ellipse(rx: 180.0, ry: 6.0, fill: "#7a6a4a", offset: (5.0, 50.0)),
+        // Path edge stones
+        Circle(radius: 1.5, fill: "#887766", offset: (-60.0, 45.0)),
+        Circle(radius: 1.2, fill: "#887766", offset: (-30.0, 43.0)),
+        Circle(radius: 1.0, fill: "#887766", offset: (10.0, 44.0)),
+        Circle(radius: 1.3, fill: "#887766", offset: (50.0, 45.0)),
+        Circle(radius: 1.1, fill: "#887766", offset: (90.0, 44.0)),
+
+        // ========== FOREGROUND GRASS ==========
+        Triangle(v0: (-140.0, 55.0), v1: (-145.0, 70.0), v2: (-135.0, 70.0), fill: "#3a7a28"),
+        Triangle(v0: (-60.0, 58.0), v1: (-65.0, 72.0), v2: (-55.0, 72.0), fill: "#448a30"),
+        Triangle(v0: (25.0, 56.0), v1: (20.0, 70.0), v2: (30.0, 70.0), fill: "#3a7a28"),
+        Triangle(v0: (100.0, 57.0), v1: (95.0, 71.0), v2: (105.0, 71.0), fill: "#448a30"),
+        Triangle(v0: (140.0, 56.0), v1: (135.0, 70.0), v2: (145.0, 70.0), fill: "#3a7a28"),
+        // ========== WOLF (embedded via Visual ref with offset) ==========
+        Visual(visual: "demo:wolf_runner", offset: (20.0, 15.0), scale: (0.6, 0.6)),
+    ],
+),
+]
